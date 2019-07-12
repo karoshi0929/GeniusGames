@@ -1,0 +1,5 @@
+C:\Users\P21806\Documents\Visual Studio 2015\Projects\PlayGround\TCPcommunication\bin\Debug\TCPcommunication.dll
+C:\Users\P21806\Documents\Visual Studio 2015\Projects\PlayGround\TCPcommunication\bin\Debug\TCPcommunication.pdb
+C:\Users\P21806\Documents\Visual Studio 2015\Projects\PlayGround\TCPcommunication\obj\Debug\TCPcommunication.csprojResolveAssemblyReference.cache
+C:\Users\P21806\Documents\Visual Studio 2015\Projects\PlayGround\TCPcommunication\obj\Debug\TCPcommunication.dll
+C:\Users\P21806\Documents\Visual Studio 2015\Projects\PlayGround\TCPcommunication\obj\Debug\TCPcommunication.pdb

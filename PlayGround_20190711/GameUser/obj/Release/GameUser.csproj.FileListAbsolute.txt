@@ -1,0 +1,81 @@
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\GameUser\bin\Release\GameUser.exe.config
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\GameUser\bin\Release\GameUser.exe
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\GameUser\bin\Release\GameUser.pdb
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\GameUser\obj\Release\GameUser.csprojResolveAssemblyReference.cache
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\GameUser\obj\Release\MainWindow.g.cs
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\GameUser\obj\Release\App.g.cs
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\GameUser\obj\Release\GameUser_MarkupCompile.cache
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\GameUser\obj\Release\GameUser_MarkupCompile.lref
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\GameUser\obj\Release\MainWindow.baml
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\GameUser\obj\Release\GameUser.g.resources
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\GameUser\obj\Release\GameUser.Properties.Resources.resources
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\GameUser\obj\Release\GameUser.csproj.GenerateResource.Cache
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\GameUser\obj\Release\GameUser.exe
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\GameUser\obj\Release\GameUser.pdb
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\GameUser\bin\Release\TCPcommunication.dll
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\GameUser\bin\Release\TCPcommunication.pdb
+D:\동고비\PlayGround_20190702(2)\GameUser\bin\Release\GameUser.exe.config
+D:\동고비\PlayGround_20190702(2)\GameUser\obj\Release\GameUser.exe
+D:\동고비\PlayGround_20190702(2)\GameUser\obj\Release\GameUser.pdb
+D:\동고비\PlayGround_20190702(2)\GameUser\bin\Release\GameUser.exe
+D:\동고비\PlayGround_20190702(2)\GameUser\bin\Release\GameUser.pdb
+D:\동고비\PlayGround_20190702(2)\GameUser\bin\Release\TCPcommunication.dll
+D:\동고비\PlayGround_20190702(2)\GameUser\bin\Release\TCPcommunication.pdb
+D:\동고비\PlayGround_20190702(2)\GameUser\obj\Release\GameUser.csprojResolveAssemblyReference.cache
+D:\동고비\PlayGround_20190702(2)\GameUser\obj\Release\MainWindow.g.cs
+D:\동고비\PlayGround_20190702(2)\GameUser\obj\Release\UCLogin.g.cs
+D:\동고비\PlayGround_20190702(2)\GameUser\obj\Release\UCSelectedGame.g.cs
+D:\동고비\PlayGround_20190702(2)\GameUser\obj\Release\App.g.cs
+D:\동고비\PlayGround_20190702(2)\GameUser\obj\Release\GeneratedInternalTypeHelper.g.cs
+D:\동고비\PlayGround_20190702(2)\GameUser\obj\Release\GameUser_MarkupCompile.cache
+D:\동고비\PlayGround_20190702(2)\GameUser\obj\Release\GameUser_MarkupCompile.lref
+D:\동고비\PlayGround_20190702(2)\GameUser\obj\Release\MainWindow.baml
+D:\동고비\PlayGround_20190702(2)\GameUser\obj\Release\UCLogin.baml
+D:\동고비\PlayGround_20190702(2)\GameUser\obj\Release\UCSelectedGame.baml
+D:\동고비\PlayGround_20190702(2)\GameUser\obj\Release\GameUser.g.resources
+D:\동고비\PlayGround_20190702(2)\GameUser\obj\Release\GameUser.Properties.Resources.resources
+D:\동고비\PlayGround_20190702(2)\GameUser\obj\Release\GameUser.csproj.GenerateResource.Cache
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\GameUser\bin\Release\GameUser.exe.config
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\GameUser\obj\Release\GameUser.exe
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\GameUser\obj\Release\GameUser.pdb
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\GameUser\bin\Release\GameUser.exe
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\GameUser\bin\Release\GameUser.pdb
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\GameUser\bin\Release\TCPcommunication.dll
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\GameUser\bin\Release\TCPcommunication.pdb
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\GameUser\obj\Release\GameUser.csprojResolveAssemblyReference.cache
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\GameUser\obj\Release\MainWindow.g.cs
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\GameUser\obj\Release\UCLogin.g.cs
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\GameUser\obj\Release\UCSelectedGame.g.cs
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\GameUser\obj\Release\App.g.cs
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\GameUser\obj\Release\GeneratedInternalTypeHelper.g.cs
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\GameUser\obj\Release\GameUser_MarkupCompile.cache
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\GameUser\obj\Release\GameUser_MarkupCompile.lref
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\GameUser\obj\Release\MainWindow.baml
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\GameUser\obj\Release\UCLogin.baml
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\GameUser\obj\Release\UCSelectedGame.baml
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\GameUser\obj\Release\GameUser.g.resources
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\GameUser\obj\Release\GameUser.Properties.Resources.resources
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\GameUser\obj\Release\GameUser.csproj.GenerateResource.Cache
+D:\동고비\PlayGround_20190710\GameUser\bin\Release\GameUser.exe.config
+D:\동고비\PlayGround_20190710\GameUser\obj\Release\GameUser.exe
+D:\동고비\PlayGround_20190710\GameUser\obj\Release\GameUser.pdb
+D:\동고비\PlayGround_20190710\GameUser\bin\Release\GameUser.exe
+D:\동고비\PlayGround_20190710\GameUser\bin\Release\GameUser.pdb
+D:\동고비\PlayGround_20190710\GameUser\bin\Release\TCPcommunication.dll
+D:\동고비\PlayGround_20190710\GameUser\bin\Release\TCPcommunication.pdb
+D:\동고비\PlayGround_20190710\GameUser\obj\Release\GameUser.csprojResolveAssemblyReference.cache
+D:\동고비\PlayGround_20190710\GameUser\obj\Release\MainWindow.g.cs
+D:\동고비\PlayGround_20190710\GameUser\obj\Release\UCIndianPoker.g.cs
+D:\동고비\PlayGround_20190710\GameUser\obj\Release\UCLogin.g.cs
+D:\동고비\PlayGround_20190710\GameUser\obj\Release\UCSelectedGame.g.cs
+D:\동고비\PlayGround_20190710\GameUser\obj\Release\App.g.cs
+D:\동고비\PlayGround_20190710\GameUser\obj\Release\GeneratedInternalTypeHelper.g.cs
+D:\동고비\PlayGround_20190710\GameUser\obj\Release\GameUser_MarkupCompile.cache
+D:\동고비\PlayGround_20190710\GameUser\obj\Release\GameUser_MarkupCompile.lref
+D:\동고비\PlayGround_20190710\GameUser\obj\Release\MainWindow.baml
+D:\동고비\PlayGround_20190710\GameUser\obj\Release\UCIndianPoker.baml
+D:\동고비\PlayGround_20190710\GameUser\obj\Release\UCLogin.baml
+D:\동고비\PlayGround_20190710\GameUser\obj\Release\UCSelectedGame.baml
+D:\동고비\PlayGround_20190710\GameUser\obj\Release\GameUser.g.resources
+D:\동고비\PlayGround_20190710\GameUser\obj\Release\GameUser.Properties.Resources.resources
+D:\동고비\PlayGround_20190710\GameUser\obj\Release\GameUser.csproj.GenerateResource.Cache

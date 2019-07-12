@@ -1,0 +1,5 @@
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\TCPcommunication\bin\Release\TCPcommunication.dll
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\TCPcommunication\bin\Release\TCPcommunication.pdb
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\TCPcommunication\obj\Release\DataHandler.csprojResolveAssemblyReference.cache
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\TCPcommunication\obj\Release\TCPcommunication.dll
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\TCPcommunication\obj\Release\TCPcommunication.pdb

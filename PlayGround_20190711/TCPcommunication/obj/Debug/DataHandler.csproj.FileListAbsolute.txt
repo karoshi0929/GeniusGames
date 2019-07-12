@@ -1,0 +1,5 @@
+D:\동고비\PlayGround_20190710\TCPcommunication\bin\Debug\TCPcommunication.dll
+D:\동고비\PlayGround_20190710\TCPcommunication\bin\Debug\TCPcommunication.pdb
+D:\동고비\PlayGround_20190710\TCPcommunication\obj\Debug\DataHandler.csprojResolveAssemblyReference.cache
+D:\동고비\PlayGround_20190710\TCPcommunication\obj\Debug\TCPcommunication.dll
+D:\동고비\PlayGround_20190710\TCPcommunication\obj\Debug\TCPcommunication.pdb

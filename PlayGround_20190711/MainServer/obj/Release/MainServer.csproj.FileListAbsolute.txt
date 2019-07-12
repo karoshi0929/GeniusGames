@@ -1,0 +1,65 @@
+C:\Users\P21806\Desktop\메모\PlayGround_개발용\MainServer\bin\Release\MainServer.exe.config
+C:\Users\P21806\Desktop\메모\PlayGround_개발용\MainServer\bin\Release\MainServer.exe
+C:\Users\P21806\Desktop\메모\PlayGround_개발용\MainServer\bin\Release\MainServer.pdb
+C:\Users\P21806\Desktop\메모\PlayGround_개발용\MainServer\obj\Release\MainServer.csprojResolveAssemblyReference.cache
+C:\Users\P21806\Desktop\메모\PlayGround_개발용\MainServer\obj\Release\MainWindow.g.cs
+C:\Users\P21806\Desktop\메모\PlayGround_개발용\MainServer\obj\Release\App.g.cs
+C:\Users\P21806\Desktop\메모\PlayGround_개발용\MainServer\obj\Release\MainServer_MarkupCompile.cache
+C:\Users\P21806\Desktop\메모\PlayGround_개발용\MainServer\obj\Release\MainServer_MarkupCompile.lref
+C:\Users\P21806\Desktop\메모\PlayGround_개발용\MainServer\obj\Release\MainWindow.baml
+C:\Users\P21806\Desktop\메모\PlayGround_개발용\MainServer\obj\Release\MainServer.g.resources
+C:\Users\P21806\Desktop\메모\PlayGround_개발용\MainServer\obj\Release\MainServer.Properties.Resources.resources
+C:\Users\P21806\Desktop\메모\PlayGround_개발용\MainServer\obj\Release\MainServer.csproj.GenerateResource.Cache
+C:\Users\P21806\Desktop\메모\PlayGround_개발용\MainServer\obj\Release\MainServer.exe
+C:\Users\P21806\Desktop\메모\PlayGround_개발용\MainServer\obj\Release\MainServer.pdb
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\MainServer\bin\Release\MainServer.exe.config
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\MainServer\obj\Release\MainServer.exe
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\MainServer\obj\Release\MainServer.pdb
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\MainServer\bin\Release\MainServer.exe
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\MainServer\bin\Release\MainServer.pdb
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\MainServer\obj\Release\MainServer.csprojResolveAssemblyReference.cache
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\MainServer\obj\Release\MainWindow.g.cs
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\MainServer\obj\Release\App.g.cs
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\MainServer\obj\Release\MainServer_MarkupCompile.cache
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\MainServer\obj\Release\MainServer_MarkupCompile.lref
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\MainServer\obj\Release\MainWindow.baml
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\MainServer\obj\Release\MainServer.g.resources
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\MainServer\obj\Release\MainServer.Properties.Resources.resources
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\MainServer\obj\Release\MainServer.csproj.GenerateResource.Cache
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\MainServer\bin\Release\TCPcommunication.dll
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\MainServer\bin\Release\TCPcommunication.pdb
+D:\동고비\PlayGround_20190702(2)\MainServer\bin\Release\MainServer.exe.config
+D:\동고비\PlayGround_20190702(2)\MainServer\obj\Release\MainServer.exe
+D:\동고비\PlayGround_20190702(2)\MainServer\obj\Release\MainServer.pdb
+D:\동고비\PlayGround_20190702(2)\MainServer\bin\Release\MainServer.exe
+D:\동고비\PlayGround_20190702(2)\MainServer\bin\Release\MainServer.pdb
+D:\동고비\PlayGround_20190702(2)\MainServer\bin\Release\TCPcommunication.dll
+D:\동고비\PlayGround_20190702(2)\MainServer\bin\Release\TCPcommunication.pdb
+D:\동고비\PlayGround_20190702(2)\MainServer\obj\Release\MainServer.csprojResolveAssemblyReference.cache
+D:\동고비\PlayGround_20190702(2)\MainServer\obj\Release\MainWindow.g.cs
+D:\동고비\PlayGround_20190702(2)\MainServer\obj\Release\App.g.cs
+D:\동고비\PlayGround_20190702(2)\MainServer\obj\Release\MainServer_MarkupCompile.cache
+D:\동고비\PlayGround_20190702(2)\MainServer\obj\Release\MainServer_MarkupCompile.lref
+D:\동고비\PlayGround_20190702(2)\MainServer\obj\Release\MainWindow.baml
+D:\동고비\PlayGround_20190702(2)\MainServer\obj\Release\MainServer.g.resources
+D:\동고비\PlayGround_20190702(2)\MainServer\obj\Release\MainServer.Properties.Resources.resources
+D:\동고비\PlayGround_20190702(2)\MainServer\obj\Release\MainServer.csproj.GenerateResource.Cache
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\MainServer\bin\Release\MainServer.exe.config
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\MainServer\obj\Release\MainServer.exe
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\MainServer\obj\Release\MainServer.pdb
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\MainServer\bin\Release\MainServer.exe
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\MainServer\bin\Release\MainServer.pdb
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\MainServer\bin\Release\TCPcommunication.dll
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\MainServer\bin\Release\TCPcommunication.pdb
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\MainServer\obj\Release\MainServer.csprojResolveAssemblyReference.cache
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\MainServer\obj\Release\MainWindow.g.cs
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\MainServer\obj\Release\App.g.cs
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\MainServer\obj\Release\MainServer_MarkupCompile.cache
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\MainServer\obj\Release\MainServer_MarkupCompile.lref
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\MainServer\obj\Release\MainWindow.baml
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\MainServer\obj\Release\MainServer.g.resources
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\MainServer\obj\Release\MainServer.Properties.Resources.resources
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\MainServer\obj\Release\MainServer.csproj.GenerateResource.Cache
+D:\동고비\PlayGround_20190710\MainServer\bin\Release\MainServer.exe.config
+D:\동고비\PlayGround_20190710\MainServer\obj\Release\MainServer.exe
+D:\동고비\PlayGround_20190710\MainServer\obj\Release\MainServer.pdb

@@ -1,0 +1,19 @@
+C:\Users\P21806\Desktop\메모\PlayGround_개발용\TCPcommunication\bin\Release\TCPcommunication.dll
+C:\Users\P21806\Desktop\메모\PlayGround_개발용\TCPcommunication\bin\Release\TCPcommunication.pdb
+C:\Users\P21806\Desktop\메모\PlayGround_개발용\TCPcommunication\obj\Release\TCPcommunication.dll
+C:\Users\P21806\Desktop\메모\PlayGround_개발용\TCPcommunication\obj\Release\TCPcommunication.pdb
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\TCPcommunication\bin\Release\TCPcommunication.dll
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\TCPcommunication\bin\Release\TCPcommunication.pdb
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\TCPcommunication\obj\Release\TCPcommunication.csprojResolveAssemblyReference.cache
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\TCPcommunication\obj\Release\TCPcommunication.dll
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_개발용\TCPcommunication\obj\Release\TCPcommunication.pdb
+D:\동고비\PlayGround_20190702(2)\TCPcommunication\bin\Release\TCPcommunication.dll
+D:\동고비\PlayGround_20190702(2)\TCPcommunication\bin\Release\TCPcommunication.pdb
+D:\동고비\PlayGround_20190702(2)\TCPcommunication\obj\Release\TCPcommunication.csprojResolveAssemblyReference.cache
+D:\동고비\PlayGround_20190702(2)\TCPcommunication\obj\Release\TCPcommunication.dll
+D:\동고비\PlayGround_20190702(2)\TCPcommunication\obj\Release\TCPcommunication.pdb
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\TCPcommunication\bin\Release\TCPcommunication.dll
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\TCPcommunication\bin\Release\TCPcommunication.pdb
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\TCPcommunication\obj\Release\TCPcommunication.csprojResolveAssemblyReference.cache
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\TCPcommunication\obj\Release\TCPcommunication.dll
+C:\Users\P21806\Desktop\메모\지니어스 미니 게임즈\PlayGround_20190704\TCPcommunication\obj\Release\TCPcommunication.pdb
