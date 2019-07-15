@@ -9,7 +9,7 @@ namespace DataHandler
 {
     public class PacketParser
     {
-        EventManager eventManager = new EventManager();
+        public EventManager eventManager = new EventManager();
 
         public byte[] RawSerialize(object anything)
         {
@@ -42,7 +42,8 @@ namespace DataHandler
             switch (packet[2])
             {
                 case (byte)MessageID.IndianPokser:
-                    StartMatching startmatching = JoinGame_ToStruct(packet);
+                    MatchingData startmatching = JoinGame_ToStruct(packet);
+                    EventManager.Instance.ReceiveRequestMatching(startmatching);
                     eventManager.ReceiveRequestMatching(startmatching);
                     break;
                 case (byte)MessageID.MazeOfMemory:
@@ -54,7 +55,7 @@ namespace DataHandler
             }
         }
 
-        public static void PacketToStruct(byte[] packet, ref object topicstruct)
+        public void PacketToStruct(byte[] packet, ref object topicstruct)
         {
             int len = Marshal.SizeOf(topicstruct);
             IntPtr ptr = Marshal.AllocHGlobal(len);
@@ -63,12 +64,12 @@ namespace DataHandler
             Marshal.FreeHGlobal(ptr);
         }
 
-        public static StartMatching JoinGame_ToStruct(byte[] packet)
+        public MatchingData JoinGame_ToStruct(byte[] packet)
         {
-            StartMatching temp = new StartMatching();
+            MatchingData temp = new MatchingData();
             object obj = (object)temp;
             PacketToStruct(packet, ref obj);
-            temp = (StartMatching)obj;
+            temp = (MatchingData)obj;
 
             return temp;
         }

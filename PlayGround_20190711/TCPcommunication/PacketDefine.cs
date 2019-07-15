@@ -20,7 +20,7 @@ namespace DataHandler
         StopMatching = 0xB2
     }
 
-    public struct StartMatching
+    public struct MatchingData
     {
         //시작할 게임 종류 아이디
         public byte MessageID;

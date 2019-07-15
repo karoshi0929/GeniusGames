@@ -8,40 +8,27 @@ namespace DataHandler
 {
     public class EventManager
     {
-        //private static readonly EventManager instance = new EventManager();
+        private static readonly EventManager instance = new EventManager();
 
-        //public static EventManager Instance
-        //{
-        //    get { return instance; }
-        //}
+        public static EventManager Instance
+        {
+            get { return instance; }
+        }
 
-        //public class RequstMatchingReceiveArgs : EventArgs
-        //{
-        //    public JoinGame Data
-        //    { get; set; }
-        //}
+        public class RequestMatchingDataReceivedArgs : EventArgs
+        {
+            public MatchingData Data
+            { get; set; }
+        }
+        public delegate void RequestMatchingEventHandler(RequestMatchingDataReceivedArgs e);
+        public event RequestMatchingEventHandler RequestMatchingEvent;
 
-        //public delegate void RequestMatchingEventHandler(RequstMatchingReceiveArgs e);
-        //public event RequestMatchingEventHandler RequestMatchingEvent;
-        //public void ReceiveRequestMatching(JoinGame data)
-        //{
-        //    if(RequestMatchingEvent != null)
-        //    {
-        //        RequstMatchingReceiveArgs Parameter = new RequstMatchingReceiveArgs();
-        //        Parameter.Data = data;
-        //        this.RequestMatchingEvent(Parameter);
-        //    }
-        //}
-
-        public delegate void JoinClientEventHandler(StartMatching message);
-        public event JoinClientEventHandler RequestMatchingEvent;
-
-        public void ReceiveRequestMatching(StartMatching message)
+        public void ReceiveRequestMatching(MatchingData message)
         {
             if(RequestMatchingEvent != null)
             {
-                StartMatching Parameter = new StartMatching();
-                Parameter = message;
+                RequestMatchingDataReceivedArgs Parameter = new RequestMatchingDataReceivedArgs();
+                Parameter.Data = message;
 
                 RequestMatchingEvent(Parameter);
             }
