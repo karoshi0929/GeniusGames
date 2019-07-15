@@ -68,6 +68,7 @@ namespace TCPcommunication
             stream.Write(sendMessage, 0, sendMessage.Length);
             return true;
 
+            //b
             //a
             //a
             //string msg = "matching";
