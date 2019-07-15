@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround_20190711\GameUser\obj\Debug\
+C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\GameUser\obj\Debug\
 GameUser
 none
 false
 DEBUG;TRACE
-C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround_20190711\GameUser\App.xaml
+C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\GameUser\App.xaml
 41296714932
 
-9-810239043
-16652216677
+101794026427
+161834171835
 MainWindow.xaml;UCIndianPoker.xaml;UCLogin.xaml;UCSelectedGame.xaml;
 
-False
+True
 
