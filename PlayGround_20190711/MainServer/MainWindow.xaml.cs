@@ -88,6 +88,7 @@ namespace MainServer
         private void PrintText(string message)
         {
             LogMessage = message;
+            //printf
         }
 
         private void AddClient()

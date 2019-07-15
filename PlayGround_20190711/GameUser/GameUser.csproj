@@ -58,7 +58,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="IndianPokerClient.cs" />
-    <Compile Include="MazeOfMemoryClient.cs" />
     <Compile Include="UCIndianPoker.xaml.cs">
       <DependentUpon>UCIndianPoker.xaml</DependentUpon>
     </Compile>

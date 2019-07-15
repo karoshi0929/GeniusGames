@@ -8,5 +8,6 @@ namespace MainServer
 {
     class MazeOfMemoryServer
     {
+        
     }
 }
