@@ -25,8 +25,6 @@ namespace MainServer
     {
         IndianPokerServer indianPokerServer;
 
-        DataHandler.EventManager eventManager = new DataHandler.EventManager();
-
         //TextBox에 출력할 문자열(LogMessage)
         private string strLogMessage = string.Empty;
         public string LogMessage
@@ -55,20 +53,32 @@ namespace MainServer
             this.DataContext = this;
 
             indianPokerServer = new IndianPokerServer();
-            indianPokerServer.printText += PrintText;
+            indianPokerServer.printText = new IndianPokerServer.PrintTextDelegate(PrintText);
 
-            eventManager.RequestMatchingEvent += EventManager_RequestMatchingEvent;
+            indianPokerServer.packetParser.eventManager.RequestMatchingEvent += EventManager_RequestMatchingEvent;
+            DataHandler.EventManager.Instance.RequestMatchingEvent += Instance_RequestMatchingEvent;
+
         }
 
-        private void EventManager_RequestMatchingEvent(StartMatching message)
+        private void EventManager_RequestMatchingEvent(DataHandler.EventManager.RequestMatchingDataReceivedArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void EventManager_RequestMatchingEvent1(DataHandler.EventManager.RequestMatchingDataReceivedArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Instance_RequestMatchingEvent(DataHandler.EventManager.RequestMatchingDataReceivedArgs e)
         {
             //클라이언트로부터 매칭 시작 메세지 받았을 시
-            if(message.matchingMsg == (byte)Matching.StartMatching)
+            if (e.Data.matchingMsg == (byte)Matching.StartMatching)
             {
 
             }
             //클라이언트로부터 매칭 멈춤 메세지 받았을 시
-            else if (message.matchingMsg == (byte)Matching.StopMatching)
+            else if (e.Data.matchingMsg == (byte)Matching.StopMatching)
             {
 
             }
@@ -77,7 +87,6 @@ namespace MainServer
 
         private void PrintText(string message)
         {
-            //TextBoxDisplayLog.AppendText = message;
             LogMessage = message;
         }
 

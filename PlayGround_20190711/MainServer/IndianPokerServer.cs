@@ -15,7 +15,7 @@ namespace MainServer
         public delegate void PrintTextDelegate(string text);
         public PrintTextDelegate printText;
 
-        PacketParser packetParser = new PacketParser();
+        public PacketParser packetParser = new PacketParser();
 
         //클라이언트 리스트 저장 컬렉션
         public List<Socket> ClientList = new List<Socket>();
@@ -30,7 +30,7 @@ namespace MainServer
         public void OpenIndianPokerServer()
         {
             ServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("192.168.2.60"), 10000);
+            IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("192.168.2.42"), 10000);
             ServerSocket.Bind(endPoint);
             ServerSocket.Listen(10);
             ServerSocket.BeginAccept(new AsyncCallback(AcceptConnection), ServerSocket);
