@@ -8,12 +8,12 @@ namespace DataHandler
 {
     public class EventManager
     {
-        private static readonly EventManager instance = new EventManager();
+        //private static readonly EventManager instance = new EventManager();
 
-        public static EventManager Instance
-        {
-            get { return instance; }
-        }
+        //public static EventManager Instance
+        //{
+        //    get { return instance; }
+        //}
 
         public class RequestMatchingDataReceivedArgs : EventArgs
         {

@@ -67,7 +67,7 @@ namespace TCPcommunication
             byte[] sendMessage = packetDefine.MakePacket(message);
             stream.Write(sendMessage, 0, sendMessage.Length);
             return true;
-
+            //a
             //string msg = "matching";
             //byte[] header = BitConverter.GetBytes(id);
             //byte[] body = BitConverter.GetBytes(value);

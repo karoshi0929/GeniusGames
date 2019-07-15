@@ -43,7 +43,6 @@ namespace DataHandler
             {
                 case (byte)MessageID.IndianPokser:
                     MatchingData startmatching = JoinGame_ToStruct(packet);
-                    EventManager.Instance.ReceiveRequestMatching(startmatching);
                     eventManager.ReceiveRequestMatching(startmatching);
                     break;
                 case (byte)MessageID.MazeOfMemory:

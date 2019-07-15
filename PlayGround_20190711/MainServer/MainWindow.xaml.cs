@@ -56,21 +56,10 @@ namespace MainServer
             indianPokerServer.printText = new IndianPokerServer.PrintTextDelegate(PrintText);
 
             indianPokerServer.packetParser.eventManager.RequestMatchingEvent += EventManager_RequestMatchingEvent;
-            DataHandler.EventManager.Instance.RequestMatchingEvent += Instance_RequestMatchingEvent;
 
         }
 
         private void EventManager_RequestMatchingEvent(DataHandler.EventManager.RequestMatchingDataReceivedArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void EventManager_RequestMatchingEvent1(DataHandler.EventManager.RequestMatchingDataReceivedArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void Instance_RequestMatchingEvent(DataHandler.EventManager.RequestMatchingDataReceivedArgs e)
         {
             //클라이언트로부터 매칭 시작 메세지 받았을 시
             if (e.Data.matchingMsg == (byte)Matching.StartMatching)
@@ -82,13 +71,11 @@ namespace MainServer
             {
 
             }
-            //throw new NotImplementedException();
         }
 
         private void PrintText(string message)
         {
             LogMessage = message;
-            //printf
         }
 
         private void AddClient()
