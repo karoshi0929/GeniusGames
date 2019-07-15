@@ -68,6 +68,9 @@ namespace TCPcommunication
             stream.Write(sendMessage, 0, sendMessage.Length);
             return true;
 
+            //a
+            //b
+            //c
             //string msg = "matching";
             //byte[] header = BitConverter.GetBytes(id);
             //byte[] body = BitConverter.GetBytes(value);
