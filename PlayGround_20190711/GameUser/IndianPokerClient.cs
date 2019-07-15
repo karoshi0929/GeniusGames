@@ -15,6 +15,8 @@ namespace TCPcommunication
         private string strServerAddress;
         private int Port;
         private short ID;
+
+        PacketDefine packetDefine = new PacketDefine();
         private NetworkStream stream = default(NetworkStream);
 
         public IndianPokerClient(string address, int port, short id)
@@ -57,28 +59,37 @@ namespace TCPcommunication
         //메시지 전달
         private bool SendMessage(short id, int value)
         {
+            MatchingData message = new MatchingData();
+            message.MessageID = (byte)MessageID.IndianPokser;
+            message.Ack = 1;
+            message.matchingMsg = (byte)Matching.StartMatching;
+
+            byte[] sendMessage = packetDefine.MakePacket(message);
+            stream.Write(sendMessage, 0, sendMessage.Length);
+            return true;
+
             //string msg = "matching";
-            byte[] header = BitConverter.GetBytes(id);
-            byte[] body = BitConverter.GetBytes(value);
-            int length = header.Length + body.Length;
-            byte[] leng = BitConverter.GetBytes(length);
-            byte[] packet = new byte[length+sizeof(int)];
+            //byte[] header = BitConverter.GetBytes(id);
+            //byte[] body = BitConverter.GetBytes(value);
+            //int length = header.Length + body.Length;
+            //byte[] leng = BitConverter.GetBytes(length);
+            //byte[] packet = new byte[length+sizeof(int)];
 
-            Array.Copy(header, 0, packet, 0, header.Length);
-            Array.Copy(leng, 0, packet, header.Length, leng.Length);
-            Array.Copy(body, 0, packet, header.Length + leng.Length, body.Length);
+            //Array.Copy(header, 0, packet, 0, header.Length);
+            //Array.Copy(leng, 0, packet, header.Length, leng.Length);
+            //Array.Copy(body, 0, packet, header.Length + leng.Length, body.Length);
 
-            try
-            {
-                stream.Write(packet, 0, packet.Length);
-                stream.Flush();
-                return true;
-            }
-            catch
-            {
-                Console.WriteLine("메시지 전송 실패");
-                return false;
-            }
+            //try
+            //{
+            //    stream.Write(packet, 0, packet.Length);
+            //    stream.Flush();
+            //    return true;
+            //}
+            //catch
+            //{
+            //    Console.WriteLine("메시지 전송 실패");
+            //    return false;
+            //}
 
         }
     }
