@@ -41,15 +41,15 @@ namespace DataHandler
         {
             switch (packet[2])
             {
-                case (byte)MessageID.IndianPokser:
+                case (byte)KindOfGame.IndianPokser:
                     MatchingData startmatching = JoinGame_ToStruct(packet);
                     eventManager.ReceiveRequestMatching(startmatching);
                     break;
-                case (byte)MessageID.MazeOfMemory:
+                case (byte)KindOfGame.MazeOfMemory:
                     break;
-                case (byte)MessageID.RememberNumber:
+                case (byte)KindOfGame.RememberNumber:
                     break;
-                case (byte)MessageID.FinishedAndSum:
+                case (byte)KindOfGame.FinishedAndSum:
                     break;
             }
         }

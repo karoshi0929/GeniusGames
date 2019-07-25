@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DataHandler;
 using TCPcommunication;
 
 namespace GameUser
@@ -23,6 +24,8 @@ namespace GameUser
     {
 
         IndianPokerClient indianPokserClient;
+        PacketDefine packetDefine = new PacketDefine();
+        
 
         public MainWindow()
         {
@@ -74,6 +77,13 @@ namespace GameUser
             if (this.indianPokserClient.ConnectedServer())
             {
                 this.SetVisible(Screen.SelectedGame);
+
+                LoginData loginData = new LoginData();
+                loginData.clientID = id.ToString();
+                loginData.isLogin = true;
+                loginData.Ack = 1;
+
+                indianPokserClient.SendMessage(Header.Login, loginData);
             }
             else
             {

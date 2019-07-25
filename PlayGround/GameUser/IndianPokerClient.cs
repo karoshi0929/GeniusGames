@@ -16,7 +16,7 @@ namespace TCPcommunication
         private int Port;
         private short ID;
 
-        PacketDefine packetDefine = new PacketDefine();
+        public PacketDefine packetDefine = new PacketDefine();
         private NetworkStream stream = default(NetworkStream);
 
         public IndianPokerClient(string address, int port, short id)
@@ -35,6 +35,9 @@ namespace TCPcommunication
             {
                 this.ClientSocket.Connect(this.strServerAddress, this.Port);
                 this.stream = this.ClientSocket.GetStream();
+
+                
+                //SendMessage(Header.Login, LoginData);
             }
             catch
             {
@@ -47,53 +50,31 @@ namespace TCPcommunication
         //매치 요청
         public bool RequestMatch()
         {
-            if(SendMessage(this.ID, (int)Matching.StartMatching))
+            if(SendMessage2(this.ID, (int)Matching.StartMatching))
             {
                 Console.WriteLine("매칭 요청");
                 return true;
             }
             return false;
-
         }
 
         //메시지 전달
-        private bool SendMessage(short id, int value)
+        private bool SendMessage2(short id, int value)
         {
             MatchingData message = new MatchingData();
-            message.MessageID = (byte)MessageID.IndianPokser;
+            message.GameID = (byte)KindOfGame.IndianPokser;
             message.Ack = 1;
             message.matchingMsg = (byte)Matching.StartMatching;
 
-            byte[] sendMessage = packetDefine.MakePacket(message);
-            stream.Write(sendMessage, 0, sendMessage.Length);
+            //byte[] sendMessage = packetDefine.MakePacket(message);
+            //stream.Write(sendMessage, 0, sendMessage.Length);
             return true;
+        }
 
-            //a
-            //b
-            //c
-            //string msg = "matching";
-            //byte[] header = BitConverter.GetBytes(id);
-            //byte[] body = BitConverter.GetBytes(value);
-            //int length = header.Length + body.Length;
-            //byte[] leng = BitConverter.GetBytes(length);
-            //byte[] packet = new byte[length+sizeof(int)];
+        public bool SendMessage(Header header, object data)
+        {
 
-            //Array.Copy(header, 0, packet, 0, header.Length);
-            //Array.Copy(leng, 0, packet, header.Length, leng.Length);
-            //Array.Copy(body, 0, packet, header.Length + leng.Length, body.Length);
-
-            //try
-            //{
-            //    stream.Write(packet, 0, packet.Length);
-            //    stream.Flush();
-            //    return true;
-            //}
-            //catch
-            //{
-            //    Console.WriteLine("메시지 전송 실패");
-            //    return false;
-            //}
-
+            return true;
         }
     }
 
