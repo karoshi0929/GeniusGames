@@ -66,8 +66,6 @@ D:\동고비\PlayGround_20190710\MainServer\obj\Release\MainServer.pdb
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\MainServer\bin\Release\MainServer.exe.config
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\MainServer\bin\Release\MainServer.exe
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\MainServer\bin\Release\MainServer.pdb
-C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\MainServer\bin\Release\TCPcommunication.dll
-C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\MainServer\bin\Release\TCPcommunication.pdb
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\MainServer\obj\Release\MainServer.csprojAssemblyReference.cache
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\MainServer\obj\Release\MainWindow.g.cs
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\MainServer\obj\Release\App.g.cs
@@ -81,3 +79,5 @@ C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\MainServer\obj\Rel
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\MainServer\obj\Release\MainServer.csproj.CopyComplete
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\MainServer\obj\Release\MainServer.exe
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\MainServer\obj\Release\MainServer.pdb
+C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\MainServer\bin\Release\DataHandler.dll
+C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\MainServer\bin\Release\DataHandler.pdb

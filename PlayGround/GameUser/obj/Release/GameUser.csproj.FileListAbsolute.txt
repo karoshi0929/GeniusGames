@@ -82,8 +82,6 @@ D:\동고비\PlayGround_20190710\GameUser\obj\Release\GameUser.csproj.GenerateRe
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\GameUser\bin\Release\GameUser.exe.config
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\GameUser\bin\Release\GameUser.exe
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\GameUser\bin\Release\GameUser.pdb
-C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\GameUser\bin\Release\TCPcommunication.dll
-C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\GameUser\bin\Release\TCPcommunication.pdb
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\GameUser\obj\Release\GameUser.csprojAssemblyReference.cache
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\GameUser\obj\Release\MainWindow.g.cs
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\GameUser\obj\Release\UCIndianPoker.g.cs
@@ -104,3 +102,5 @@ C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\GameUser\obj\Relea
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\GameUser\obj\Release\GameUser.csproj.CopyComplete
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\GameUser\obj\Release\GameUser.exe
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\GameUser\obj\Release\GameUser.pdb
+C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\GameUser\bin\Release\DataHandler.dll
+C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\GameUser\bin\Release\DataHandler.pdb

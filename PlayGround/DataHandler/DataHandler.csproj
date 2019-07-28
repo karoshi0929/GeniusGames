@@ -7,8 +7,8 @@
     <ProjectGuid>{573FAC4B-44C8-4447-9CCE-9BAB03D53692}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TCPcommunication</RootNamespace>
-    <AssemblyName>TCPcommunication</AssemblyName>
+    <RootNamespace>DataHandler</RootNamespace>
+    <AssemblyName>DataHandler</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

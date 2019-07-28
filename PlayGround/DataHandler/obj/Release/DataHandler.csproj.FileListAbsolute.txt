@@ -8,3 +8,9 @@ C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\TCPcommunication\b
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\TCPcommunication\obj\Release\DataHandler.csproj.CoreCompileInputs.cache
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\TCPcommunication\obj\Release\TCPcommunication.dll
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\TCPcommunication\obj\Release\TCPcommunication.pdb
+C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\DataHandler\obj\Release\DataHandler.csprojAssemblyReference.cache
+C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\DataHandler\obj\Release\DataHandler.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\DataHandler\bin\Release\DataHandler.dll
+C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\DataHandler\bin\Release\DataHandler.pdb
+C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\DataHandler\obj\Release\DataHandler.dll
+C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\DataHandler\obj\Release\DataHandler.pdb
