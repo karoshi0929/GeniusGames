@@ -9,3 +9,9 @@ C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround_20190711\TCPcommun
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround_20190711\TCPcommunication\obj\Debug\TCPcommunication.pdb
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround_20190711\TCPcommunication\bin\Debug\TCPcommunication.dll
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround_20190711\TCPcommunication\bin\Debug\TCPcommunication.pdb
+C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\TCPcommunication\bin\Debug\TCPcommunication.dll
+C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\TCPcommunication\bin\Debug\TCPcommunication.pdb
+C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\TCPcommunication\obj\Debug\DataHandler.csprojAssemblyReference.cache
+C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\TCPcommunication\obj\Debug\DataHandler.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\TCPcommunication\obj\Debug\TCPcommunication.dll
+C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\TCPcommunication\obj\Debug\TCPcommunication.pdb

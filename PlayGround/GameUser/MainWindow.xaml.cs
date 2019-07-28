@@ -72,7 +72,7 @@ namespace GameUser
         {
             
             short id = short.Parse(this.LoginScreen.IDboxString);
-            this.indianPokserClient = new IndianPokerClient("192.168.2.60", 10000, id);
+            this.indianPokserClient = new IndianPokerClient("127.0.0.1", 10000, id);
             
             if (this.indianPokserClient.ConnectedServer())
             {
@@ -97,10 +97,17 @@ namespace GameUser
             {
                 case "Set Indian Poker Screen":
                     this.SetVisible(Screen.IndianPoker);
-                    if(indianPokserClient.RequestMatch()) // 서버에 매치요청 보냄
-                    {
 
-                    }
+                    MatchingData matchingData = new MatchingData();
+                    matchingData.GameID = (byte)KindOfGame.IndianPokser;
+                    matchingData.matchingMsg = (byte)Matching.StartMatching;
+                    matchingData.Ack = 1;
+                    indianPokserClient.SendMessage(Header.Matching, matchingData);
+
+                    //if(indianPokserClient.RequestMatch()) // 서버에 매치요청 보냄
+                    //{
+
+                    //}
                     break;
                 case "Set Maze of Memory Screen":
                     this.SetVisible(Screen.MazeofMemory);

@@ -55,7 +55,7 @@ namespace MainServer
             indianPokerServer = new IndianPokerServer();
             indianPokerServer.printText = new IndianPokerServer.PrintTextDelegate(PrintText);
 
-            indianPokerServer.packetParser.eventManager.RequestMatchingEvent += EventManager_RequestMatchingEvent;
+            DataHandler.EventManager.Instance.RequestMatchingEvent += EventManager_RequestMatchingEvent;
 
         }
 

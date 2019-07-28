@@ -9,9 +9,7 @@ namespace DataHandler
 {
     public class PacketParser
     {
-        public EventManager eventManager = new EventManager();
-
-        public byte[] RawSerialize(object anything)
+        public static byte[] RawSerialize(object anything)
         {
             string strError;
             try
@@ -37,24 +35,26 @@ namespace DataHandler
             }
         }
 
-        public void PacketParsing(byte[] packet)
+        public static void PacketParsing(byte[] packet)
         {
-            switch (packet[2])
+            switch (packet[0])
             {
-                case (byte)KindOfGame.IndianPokser:
-                    MatchingData startmatching = JoinGame_ToStruct(packet);
-                    eventManager.ReceiveRequestMatching(startmatching);
-                    break;
-                case (byte)KindOfGame.MazeOfMemory:
-                    break;
-                case (byte)KindOfGame.RememberNumber:
-                    break;
-                case (byte)KindOfGame.FinishedAndSum:
-                    break;
+
+
+                //case (byte)KindOfGame.IndianPokser:
+                //    MatchingData startmatching = JoinGame_ToStruct(packet);
+                //    EventManager.Instance.ReceiveRequestMatching(startmatching);
+                //    break;
+                //case (byte)KindOfGame.MazeOfMemory:
+                //    break;
+                //case (byte)KindOfGame.RememberNumber:
+                //    break;
+                //case (byte)KindOfGame.FinishedAndSum:
+                //    break;
             }
         }
 
-        public void PacketToStruct(byte[] packet, ref object topicstruct)
+        public static void PacketToStruct(byte[] packet, ref object topicstruct)
         {
             int len = Marshal.SizeOf(topicstruct);
             IntPtr ptr = Marshal.AllocHGlobal(len);
@@ -63,7 +63,7 @@ namespace DataHandler
             Marshal.FreeHGlobal(ptr);
         }
 
-        public MatchingData JoinGame_ToStruct(byte[] packet)
+        public static MatchingData JoinGame_ToStruct(byte[] packet)
         {
             MatchingData temp = new MatchingData();
             object obj = (object)temp;

@@ -7,6 +7,13 @@ using System.Threading.Tasks;
 
 namespace DataHandler
 {
+    public enum Header
+    {
+        Login = 0x01,
+        Matching = 0x02,
+        Game = 0x03
+    }
+
     public enum KindOfGame
     {
         IndianPokser = 0xA1,
@@ -18,14 +25,8 @@ namespace DataHandler
     public enum Matching
     {
         StartMatching = 0xB1,
-        StopMatching = 0xB2
-    }
-
-    public enum Header
-    {
-        Login = 0x01,
-        Matching = 0x02,
-        Game = 0x03
+        StopMatching = 0xB2,
+        MatchComplete = 0xB3
     }
 
     public struct LoginData
@@ -46,12 +47,12 @@ namespace DataHandler
         //시작할 게임 종류 아이디
         public byte GameID;
 
-        //메세지 수신을 받았는지 못받았는지 체크 true = 1, false 0
-        public byte Ack;
-
         //매칭 시작 및 매칭 취소 메세지
         //StartMatching, StopMatching
         public byte matchingMsg;
+
+        //메세지 수신을 받았는지 못받았는지 체크 true = 1, false 0
+        public byte Ack;
     }
 
     public struct GameData
@@ -61,16 +62,13 @@ namespace DataHandler
 
     public class PacketDefine
     {
-        PacketParser packetParser = new PacketParser();
-
-        public byte[] MakePacket(Header header, object Data)
+        public static byte[] MakePacket(Header header, object Data)
         {
             byte[] temp = new byte[] { };
-            temp = packetParser.RawSerialize(Data);
-            byte[] outpacket = new byte[temp.Length + 3];
-            outpacket[0] = 0x3A;
-            outpacket[0] = 0x3B;
-            Array.Copy(temp, 0, outpacket, 2, temp.Length);
+            temp = PacketParser.RawSerialize(Data);
+            byte[] outpacket = new byte[temp.Length + 1];
+            outpacket[0] = (byte)header;
+            Array.Copy(temp, 0, outpacket, 1, temp.Length);
 
             //packet 검사 코드
             //outpakcet[outpacket.Length - 1] = Crc8.ComputeChecksum(outpacket);

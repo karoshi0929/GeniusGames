@@ -73,6 +73,8 @@ namespace TCPcommunication
 
         public bool SendMessage(Header header, object data)
         {
+            byte[] sendData = PacketDefine.MakePacket(header, data);
+            stream.Write(sendData, 0, sendData.Length);
 
             return true;
         }
