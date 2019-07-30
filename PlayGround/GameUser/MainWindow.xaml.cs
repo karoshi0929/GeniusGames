@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DataHandler;
 using TCPcommunication;
 
 namespace GameUser
@@ -23,6 +24,8 @@ namespace GameUser
     {
 
         IndianPokerClient indianPokserClient;
+        PacketDefine packetDefine = new PacketDefine();
+        
 
         public MainWindow()
         {
@@ -69,11 +72,18 @@ namespace GameUser
         {
             
             short id = short.Parse(this.LoginScreen.IDboxString);
-            this.indianPokserClient = new IndianPokerClient("192.168.2.60", 10000, id);
+            this.indianPokserClient = new IndianPokerClient("127.0.0.1", 10000, id);
             
             if (this.indianPokserClient.ConnectedServer())
             {
                 this.SetVisible(Screen.SelectedGame);
+
+                LoginData loginData = new LoginData();
+                loginData.clientID = id.ToString();
+                loginData.isLogin = true;
+                loginData.Ack = 1;
+
+                indianPokserClient.SendMessage(Header.Login, loginData);
             }
             else
             {
@@ -87,10 +97,17 @@ namespace GameUser
             {
                 case "Set Indian Poker Screen":
                     this.SetVisible(Screen.IndianPoker);
-                    if(indianPokserClient.RequestMatch()) // 서버에 매치요청 보냄
-                    {
 
-                    }
+                    MatchingData matchingData = new MatchingData();
+                    matchingData.GameID = (byte)KindOfGame.IndianPokser;
+                    matchingData.matchingMsg = (byte)Matching.StartMatching;
+                    matchingData.Ack = 1;
+                    indianPokserClient.SendMessage(Header.Matching, matchingData);
+
+                    //if(indianPokserClient.RequestMatch()) // 서버에 매치요청 보냄
+                    //{
+
+                    //}
                     break;
                 case "Set Maze of Memory Screen":
                     this.SetVisible(Screen.MazeofMemory);
