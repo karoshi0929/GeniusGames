@@ -17,12 +17,12 @@ namespace TCPcommunication
         private AsyncObject ao = new AsyncObject(1024);
         private string strServerAddress;
         private int Port;
-        private short ID;
+        private string ID;
 
         public PacketDefine packetDefine = new PacketDefine();
         //private NetworkStream stream = default(NetworkStream);
 
-        public IndianPokerClient(string address, int port, short id)
+        public IndianPokerClient(string address, int port, string id)
         {
             this.ep = new IPEndPoint(IPAddress.Parse(address), port);
             this.ClientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -40,10 +40,7 @@ namespace TCPcommunication
             {
                 this.ClientSocket.Connect(this.ep);
                 this.ao.WorkingSocket = this.ClientSocket;
-                //this.stream = this.ao.WorkingSocket.GetStream();
                 this.ClientSocket.BeginReceive(ao.Buffer, 0, ao.BufferSize, 0, ReceiveMessage, ao);
-
-                //SendMessage(Header.Login, LoginData);
             }
             catch
             {
@@ -53,34 +50,9 @@ namespace TCPcommunication
             return true;
         }
 
-        //매치 요청
-        public bool RequestMatch()
-        {
-            if(SendMessage2(this.ID, Matching.StartMatching))
-            {
-                Console.WriteLine("매칭 요청");
-                return true;
-            }
-            return false;
-        }
-
-        //메시지 전달
-        private bool SendMessage2(short id, Matching type)
-        {
-            MatchingData message = new MatchingData();
-            message.GameID = (byte)KindOfGame.IndianPokser;
-            message.Ack = 1;
-            message.matchingMsg = (byte)type;
-
-            //byte[] sendMessage = packetDefine.MakePacket(message);
-            //stream.Write(sendMessage, 0, sendMessage.Length);
-            return true;
-        }
-
         public bool SendMessage(Header header, object data)
         {
             byte[] sendData = PacketDefine.MakePacket(header, data);
-            //stream.Write(sendData, 0, sendData.Length);
 
             if(!this.ClientSocket.IsBound)
             {

@@ -43,17 +43,15 @@ namespace MainServer
 
             string strWelcome = "서버에 접속 하였습니다.";
             byte[] sendMessage = Encoding.UTF8.GetBytes(strWelcome);
-            ClientSocket.BeginSend(sendMessage, 0, sendMessage.Length, SocketFlags.None, new AsyncCallback(SendData), ClientSocket);
+            ClientSocket.BeginSend(sendMessage, 0, sendMessage.Length, SocketFlags.None, new AsyncCallback(SendMessage), ClientSocket);
 
-            //ClientList.Add(ClientSocket);
             printText("클라이언트" + ClientSocket.RemoteEndPoint.ToString() + "입장하였습니다.");
-            
             
             ClientSocket.BeginReceive(ReceiveBuffer, 0, ReceiveBuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveMessage), ClientSocket);
             //ClientSocket.BeginReceive(ReceiveBuffer, 0, ReceiveBuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveMessage), ClientSocket);
         }
 
-        private void SendData(IAsyncResult iar)
+        private void SendMessage(IAsyncResult iar)
         {
             Socket client = (Socket)iar.AsyncState;
             int sent = client.EndSend(iar);
@@ -71,7 +69,7 @@ namespace MainServer
                 byte[] recvData = ReceiveBuffer;
                 PacketParser.PacketParsing(recvData);
 
-                printText("클라이언트" + ClientSocket.RemoteEndPoint.ToString() + "매칭 요청하였습니다.");
+                //printText("클라이언트" + ClientSocket.RemoteEndPoint.ToString() + "매칭 요청하였습니다.");
             }
             else
             {

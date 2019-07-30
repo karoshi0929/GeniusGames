@@ -39,38 +39,56 @@ namespace DataHandler
         {
             switch (packet[0])
             {
-
-
-                //case (byte)KindOfGame.IndianPokser:
-                //    MatchingData startmatching = JoinGame_ToStruct(packet);
-                //    EventManager.Instance.ReceiveRequestMatching(startmatching);
-                //    break;
-                //case (byte)KindOfGame.MazeOfMemory:
-                //    break;
-                //case (byte)KindOfGame.RememberNumber:
-                //    break;
-                //case (byte)KindOfGame.FinishedAndSum:
-                //    break;
+                case (byte)Header.Login:
+                    LoginPacket loginPacket = LoginPacket_ToStruct(packet);
+                    EventManager.Instance.ReceiveLoginPacket(loginPacket);
+                    break;
+                case (byte)Header.Matching:
+                    MatchingPacket matchingPacket = MatchingPacket_ToStruct(packet);
+                    EventManager.Instance.ReceiveMatchingPacket(matchingPacket);
+                    break;
+                case (byte)Header.Game:
+                    IndianPokerGamePacket indianPokerPacket = IndianPokerGame_ToStruct(packet);
+                    EventManager.Instance.ReceiveIndianPokerGamePacket(indianPokerPacket);
+                    break;
             }
+        }
+        public static LoginPacket LoginPacket_ToStruct(byte[] packet)
+        {
+            LoginPacket temp = new LoginPacket();
+            object obj = (object)temp;
+            PacketToStruct(packet, ref obj);
+            temp = (LoginPacket)obj;
+            return temp;
+        }
+
+        public static MatchingPacket MatchingPacket_ToStruct(byte[] packet)
+        {
+            MatchingPacket temp = new MatchingPacket();
+            object obj = (object)temp;
+            PacketToStruct(packet, ref obj);
+            temp = (MatchingPacket)obj;
+            return temp;
+        }
+
+        public static IndianPokerGamePacket IndianPokerGame_ToStruct(byte[] packet)
+        {
+            IndianPokerGamePacket temp = new IndianPokerGamePacket();
+            object obj = (object)temp;
+            PacketToStruct(packet, ref obj);
+            temp = (IndianPokerGamePacket)obj;
+            return temp;
         }
 
         public static void PacketToStruct(byte[] packet, ref object topicstruct)
         {
             int len = Marshal.SizeOf(topicstruct);
             IntPtr ptr = Marshal.AllocHGlobal(len);
-            Marshal.Copy(packet, 2, ptr, len);
+            Marshal.Copy(packet, 1, ptr, len);
             topicstruct = Marshal.PtrToStructure(ptr, topicstruct.GetType());
             Marshal.FreeHGlobal(ptr);
         }
 
-        public static MatchingData JoinGame_ToStruct(byte[] packet)
-        {
-            MatchingData temp = new MatchingData();
-            object obj = (object)temp;
-            PacketToStruct(packet, ref obj);
-            temp = (MatchingData)obj;
-
-            return temp;
-        }
+        
     }
 }

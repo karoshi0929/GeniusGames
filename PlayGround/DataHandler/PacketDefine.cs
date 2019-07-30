@@ -29,7 +29,7 @@ namespace DataHandler
         MatchComplete = 0xB3
     }
 
-    public struct LoginData
+    public struct LoginPacket
     {
         //유저 아이디
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 12)]
@@ -42,7 +42,7 @@ namespace DataHandler
         public byte Ack;
     }
 
-    public struct MatchingData
+    public struct MatchingPacket
     {
         //시작할 게임 종류 아이디
         public byte GameID;
@@ -55,7 +55,7 @@ namespace DataHandler
         public byte Ack;
     }
 
-    public struct GameData
+    public struct IndianPokerGamePacket
     {
 
     }

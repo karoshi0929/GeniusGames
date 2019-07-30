@@ -71,19 +71,19 @@ namespace GameUser
         private void LoginScreen_Loginbtn_event(string message)
         {
             
-            short id = short.Parse(this.LoginScreen.IDboxString);
+            string id = this.LoginScreen.IDboxString;
             this.indianPokserClient = new IndianPokerClient("127.0.0.1", 10000, id);
             
             if (this.indianPokserClient.ConnectedServer())
             {
                 this.SetVisible(Screen.SelectedGame);
 
-                LoginData loginData = new LoginData();
-                loginData.clientID = id.ToString();
-                loginData.isLogin = true;
-                loginData.Ack = 1;
+                LoginPacket loginPacket = new LoginPacket();
+                loginPacket.clientID = id.ToString();
+                loginPacket.isLogin = true;
+                loginPacket.Ack = 1;
 
-                indianPokserClient.SendMessage(Header.Login, loginData);
+                indianPokserClient.SendMessage(Header.Login, loginPacket);
             }
             else
             {
@@ -98,11 +98,11 @@ namespace GameUser
                 case "Set Indian Poker Screen":
                     this.SetVisible(Screen.IndianPoker);
 
-                    MatchingData matchingData = new MatchingData();
-                    matchingData.GameID = (byte)KindOfGame.IndianPokser;
-                    matchingData.matchingMsg = (byte)Matching.StartMatching;
-                    matchingData.Ack = 1;
-                    indianPokserClient.SendMessage(Header.Matching, matchingData);
+                    MatchingPacket matchingPacket = new MatchingPacket();
+                    matchingPacket.GameID = (byte)KindOfGame.IndianPokser;
+                    matchingPacket.matchingMsg = (byte)Matching.StartMatching;
+                    matchingPacket.Ack = 1;
+                    indianPokserClient.SendMessage(Header.Matching, matchingPacket);
 
                     //if(indianPokserClient.RequestMatch()) // 서버에 매치요청 보냄
                     //{

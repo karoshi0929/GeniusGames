@@ -15,23 +15,60 @@ namespace DataHandler
             get { return instance; }
         }
 
-        public class RequestMatchingDataReceivedArgs : EventArgs
+        /* ************************************************************************************ */
+        public class LoginPacketReceivedArgs : EventArgs
         {
-            public MatchingData Data
+            public LoginPacket Data
             { get; set; }
         }
-        public delegate void RequestMatchingEventHandler(RequestMatchingDataReceivedArgs e);
-        public event RequestMatchingEventHandler RequestMatchingEvent;
 
-        public void ReceiveRequestMatching(MatchingData message)
+        public delegate void LoginPacketEventHandler(LoginPacketReceivedArgs e);
+        public event LoginPacketEventHandler LoginPacketEvent;
+
+        public void ReceiveLoginPacket(LoginPacket loginPacket)
         {
-            if(RequestMatchingEvent != null)
-            {
-                RequestMatchingDataReceivedArgs Parameter = new RequestMatchingDataReceivedArgs();
-                Parameter.Data = message;
+            LoginPacketReceivedArgs parameter = new LoginPacketReceivedArgs();
+            parameter.Data = loginPacket;
 
-                RequestMatchingEvent(Parameter);
-            }
+            LoginPacketEvent(parameter);
         }
+
+        /* ************************************************************************************ */
+        public class MatchingPacketReceivedArgs : EventArgs
+        {
+            public MatchingPacket Data
+            { get; set; }
+        }
+
+        public delegate void MatchingPacketEventHandler(MatchingPacketReceivedArgs e);
+        public event MatchingPacketEventHandler MatchingPacketEvent;
+
+        public void ReceiveMatchingPacket(MatchingPacket matchingPacket)
+        {
+            MatchingPacketReceivedArgs parameter = new MatchingPacketReceivedArgs();
+            parameter.Data = matchingPacket;
+
+            MatchingPacketEvent(parameter);
+        }
+        /* ************************************************************************************ */
+
+        public class IndianPokerGamePacketReceivedArgs : EventArgs
+        {
+            public IndianPokerGamePacket Data
+            { get; set; }
+        }
+
+        public delegate void IndianPokerGamePacketEventHandler(IndianPokerGamePacketReceivedArgs e);
+        public event IndianPokerGamePacketEventHandler IndianPokerGamePacketEvent;
+
+        public void ReceiveIndianPokerGamePacket(IndianPokerGamePacket indianPokerGamePacket)
+        {
+            IndianPokerGamePacketReceivedArgs parameter = new IndianPokerGamePacketReceivedArgs();
+            parameter.Data = indianPokerGamePacket;
+
+            IndianPokerGamePacketEvent(parameter);
+        }
+
+        /* ************************************************************************************ */
     }
 }

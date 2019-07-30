@@ -8,7 +8,7 @@ using DataHandler;
 
 namespace MainServer
 {
-    public class ClientManager
+    public class ClientManagement
     {
         List<ClientInfo> ClientSocket;
         
