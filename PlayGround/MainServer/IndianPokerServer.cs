@@ -46,6 +46,7 @@ namespace MainServer
             ClientSocket.BeginSend(sendMessage, 0, sendMessage.Length, SocketFlags.None, new AsyncCallback(SendMessage), ClientSocket);
 
             printText("클라이언트" + ClientSocket.RemoteEndPoint.ToString() + "입장하였습니다.");
+
             
             ClientSocket.BeginReceive(ReceiveBuffer, 0, ReceiveBuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveMessage), ClientSocket);
             //ClientSocket.BeginReceive(ReceiveBuffer, 0, ReceiveBuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveMessage), ClientSocket);
@@ -75,6 +76,7 @@ namespace MainServer
             {
                 //메세지를 못받았을 경우
             }
+            //ReceiveBuffer = new byte[bufferSize];
             ClientSocket.BeginReceive(ReceiveBuffer, 0, ReceiveBuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveMessage), ClientSocket);
         }
     }

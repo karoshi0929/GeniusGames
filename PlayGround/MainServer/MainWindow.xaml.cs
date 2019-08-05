@@ -74,6 +74,8 @@ namespace MainServer
 
         private void Instance_MatchingPacketEvent(DataHandler.EventManager.MatchingPacketReceivedArgs e)
         {
+            //0. 클라이언트 정보 가지고 오기 Param 클라이언트 아이디
+
             //1. 클라이언트 ID 확인
 
             //클라이언트로부터 매칭 시작 메세지 받았을 시
