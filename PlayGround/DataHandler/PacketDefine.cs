@@ -53,6 +53,9 @@ namespace DataHandler
 
         //메세지 수신을 받았는지 못받았는지 체크 true = 1, false 0
         public byte Ack;
+
+        //매칭이 성사 되었다면 서버에서 true 송신
+        public bool matchingComplete;
     }
 
     public struct IndianPokerGamePacket
