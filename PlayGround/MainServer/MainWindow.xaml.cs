@@ -26,6 +26,8 @@ namespace MainServer
         IndianPokerServer indianPokerServer;
         ClientManagement clientManagement;
 
+        Queue<ClientInfo> MatchingClientQueue = new Queue<ClientInfo>();
+
         //TextBox에 출력할 문자열(LogMessage)
         private string strLogMessage = string.Empty;
         public string LogMessage
@@ -68,13 +70,23 @@ namespace MainServer
 
         private void Instance_LoginPacketEvent(DataHandler.EventManager.LoginPacketReceivedArgs e)
         {
-            //ClientManagement 클래스에 로그인한 클라이언트 정보 저장 
-            Console.WriteLine(e.Data.clientID.ToString());
+            //클라이언트 정보 저장
+
+            //방법1
+            ClientInfo clientInfo = new ClientInfo(e.Data, e.ClientSocket);
+            if(clientManagement.AddClient(clientInfo))
+            {
+
+            }
+
+            //방법2
+            //clientManagement.AddClient(e.Data, e.ClientSocket);
         }
 
         private void Instance_MatchingPacketEvent(DataHandler.EventManager.MatchingPacketReceivedArgs e)
         {
-            //0. 클라이언트 정보 가지고 오기 Param 클라이언트 아이디
+            //0. 클라이언트 정보 가지고 오기 Param = 클라이언트 아이디
+            
 
             //1. 클라이언트 ID 확인
 

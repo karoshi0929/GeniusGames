@@ -10,9 +10,25 @@ namespace MainServer
 {
     public class ClientManagement
     {
+        //string = ClientID, ClientInfo Class
         public Dictionary<string, ClientInfo> ClientInfoDic = new Dictionary<string, ClientInfo>();
 
-        List<ClientInfo> ClientSocket;
+        //List<ClientInfo> ClientSocket;
+
+
+        public bool AddClient(ClientInfo clientInfo)
+        {
+            ClientInfoDic.Add(clientInfo.ClientID, clientInfo);
+            return true;
+        }
+
+        public bool AddClient(LoginPacket loginPacket, Socket ClientSocket)
+        {
+            ClientInfo clientInfo = new ClientInfo(loginPacket, ClientSocket);
+
+            ClientInfoDic.Add(clientInfo.ClientID, clientInfo);
+            return true;
+        }
     }
 
     public class ClientInfo
@@ -21,6 +37,18 @@ namespace MainServer
         bool isLogin;
         bool isPlayGame;
         string clientID;
+
+        public Socket ClientSocket
+        {
+            get
+            {
+                return clientSocket;
+            }
+            set
+            {
+                clientSocket = value;
+            }
+        }
 
         public string ClientID
         {
@@ -33,7 +61,7 @@ namespace MainServer
                 clientID = value;
             }
         }
-
+        
         public bool IsLogin
         {
             get
@@ -58,10 +86,12 @@ namespace MainServer
             }
         }
 
-        public ClientInfo()
+        public ClientInfo(LoginPacket loginPacket,Socket Client)
         {
-
+            ClientSocket = Client;
+            ClientID = loginPacket.clientID;
+            IsLogin = loginPacket.isLogin;
+            //IsPlayGame = loginPacket.
         }
-        
     }
 }
