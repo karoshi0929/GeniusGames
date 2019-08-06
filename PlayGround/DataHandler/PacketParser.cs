@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,21 +36,21 @@ namespace DataHandler
             }
         }
 
-        public static void PacketParsing(byte[] packet)
+        public static void PacketParsing(byte[] packet, Socket clientSocket = null)
         {
             switch (packet[0])
             {
                 case (byte)Header.Login:
                     LoginPacket loginPacket = LoginPacket_ToStruct(packet);
-                    EventManager.Instance.ReceiveLoginPacket(loginPacket);
+                    EventManager.Instance.ReceiveLoginPacket(loginPacket, clientSocket);
                     break;
                 case (byte)Header.Matching:
                     MatchingPacket matchingPacket = MatchingPacket_ToStruct(packet);
-                    EventManager.Instance.ReceiveMatchingPacket(matchingPacket);
+                    EventManager.Instance.ReceiveMatchingPacket(matchingPacket, clientSocket);
                     break;
                 case (byte)Header.Game:
                     IndianPokerGamePacket indianPokerPacket = IndianPokerGame_ToStruct(packet);
-                    EventManager.Instance.ReceiveIndianPokerGamePacket(indianPokerPacket);
+                    EventManager.Instance.ReceiveIndianPokerGamePacket(indianPokerPacket, clientSocket);
                     break;
             }
         }
