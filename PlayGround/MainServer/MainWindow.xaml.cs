@@ -28,6 +28,8 @@ namespace MainServer
 
         Queue<ClientInfo> MatchingClientQueue = new Queue<ClientInfo>();
 
+        List<ClientInfo> WaitingMatchClientList = new List<ClientInfo>();
+
         //TextBox에 출력할 문자열(LogMessage)
         private string strLogMessage = string.Empty;
         public string LogMessage
@@ -71,37 +73,62 @@ namespace MainServer
         private void Instance_LoginPacketEvent(DataHandler.EventManager.LoginPacketReceivedArgs e)
         {
             //클라이언트 정보 저장
-
-            //방법1
             ClientInfo clientInfo = new ClientInfo(e.Data, e.ClientSocket);
             if(clientManagement.AddClient(clientInfo))
             {
 
             }
-
-            //방법2
-            //clientManagement.AddClient(e.Data, e.ClientSocket);
         }
 
         private void Instance_MatchingPacketEvent(DataHandler.EventManager.MatchingPacketReceivedArgs e)
         {
             //0. 클라이언트 정보 가지고 오기 Param = 클라이언트 아이디
-            
+            ClientInfo asd = clientManagement.ClientInfoDic[e.Data.clientID];
 
-            //1. 클라이언트 ID 확인
-
-            //클라이언트로부터 매칭 시작 메세지 받았을 시
-            if (e.Data.matchingMsg == (byte)Matching.StartMatching)
+            //1. 어떤 게임의 매칭 요청인지 확인
+            switch(e.Data.GameID)
             {
-                //큐에 클라이언트를 담고
-                //count == 2가 되면 두 클라이언트 매칭.
-                //매칭된 클라이언트에게 MessageSend
-            }
-            //클라이언트로부터 매칭 멈춤 메세지 받았을 시
-            else if (e.Data.matchingMsg == (byte)Matching.StopMatching)
-            {
+                case (byte)KindOfGame.IndianPokser:
+                    //함수로 처리
 
+                    //클라이언트로부터 매칭 시작 메세지 받았을 시
+                    if (e.Data.matchingMsg == (byte)Matching.StartMatching)
+                    {
+                        //2. 매칭 대기 리스트에 담기
+                        WaitingMatchClientList.Add(asd);
+                    }
+                    //클라이언트로부터 매칭 멈춤 메세지 받았을 시
+                    else if (e.Data.matchingMsg == (byte)Matching.StopMatching)
+                    {
+                        MatchingClientQueue.Dequeue();
+                    }
+                    break;
+                case (byte)KindOfGame.MazeOfMemory:
+                    break;
+                case (byte)KindOfGame.RememberNumber:
+                    break;
+                case (byte)KindOfGame.FinishedAndSum:
+                    break;
+
+                default:
+                    break;
             }
+            //WaitingMatchClientList리스트에 클라이언트를 담고
+            //count == 2가 되면 두 클라이언트 매칭.
+            //매칭된 클라이언트에게 MessageSend
+            //RoomManager에게 클라이언트 정보 전송
+            if(WaitingMatchClientList.Count < 2)
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                }
+            }
+
+
+            //클라이언트 ID 확인(저장된 클라이언트 아이디 정보와 일치 하는지 확인)필요한지 고민해보자
+            //if (e.Data.clientID == asd.ClientID)
+            //{
+            //}
         }
 
         private void Instance_IndianPokerGamePacketEvent(DataHandler.EventManager.IndianPokerGamePacketReceivedArgs e)
@@ -109,15 +136,14 @@ namespace MainServer
 
         }
 
+        private void HandleMatching()
+        {
+
+        }
+
         private void PrintText(string message)
         {
             LogMessage = message;
-        }
-
-        private void AddClient()
-        {
-            //TextBoxDisplayLog.AppendText = message;
-            //LogMessage = message;
         }
 
         //프로그램 실행 시 인디언 포커, 기억의 미로 서버 실행
