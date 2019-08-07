@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,6 +45,9 @@ namespace DataHandler
 
     public struct MatchingPacket
     {
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 12)]
+        public string clientID;
+
         //시작할 게임 종류 아이디
         public byte GameID;
 
