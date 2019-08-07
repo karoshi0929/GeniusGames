@@ -89,8 +89,6 @@ namespace MainServer
             switch(e.Data.GameID)
             {
                 case (byte)KindOfGame.IndianPokser:
-                    //함수로 처리
-
                     //클라이언트로부터 매칭 시작 메세지 받았을 시
                     if (e.Data.matchingMsg == (byte)Matching.StartMatching)
                     {
@@ -100,7 +98,7 @@ namespace MainServer
                     //클라이언트로부터 매칭 멈춤 메세지 받았을 시
                     else if (e.Data.matchingMsg == (byte)Matching.StopMatching)
                     {
-                        MatchingClientQueue.Dequeue();
+                        //매칭 리스트에서 제거
                     }
                     break;
                 case (byte)KindOfGame.MazeOfMemory:
@@ -113,14 +111,16 @@ namespace MainServer
                 default:
                     break;
             }
-            //WaitingMatchClientList리스트에 클라이언트를 담고
             //count == 2가 되면 두 클라이언트 매칭.
             //매칭된 클라이언트에게 MessageSend
             //RoomManager에게 클라이언트 정보 전송
-            if(WaitingMatchClientList.Count < 2)
+            if(WaitingMatchClientList.Count >= 2)
             {
                 for (int i = 0; i < 2; i++)
                 {
+                    //1. 매칭 성사된 클라이언트에게 SendMessage
+                    //2. RoomManager에게 클라이언트 정보 전송.
+                    //3. 매칭리스트에서 클라이언트 제거
                 }
             }
 
