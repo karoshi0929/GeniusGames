@@ -82,7 +82,7 @@ namespace MainServer
             {
                 //메세지를 못받았을 경우
             }
-            //ReceiveBuffer = new byte[bufferSize];
+            ReceiveBuffer = new byte[bufferSize];
             ClientSocket.BeginReceive(ReceiveBuffer, 0, ReceiveBuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveMessage), client);
         }
     }
