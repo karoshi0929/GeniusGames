@@ -73,13 +73,7 @@ namespace TCPcommunication
             if (recv > 0)
             {
                 //메세지를 받았을 경우
-                string text = Encoding.UTF8.GetString(client.Buffer);
-                //string[] tokens = text.Split('\x01');
-                //string ip = tokens[0];
-                //string msg = tokens[1];
-                Console.WriteLine(text);
-                //byte[] recvData = this.ReceiveBuffer;
-                //PacketParser.PacketParsing(recvData);
+                PacketParser.PacketParsing(client.Buffer);
 
             }
             else
@@ -91,6 +85,7 @@ namespace TCPcommunication
             client.ClearBuffer();
             client.WorkingSocket.BeginReceive(client.Buffer, 0, 1024, SocketFlags.None, ReceiveMessage, client);
         }
+
     }
     public class AsyncObject
     {

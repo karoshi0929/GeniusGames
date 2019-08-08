@@ -23,16 +23,19 @@ namespace GameUser
     public partial class MainWindow : Window
     {
 
-        IndianPokerClient indianPokserClient;
-        PacketDefine packetDefine = new PacketDefine();
-        
+        private IndianPokerClient indianPokserClient;
+        private PacketDefine packetDefine = new PacketDefine();
+        private DataHandler.EventManager manager = new DataHandler.EventManager();
 
+        private bool isMatching = false;
+        private bool isPlaying = false;
         public MainWindow()
         {
             InitializeComponent();
             this.LoginScreen.Loginbtn_event += LoginScreen_Loginbtn_event;
             this.SelectGameScreen.indianbtn_event += SelectedGameScreen_SelectGame;
             this.SelectGameScreen.mazebtn_event += SelectedGameScreen_SelectGame;
+            this.manager.MatchingPacketEvent += Instance_MatchingPacketEvent;
         }
 
         private void SetVisible(Screen selectedscreen)
@@ -96,18 +99,7 @@ namespace GameUser
             switch (message)
             {
                 case "Set Indian Poker Screen":
-                    this.SetVisible(Screen.IndianPoker);
-
-                    MatchingPacket matchingPacket = new MatchingPacket();
-                    matchingPacket.GameID = (byte)KindOfGame.IndianPokser;
-                    matchingPacket.matchingMsg = (byte)Matching.StartMatching;
-                    matchingPacket.Ack = 1;
-                    indianPokserClient.SendMessage(Header.Matching, matchingPacket);
-
-                    //if(indianPokserClient.RequestMatch()) // 서버에 매치요청 보냄
-                    //{
-
-                    //}
+                    SetScreen();
                     break;
                 case "Set Maze of Memory Screen":
                     this.SetVisible(Screen.MazeofMemory);
@@ -116,5 +108,32 @@ namespace GameUser
                     break;
             }
         }
+        //서버에 매칭 요청 메시지 발신
+        private void SetScreen()
+        {
+            if (!this.isMatching)
+            {
+                MatchingPacket matchingPacket = new MatchingPacket();
+                matchingPacket.GameID = (byte)KindOfGame.IndianPokser;
+                matchingPacket.matchingMsg = (byte)Matching.StartMatching;
+                matchingPacket.Ack = 1;
+                indianPokserClient.SendMessage(Header.Matching, matchingPacket);
+
+                //기다리는 화면 표시
+            }
+        }
+
+        //서버에서 매칭 메시지 수신 시 게임 화면 표시
+        private void Instance_MatchingPacketEvent(DataHandler.EventManager.MatchingPacketReceivedArgs e)
+        {
+            this.isMatching = true;
+            if(!this.isPlaying)
+            {
+                this.SetVisible(Screen.IndianPoker);
+                this.isPlaying = true;
+            }
+        }
+
+
     }
 }
