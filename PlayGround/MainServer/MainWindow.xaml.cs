@@ -84,6 +84,7 @@ namespace MainServer
         {
             //0. 클라이언트 정보 가지고 오기 Param = 클라이언트 아이디
             ClientInfo asd = clientManagement.ClientInfoDic[e.Data.clientID];
+            MatchingPacket matchingPacket = e.Data;
 
             //1. 어떤 게임의 매칭 요청인지 확인
             switch(e.Data.GameID)
@@ -99,6 +100,7 @@ namespace MainServer
                     else if (e.Data.matchingMsg == (byte)Matching.StopMatching)
                     {
                         //매칭 리스트에서 제거
+                        WaitingMatchClientList.Remove(asd);
                     }
                     break;
                 case (byte)KindOfGame.MazeOfMemory:
@@ -119,6 +121,9 @@ namespace MainServer
                 for (int i = 0; i < 2; i++)
                 {
                     //1. 매칭 성사된 클라이언트에게 SendMessage
+                    matchingPacket.matchingComplete = true;
+                    indianPokerServer.SendMessage(Header.Matching, matchingPacket, asd.ClientSocket);
+
                     //2. RoomManager에게 클라이언트 정보 전송.
                     //3. 매칭리스트에서 클라이언트 제거
                 }

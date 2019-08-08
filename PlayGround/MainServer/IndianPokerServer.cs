@@ -41,9 +41,9 @@ namespace MainServer
 
             ServerSocket.BeginAccept(new AsyncCallback(AcceptConnection), ServerSocket);
 
-            string strWelcome = "서버에 접속 하였습니다.";
-            byte[] sendMessage = Encoding.UTF8.GetBytes(strWelcome);
-            ClientSocket.BeginSend(sendMessage, 0, sendMessage.Length, SocketFlags.None, new AsyncCallback(SendMessage), ClientSocket);
+            //string strWelcome = "서버에 접속 하였습니다.";
+            //byte[] sendMessage = Encoding.UTF8.GetBytes(strWelcome);
+            //ClientSocket.BeginSend(sendMessage, 0, sendMessage.Length, SocketFlags.None, new AsyncCallback(SendMessage2), ClientSocket);
 
             printText("클라이언트" + ClientSocket.RemoteEndPoint.ToString() + "입장하였습니다.");
 
@@ -52,7 +52,13 @@ namespace MainServer
             //ClientSocket.BeginReceive(ReceiveBuffer, 0, ReceiveBuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveMessage), ClientSocket);
         }
 
-        private void SendMessage(IAsyncResult iar)
+        public void SendMessage(Header header, object data, Socket EndPointClientSocket)
+        {
+            byte[] sendData = PacketDefine.MakePacket(header, data);
+
+            EndPointClientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, new AsyncCallback(SendMessage2), EndPointClientSocket);
+        }
+        private void SendMessage2(IAsyncResult iar)
         {
             Socket client = (Socket)iar.AsyncState;
             int sent = client.EndSend(iar);
@@ -68,7 +74,7 @@ namespace MainServer
             {
                 //메세지를 받았을 경우
                 byte[] recvData = ReceiveBuffer;
-                PacketParser.PacketParsing(recvData);
+                PacketParser.PacketParsing(recvData, client);
 
                 //printText("클라이언트" + ClientSocket.RemoteEndPoint.ToString() + "매칭 요청하였습니다.");
             }
@@ -77,7 +83,7 @@ namespace MainServer
                 //메세지를 못받았을 경우
             }
             //ReceiveBuffer = new byte[bufferSize];
-            ClientSocket.BeginReceive(ReceiveBuffer, 0, ReceiveBuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveMessage), ClientSocket);
+            ClientSocket.BeginReceive(ReceiveBuffer, 0, ReceiveBuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveMessage), client);
         }
     }
 }
