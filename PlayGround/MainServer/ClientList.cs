@@ -93,5 +93,10 @@ namespace MainServer
             IsLogin = loginPacket.isLogin;
             //IsPlayGame = loginPacket.
         }
+
+        public ClientInfo(ClientInfo user)
+        {
+            
+        }
     }
 }

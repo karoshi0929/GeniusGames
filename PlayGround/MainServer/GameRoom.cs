@@ -9,12 +9,18 @@ namespace MainServer
 {
     public class GameRoom
     {
-        ClientInfo client1;
-        ClientInfo client2;
+        ClientInfo Player1;
+        ClientInfo Player2;
 
-        public GameRoom(ClientInfo Player1, ClientInfo Player2)
+        public GameRoom(ClientInfo user1, ClientInfo user2)
         {
-            //client1 = new ClientInfo();
+            Player1 = new ClientInfo(user1);
+            Player2 = new ClientInfo(user2);
+        }
+
+        public void EnterGameRoom()
+        {
+
         }
 
         public void GameStart()
@@ -43,7 +49,13 @@ namespace MainServer
         public void CreateGameRoom(ClientInfo Player1, ClientInfo Player2)
         {
             GameRoom gameRoom = new GameRoom(Player1, Player2);
+            gameRoom.EnterGameRoom();
             gameRoomList.Add(gameRoom);
+        }
+
+        public void RemoveGameRoom()
+        {
+
         }
     }
 }
