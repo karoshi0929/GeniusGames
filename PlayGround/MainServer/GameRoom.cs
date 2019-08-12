@@ -14,7 +14,7 @@ namespace MainServer
 
         public GameRoom(ClientInfo Player1, ClientInfo Player2)
         {
-            client1 = new ClientInfo();
+            //client1 = new ClientInfo();
         }
 
         public void GameStart()
