@@ -9,7 +9,15 @@ namespace MainServer
 {
     public class GameRoom
     {
-        public GameRoom()
+        ClientInfo client1;
+        ClientInfo client2;
+
+        public GameRoom(ClientInfo Player1, ClientInfo Player2)
+        {
+            client1 = new ClientInfo();
+        }
+
+        public void GameStart()
         {
 
         }
@@ -17,11 +25,25 @@ namespace MainServer
 
     public class GameRoomManager
     {
-        Dictionary<int, GameRoom> GameRoomDic = new Dictionary<int, GameRoom>();
+        
+        //Dictionary<int, GameRoom> GameRoomDic = new Dictionary<int, GameRoom>();
+        List<GameRoom> gameRoomList = new List<GameRoom>();
+
+        //public GameRoomManager(ClientInfo Player1, ClientInfo Player2)
+        //{
+        //    gameRoom = new GameRoom(Player1, Player2);
+        //    gameRoomList.Add(gameRoom);
+        //}
 
         public GameRoomManager()
         {
+            
+        }
 
+        public void CreateGameRoom(ClientInfo Player1, ClientInfo Player2)
+        {
+            GameRoom gameRoom = new GameRoom(Player1, Player2);
+            gameRoomList.Add(gameRoom);
         }
     }
 }

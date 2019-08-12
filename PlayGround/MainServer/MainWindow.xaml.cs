@@ -25,11 +25,12 @@ namespace MainServer
     {
         IndianPokerServer indianPokerServer;
         ClientManagement clientManagement;
+        GameRoomManager gameRoomManager;
 
-        Queue<ClientInfo> MatchingClientQueue = new Queue<ClientInfo>();
-
+        //Queue<ClientInfo> MatchingClientQueue = new Queue<ClientInfo>();
         List<ClientInfo> WaitingMatchClientList = new List<ClientInfo>();
 
+        /********************************************************************************/
         //TextBox에 출력할 문자열(LogMessage)
         private string strLogMessage = string.Empty;
         public string LogMessage
@@ -49,7 +50,7 @@ namespace MainServer
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-        //
+        /********************************************************************************/
 
         public MainWindow()
         {
@@ -61,6 +62,7 @@ namespace MainServer
             indianPokerServer.printText = new IndianPokerServer.PrintTextDelegate(PrintText);
 
             clientManagement = new ClientManagement();
+            gameRoomManager = new GameRoomManager();
 
             //클라이언트로부터 Login Message를 받았을 때
             DataHandler.EventManager.Instance.LoginPacketEvent += Instance_LoginPacketEvent;
@@ -84,6 +86,7 @@ namespace MainServer
         {
             //0. 클라이언트 정보 가지고 오기 Param = 클라이언트 아이디
             ClientInfo asd = clientManagement.ClientInfoDic[e.Data.clientID];
+
             MatchingPacket matchingPacket = e.Data;
 
             //1. 어떤 게임의 매칭 요청인지 확인
@@ -116,24 +119,21 @@ namespace MainServer
             //count == 2가 되면 두 클라이언트 매칭.
             //매칭된 클라이언트에게 MessageSend
             //RoomManager에게 클라이언트 정보 전송
-            if(WaitingMatchClientList.Count >= 2)
+            if(WaitingMatchClientList.Count == 2)
             {
-                for (int i = 0; i < 2; i++)
-                {
-                    //1. 매칭 성사된 클라이언트에게 SendMessage
-                    matchingPacket.matchingComplete = true;
-                    indianPokerServer.SendMessage(Header.Matching, matchingPacket, asd.ClientSocket);
+                //1. 매칭 성사된 클라이언트에게 SendMessage
+                matchingPacket.matchingComplete = true;
 
-                    //2. RoomManager에게 클라이언트 정보 전송.
-                    //3. 매칭리스트에서 클라이언트 제거
-                }
+                indianPokerServer.SendMessage(Header.Matching, matchingPacket, WaitingMatchClientList[0].ClientSocket);
+                indianPokerServer.SendMessage(Header.Matching, matchingPacket, WaitingMatchClientList[1].ClientSocket);
+
+                //2. RoomManager에게 클라이언트 전송.
+                gameRoomManager.CreateGameRoom(WaitingMatchClientList[0], WaitingMatchClientList[1]);
+                
+                //3. 매칭리스트에서 클라이언트 제거
+                WaitingMatchClientList.Remove(WaitingMatchClientList[0]);
+                WaitingMatchClientList.Remove(WaitingMatchClientList[1]);
             }
-
-
-            //클라이언트 ID 확인(저장된 클라이언트 아이디 정보와 일치 하는지 확인)필요한지 고민해보자
-            //if (e.Data.clientID == asd.ClientID)
-            //{
-            //}
         }
 
         private void Instance_IndianPokerGamePacketEvent(DataHandler.EventManager.IndianPokerGamePacketReceivedArgs e)
