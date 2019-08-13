@@ -9,18 +9,26 @@ namespace MainServer
 {
     public class GameRoom
     {
-        ClientInfo Player1;
-        ClientInfo Player2;
-
-        public GameRoom(ClientInfo user1, ClientInfo user2)
+        enum Deal
         {
-            Player1 = new ClientInfo(user1);
-            Player2 = new ClientInfo(user2);
+
         }
 
-        public void EnterGameRoom()
-        {
+        GamePlayer player1;
+        GamePlayer player2;
 
+        int currentTurnPlayer;
+        int card;
+
+
+        public void EnterGameRoom(ClientInfo user1, ClientInfo user2)
+        {
+            player1 = new GamePlayer(user1, 1);
+            player2 = new GamePlayer(user2, 2);
+
+
+
+            GameStart();
         }
 
         public void GameStart()
@@ -48,9 +56,11 @@ namespace MainServer
 
         public void CreateGameRoom(ClientInfo Player1, ClientInfo Player2)
         {
-            GameRoom gameRoom = new GameRoom(Player1, Player2);
-            gameRoom.EnterGameRoom();
+            GameRoom gameRoom = new GameRoom();
+            gameRoom.EnterGameRoom(Player1, Player2);
             gameRoomList.Add(gameRoom);
+
+            //gameRoom.GameStart();
         }
 
         public void RemoveGameRoom()

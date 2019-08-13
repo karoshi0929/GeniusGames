@@ -99,4 +99,32 @@ namespace MainServer
             
         }
     }
+
+    public class GamePlayer
+    {
+        ClientInfo owner;
+        short playerIndex;
+        public short PlyaerIndex
+        {
+            get
+            {
+                return playerIndex;
+            }
+            set
+            {
+                playerIndex = value;
+            }
+        }
+        //게임에 입장한 플레이어에게 필요한 요소
+        public int money;
+        public int card;
+
+        public GamePlayer(ClientInfo user, short playerNumber)
+        {
+            this.owner = user;
+            this.PlyaerIndex = playerNumber;
+            this.money = 100;
+            this.card = 0;
+        }
+    }
 }
