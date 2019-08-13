@@ -9,7 +9,7 @@ namespace MainServer
 {
     public class GameRoom
     {
-        enum Deal
+        enum Betting
         {
             //다이 삥 따당 체크 쿼터 하프
         }
