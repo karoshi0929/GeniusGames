@@ -11,7 +11,7 @@ namespace MainServer
     {
         enum Deal
         {
-
+            //다이 삥 따당 체크 쿼터 하프
         }
 
         GamePlayer player1;
