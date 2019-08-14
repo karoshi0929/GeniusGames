@@ -29,6 +29,8 @@ namespace GameUser
 
         private bool isMatching = false;
         private bool isPlaying = false;
+
+        private string ClientID;
         public MainWindow()
         {
             InitializeComponent();
@@ -73,16 +75,16 @@ namespace GameUser
 
         private void LoginScreen_Loginbtn_event(string message)
         {
-            
-            string id = this.LoginScreen.IDboxString;
-            this.indianPokserClient = new IndianPokerClient("127.0.0.1", 10000, id);
-            
+
+            this.ClientID = this.LoginScreen.IDboxString;
+            this.indianPokserClient = new IndianPokerClient("127.0.0.1", 10000, this.ClientID);
+
             if (this.indianPokserClient.ConnectedServer())
             {
                 this.SetVisible(Screen.SelectedGame);
 
                 LoginPacket loginPacket = new LoginPacket();
-                loginPacket.clientID = id.ToString();
+                loginPacket.clientID = this.ClientID;
                 loginPacket.isLogin = true;
                 loginPacket.Ack = 1;
 
@@ -108,15 +110,17 @@ namespace GameUser
                     break;
             }
         }
-        //서버에 매칭 요청 메시지 발신
+        //서버에 매칭 요청 메시지 송신
         private void SetScreen()
         {
             if (!this.isMatching)
             {
                 MatchingPacket matchingPacket = new MatchingPacket();
+                matchingPacket.clientID = this.ClientID;
                 matchingPacket.GameID = (byte)KindOfGame.IndianPokser;
                 matchingPacket.matchingMsg = (byte)Matching.StartMatching;
                 matchingPacket.Ack = 1;
+
                 indianPokserClient.SendMessage(Header.Matching, matchingPacket);
 
                 //기다리는 화면 표시
@@ -127,7 +131,7 @@ namespace GameUser
         private void Instance_MatchingPacketEvent(DataHandler.EventManager.MatchingPacketReceivedArgs e)
         {
             this.isMatching = true;
-            if(!this.isPlaying)
+            if (!this.isPlaying)
             {
                 this.SetVisible(Screen.IndianPoker);
                 this.isPlaying = true;
