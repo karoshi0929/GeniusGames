@@ -14,7 +14,7 @@ namespace MainServer
     {
         public delegate void PrintTextDelegate(string text);
         public PrintTextDelegate printText;
-
+        
         //클라이언트 리스트 저장 컬렉션
         public List<Socket> ClientList = new List<Socket>();
         //Dictionary<string, Socket> ClientInfoDic = new Dictionary<string, Socket>();
@@ -27,26 +27,18 @@ namespace MainServer
 
         public void OpenIndianPokerServer()
         {
-            try
-            {
-                ServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10000);
-                ServerSocket.Bind(endPoint);
-                ServerSocket.Listen(10);
-                ServerSocket.BeginAccept(new AsyncCallback(AcceptConnection), ServerSocket);
-                printText("서버가 시작되었습니다.");
-            }
-            catch(Exception ee)
-            {
-                printText("서버 열기 실패");
-            }
+            ServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10000);
+            ServerSocket.Bind(endPoint);
+            ServerSocket.Listen(10);
+            ServerSocket.BeginAccept(new AsyncCallback(AcceptConnection), ServerSocket);
         }
 
         private void AcceptConnection(IAsyncResult iar)
         {
             Socket oldServer = (Socket)iar.AsyncState;
             ClientSocket = oldServer.EndAccept(iar);
-
+            
             ServerSocket.BeginAccept(new AsyncCallback(AcceptConnection), ServerSocket);
 
             //string strWelcome = "서버에 접속 하였습니다.";
@@ -55,8 +47,11 @@ namespace MainServer
 
             printText("클라이언트" + ClientSocket.RemoteEndPoint.ToString() + "입장하였습니다.");
 
-            
-            ClientSocket.BeginReceive(ReceiveBuffer, 0, ReceiveBuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveMessage), ClientSocket);
+
+            AsyncObject ao = new AsyncObject(1024);
+            ao.WorkingSocket = ClientSocket;
+            ClientSocket.BeginReceive(ao.Buffer, 0, ao.BufferSize, 0, ReceiveMessage, ao);
+            //ClientSocket.BeginReceive(ReceiveBuffer, 0, ReceiveBuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveMessage), ClientSocket);
             //ClientSocket.BeginReceive(ReceiveBuffer, 0, ReceiveBuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveMessage), ClientSocket);
         }
 
@@ -74,24 +69,43 @@ namespace MainServer
 
         private void ReceiveMessage(IAsyncResult iar)
         {
-            Socket client = (Socket)iar.AsyncState;
+            AsyncObject client = (AsyncObject)iar.AsyncState;
             
-            int recv = client.EndReceive(iar);
+            int recv = client.WorkingSocket.EndReceive(iar);
 
-            if(recv != 0)
+            if(recv > 0)
             {
                 //메세지를 받았을 경우
-                byte[] recvData = ReceiveBuffer.ToArray();
-                PacketParser.PacketParsing(recvData, client);
+                //byte[] recvData = ReceiveBuffer;
+                PacketParser.PacketParsing(client.Buffer);
 
-                //printText("클라이언트" + ClientSocket.RemoteEndPoint.ToString() + "매칭 요청하였습니다.");
+                printText("클라이언트 매칭 요청하였습니다.");
             }
             else
             {
                 //메세지를 못받았을 경우
+                client.WorkingSocket.Close();
+                return;
             }
-            ReceiveBuffer = new byte[bufferSize];
-            ClientSocket.BeginReceive(ReceiveBuffer, 0, ReceiveBuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveMessage), client);
+            client.ClearBuffer();
+            ClientSocket.BeginReceive(ReceiveBuffer, 0, ReceiveBuffer.Length, SocketFlags.None, ReceiveMessage, client);
+        }
+
+    }
+    public class AsyncObject
+    {
+        public byte[] Buffer;
+        public Socket WorkingSocket;
+        public readonly int BufferSize;
+        public AsyncObject(int buffersize)
+        {
+            BufferSize = buffersize;
+            Buffer = new byte[BufferSize];
+        }
+
+        public void ClearBuffer()
+        {
+            Array.Clear(Buffer, 0, Buffer.Length);
         }
     }
 }
