@@ -37,6 +37,8 @@ namespace MainServer
         bool isLogin;
         bool isPlayGame;
         string clientID;
+        GamePlayer gamePlayer;
+        public GameRoom gameRoom;
 
         public Socket ClientSocket
         {
@@ -94,15 +96,19 @@ namespace MainServer
             //IsPlayGame = loginPacket.
         }
 
-        public ClientInfo(ClientInfo user)
+        public void EnterClientGameRoom(GamePlayer player,GameRoom CureentGameRoom)
         {
-            
+            this.gamePlayer = player;
+            this.gameRoom = CureentGameRoom;
         }
     }
 
     public class GamePlayer
     {
-        ClientInfo owner;
+        //GameStart()함수에서 Send할때 사용하기때문에 public이지만, private로 지정해야함. 
+        public ClientInfo owner;
+
+        int playerInRoomNumber;
         short playerIndex;
         public short PlyaerIndex
         {
@@ -119,8 +125,9 @@ namespace MainServer
         public int money;
         public int card;
 
-        public GamePlayer(ClientInfo user, short playerNumber)
+        public GamePlayer(ClientInfo user, short playerNumber, int gameRoomNumber)
         {
+            this.playerInRoomNumber = gameRoomNumber;
             this.owner = user;
             this.PlyaerIndex = playerNumber;
             this.money = 100;

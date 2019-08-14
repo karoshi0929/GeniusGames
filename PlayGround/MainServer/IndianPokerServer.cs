@@ -27,11 +27,19 @@ namespace MainServer
 
         public void OpenIndianPokerServer()
         {
-            ServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10000);
-            ServerSocket.Bind(endPoint);
-            ServerSocket.Listen(10);
-            ServerSocket.BeginAccept(new AsyncCallback(AcceptConnection), ServerSocket);
+            try
+            {
+                ServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10000);
+                ServerSocket.Bind(endPoint);
+                ServerSocket.Listen(10);
+                ServerSocket.BeginAccept(new AsyncCallback(AcceptConnection), ServerSocket);
+                printText("서버가 시작되었습니다.");
+            }
+            catch(Exception ee)
+            {
+                printText("서버 열기 실패");
+            }
         }
 
         private void AcceptConnection(IAsyncResult iar)
@@ -73,7 +81,7 @@ namespace MainServer
             if(recv != 0)
             {
                 //메세지를 받았을 경우
-                byte[] recvData = ReceiveBuffer;
+                byte[] recvData = ReceiveBuffer.ToArray();
                 PacketParser.PacketParsing(recvData, client);
 
                 //printText("클라이언트" + ClientSocket.RemoteEndPoint.ToString() + "매칭 요청하였습니다.");

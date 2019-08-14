@@ -138,7 +138,9 @@ namespace MainServer
 
         private void Instance_IndianPokerGamePacketEvent(DataHandler.EventManager.IndianPokerGamePacketReceivedArgs e)
         {
+            ClientInfo asd = clientManagement.ClientInfoDic[e.Data.clientID];
 
+            asd.gameRoom.RequestBetting();
         }
 
         private void HandleMatching()
