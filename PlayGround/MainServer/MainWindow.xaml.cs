@@ -26,6 +26,7 @@ namespace MainServer
         IndianPokerServer indianPokerServer;
         ClientManagement clientManagement;
         GameRoomManager gameRoomManager;
+        GameRoom gameRoom;
 
         List<ClientInfo> WaitingMatchClientList = new List<ClientInfo>();
 
@@ -65,6 +66,10 @@ namespace MainServer
 
             clientManagement = new ClientManagement();
             gameRoomManager = new GameRoomManager();
+
+            gameRoom = new GameRoom();
+            
+
 
             //클라이언트로부터 Login Message를 받았을 때
             DataHandler.EventManager.Instance.LoginPacketEvent += Instance_LoginPacketEvent;
@@ -108,7 +113,7 @@ namespace MainServer
                     {
                         //2. 매칭 대기 리스트에 담기
                         WaitingMatchClientList.Add(asd);
-                        PrintText(asd.ClientSocket.ToString() + "님께서 인디언포커 게임 매칭요청 하였습니다.");
+                        PrintText(asd.ClientSocket.RemoteEndPoint.ToString() + "님께서 인디언포커 게임 매칭요청 하였습니다.");
                     }
                     //클라이언트로부터 매칭 멈춤 메세지 받았을 시
                     else if (e.Data.matchingMsg == (byte)Matching.StopMatching)
@@ -141,10 +146,10 @@ namespace MainServer
 
                 //2. RoomManager에게 클라이언트 전송.
                 gameRoomManager.CreateGameRoom(WaitingMatchClientList[0], WaitingMatchClientList[1]);
-                
+                gameRoomManager.gameRoomList[0].SendGameStartMessage += new GameRoom.DelegateSendGameStartMessage(SendGameStartMessage);
+                gameRoomManager.gameRoomList[0].GameStart();
                 //3. 매칭리스트에서 클라이언트 제거
-                WaitingMatchClientList.Remove(WaitingMatchClientList[0]);
-                WaitingMatchClientList.Remove(WaitingMatchClientList[0]);
+                WaitingMatchClientList.Clear();
             }
         }
 
@@ -163,6 +168,11 @@ namespace MainServer
         private void PrintText(string message)
         {
             LogMessage = message;
+        }
+
+        public void SendGameStartMessage(Header header, IndianPokerGamePacket gamePacket, Socket clientSocket)
+        {
+
         }
 
         //프로그램 실행 시 인디언 포커, 기억의 미로 서버 실행

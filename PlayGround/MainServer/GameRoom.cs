@@ -10,9 +10,11 @@ namespace MainServer
 {
     public class GameRoom
     {
+        public delegate void DelegateSendGameStartMessage(Header header, IndianPokerGamePacket gamePacket, Socket clientSocket);
+        public DelegateSendGameStartMessage SendGameStartMessage;
+
         const short CARDMINNUM = 1;
         const short CARDMAXNUM = 20;
-        IndianPokerServer SendGameMessage = new IndianPokerServer();
 
         int gameRoomNumber = 0;
 
@@ -34,21 +36,25 @@ namespace MainServer
             user1.EnterClientGameRoom(player1, this);
             user2.EnterClientGameRoom(player2, this);
             
-            GameStart();
+            //GameStart();
         }
 
         public void GameStart()
         {
             Random random = new Random();
-
-            IndianPokerGamePacket gamePacket = new IndianPokerGamePacket();
-            gamePacket.startGame = 0x01;
+            
+            IndianPokerGamePacket player1GamePacket = new IndianPokerGamePacket();
+            player1GamePacket.startGame = 0x01;
             //gamePacket.playerTurn = player1.PlyaerIndex;
-            gamePacket.card = (short)random.Next(CARDMINNUM, CARDMAXNUM);
+            player1GamePacket.card = (short)random.Next(CARDMINNUM, CARDMAXNUM);
+            SendGameStartMessage(Header.Game, player1GamePacket, player1.owner.ClientSocket);
 
-            //Delegate사용해서 Send해야됨
-            //SendGameMessage.SendMessage(Header.Game, gamePacket, player1.owner.ClientSocket);
-            //SendGameMessage.SendMessage(Header.Game, gamePacket, player2.owner.ClientSocket);
+            IndianPokerGamePacket player2GamePacket = new IndianPokerGamePacket();
+            player2GamePacket.startGame = 0x01;
+            //gamePacket.playerTurn = player1.PlyaerIndex;
+            player2GamePacket.card = (short)random.Next(CARDMINNUM, CARDMAXNUM);
+            SendGameStartMessage(Header.Game, player2GamePacket, player2.owner.ClientSocket);
+
         }
 
         public void RequestBetting()
@@ -61,7 +67,7 @@ namespace MainServer
     {
         
         //Dictionary<int, GameRoom> GameRoomDic = new Dictionary<int, GameRoom>();
-        List<GameRoom> gameRoomList = new List<GameRoom>();
+        public List<GameRoom> gameRoomList = new List<GameRoom>();
 
         //public GameRoomManager(ClientInfo Player1, ClientInfo Player2)
         //{
