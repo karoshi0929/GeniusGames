@@ -141,14 +141,8 @@ namespace MainServer
                 SendUser1MatchingPacket.matchingComplete = true;
                 SendUser2MatchingPacket.matchingComplete = true;
 
-<<<<<<< HEAD
-                //여기서 오류남 수정 해야함.
-                indianPokerServer.SendMessage(Header.Matching, matchingPacket, WaitingMatchClientList[0].ClientSocket);
-                indianPokerServer.SendMessage(Header.Matching, matchingPacket, WaitingMatchClientList[1].ClientSocket);
-=======
                 indianPokerServer.SendMessage(Header.Matching, SendUser1MatchingPacket, WaitingMatchClientList[0].ClientSocket);
                 indianPokerServer.SendMessage(Header.Matching, SendUser2MatchingPacket, WaitingMatchClientList[1].ClientSocket);
->>>>>>> fd1161ac8546f6db69de89987988aadc417d1c1b
 
                 //2. RoomManager에게 클라이언트 전송.
                 gameRoomManager.CreateGameRoom(WaitingMatchClientList[0], WaitingMatchClientList[1]);
