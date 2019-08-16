@@ -27,8 +27,10 @@ namespace MainServer
         ClientManagement clientManagement;
         GameRoomManager gameRoomManager;
 
-        //Queue<ClientInfo> MatchingClientQueue = new Queue<ClientInfo>();
         List<ClientInfo> WaitingMatchClientList = new List<ClientInfo>();
+
+        MatchingPacket SendUser1MatchingPacket = new MatchingPacket();
+        MatchingPacket SendUser2MatchingPacket = new MatchingPacket();
 
         /********************************************************************************/
         //TextBox에 출력할 문자열(LogMessage)
@@ -87,10 +89,18 @@ namespace MainServer
             //0. 클라이언트 정보 가지고 오기 Param = 클라이언트 아이디
             ClientInfo asd = clientManagement.ClientInfoDic[e.Data.clientID];
 
-            MatchingPacket matchingPacket = e.Data;
+            //매칭요청패킷 저장하기위한 코드
+            if(SendUser1MatchingPacket.clientID == null)
+            {
+                SendUser1MatchingPacket = e.Data;
+            }
+            else
+            {
+                SendUser2MatchingPacket = e.Data;
+            }
 
             //1. 어떤 게임의 매칭 요청인지 확인
-            switch(e.Data.GameID)
+            switch (e.Data.GameID)
             {
                 case (byte)KindOfGame.IndianPokser:
                     //클라이언트로부터 매칭 시작 메세지 받았을 시
@@ -122,17 +132,18 @@ namespace MainServer
             if(WaitingMatchClientList.Count == 2)
             {
                 //1. 매칭 성사된 클라이언트에게 SendMessage
-                matchingPacket.matchingComplete = true;
+                SendUser1MatchingPacket.matchingComplete = true;
+                SendUser2MatchingPacket.matchingComplete = true;
 
-                indianPokerServer.SendMessage(Header.Matching, matchingPacket, WaitingMatchClientList[0].ClientSocket);
-                indianPokerServer.SendMessage(Header.Matching, matchingPacket, WaitingMatchClientList[1].ClientSocket);
+                indianPokerServer.SendMessage(Header.Matching, SendUser1MatchingPacket, WaitingMatchClientList[0].ClientSocket);
+                indianPokerServer.SendMessage(Header.Matching, SendUser2MatchingPacket, WaitingMatchClientList[1].ClientSocket);
 
                 //2. RoomManager에게 클라이언트 전송.
                 gameRoomManager.CreateGameRoom(WaitingMatchClientList[0], WaitingMatchClientList[1]);
                 
                 //3. 매칭리스트에서 클라이언트 제거
                 WaitingMatchClientList.Remove(WaitingMatchClientList[0]);
-                WaitingMatchClientList.Remove(WaitingMatchClientList[1]);
+                WaitingMatchClientList.Remove(WaitingMatchClientList[0]);
             }
         }
 

@@ -47,8 +47,8 @@ namespace MainServer
             gamePacket.card = (short)random.Next(CARDMINNUM, CARDMAXNUM);
 
             //Delegate사용해서 Send해야됨
-            SendGameMessage.SendMessage(Header.Game, gamePacket, player1.owner.ClientSocket);
-            SendGameMessage.SendMessage(Header.Game, gamePacket, player2.owner.ClientSocket);
+            //SendGameMessage.SendMessage(Header.Game, gamePacket, player1.owner.ClientSocket);
+            //SendGameMessage.SendMessage(Header.Game, gamePacket, player2.owner.ClientSocket);
         }
 
         public void RequestBetting()

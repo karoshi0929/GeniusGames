@@ -77,9 +77,9 @@ namespace MainServer
             {
                 //메세지를 받았을 경우
                 //byte[] recvData = ReceiveBuffer;
-                PacketParser.PacketParsing(client.Buffer);
+                PacketParser.PacketParsing(client.Buffer, client.WorkingSocket);
 
-                printText("클라이언트 매칭 요청하였습니다.");
+                //printText("클라이언트 매칭 요청하였습니다.");
             }
             else
             {
@@ -88,7 +88,8 @@ namespace MainServer
                 return;
             }
             client.ClearBuffer();
-            ClientSocket.BeginReceive(ReceiveBuffer, 0, ReceiveBuffer.Length, SocketFlags.None, ReceiveMessage, client);
+            ClientSocket.BeginReceive(client.Buffer, 0, client.Buffer.Length, SocketFlags.None, ReceiveMessage, client);
+            //ClientSocket.BeginReceive(ReceiveBuffer, 0, ReceiveBuffer.Length, SocketFlags.None, ReceiveMessage, client);
         }
 
     }
