@@ -79,8 +79,11 @@ namespace DataHandler
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 12)]
         public string clientID;
 
-        //0x01 == 게임시작
-        public byte startGame;
+        //로딩 완료
+        public bool loadingComplete;
+
+        //게임시작
+        public bool startGame;
         public int betting;
         public short card;
         public short playerTurn;

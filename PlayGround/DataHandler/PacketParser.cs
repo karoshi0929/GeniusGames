@@ -46,11 +46,11 @@ namespace DataHandler
                     break;
                 case (byte)Header.Matching:
                     MatchingPacket matchingPacket = MatchingPacket_ToStruct(packet);
-                    EventManager.Instance.ReceiveMatchingPacket(matchingPacket, clientSocket);
+                    EventManager.Instance.ReceiveMatchingPacket(matchingPacket);
                     break;
                 case (byte)Header.Game:
                     IndianPokerGamePacket indianPokerPacket = IndianPokerGame_ToStruct(packet);
-                    EventManager.Instance.ReceiveIndianPokerGamePacket(indianPokerPacket, clientSocket);
+                    EventManager.Instance.ReceiveIndianPokerGamePacket(indianPokerPacket);
                     break;
             }
         }

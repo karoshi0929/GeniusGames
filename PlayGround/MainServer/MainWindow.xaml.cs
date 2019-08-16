@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,6 +30,8 @@ namespace MainServer
         GameRoom gameRoom;
 
         List<ClientInfo> WaitingMatchClientList = new List<ClientInfo>();
+
+        //List<MatchingPacket> responseMatching = new List<MatchingPacket>();
 
         MatchingPacket SendUser1MatchingPacket = new MatchingPacket();
         MatchingPacket SendUser2MatchingPacket = new MatchingPacket();
@@ -67,10 +70,6 @@ namespace MainServer
             clientManagement = new ClientManagement();
             gameRoomManager = new GameRoomManager();
 
-            gameRoom = new GameRoom();
-            
-
-
             //클라이언트로부터 Login Message를 받았을 때
             DataHandler.EventManager.Instance.LoginPacketEvent += Instance_LoginPacketEvent;
             //클라이언트로부터 GameMatching요청 Message를 받았을 때
@@ -92,9 +91,9 @@ namespace MainServer
         private void Instance_MatchingPacketEvent(DataHandler.EventManager.MatchingPacketReceivedArgs e)
         {
             //0. 클라이언트 정보 가지고 오기 Param = 클라이언트 아이디
-            ClientInfo asd = clientManagement.ClientInfoDic[e.Data.clientID];
+            ClientInfo clientInfo = clientManagement.ClientInfoDic[e.Data.clientID];
 
-            //매칭요청패킷 저장하기위한 코드
+            //매칭요청패킷 저장하기위한 코드, 맘에 안든다 어떻게 고칠지 생각해보자.
             if(SendUser1MatchingPacket.clientID == null)
             {
                 SendUser1MatchingPacket = e.Data;
@@ -112,14 +111,14 @@ namespace MainServer
                     if (e.Data.matchingMsg == (byte)Matching.StartMatching)
                     {
                         //2. 매칭 대기 리스트에 담기
-                        WaitingMatchClientList.Add(asd);
-                        PrintText(asd.ClientSocket.RemoteEndPoint.ToString() + "님께서 인디언포커 게임 매칭요청 하였습니다.");
+                        WaitingMatchClientList.Add(clientInfo);
+                        PrintText("유저 [" + clientInfo.ClientID + " ]님께서 인디언포커 게임 매칭요청 하였습니다.");
                     }
                     //클라이언트로부터 매칭 멈춤 메세지 받았을 시
                     else if (e.Data.matchingMsg == (byte)Matching.StopMatching)
                     {
                         //매칭 리스트에서 제거
-                        WaitingMatchClientList.Remove(asd);
+                        WaitingMatchClientList.Remove(clientInfo);
                     }
                     break;
                 case (byte)KindOfGame.MazeOfMemory:
@@ -142,27 +141,37 @@ namespace MainServer
                 SendUser2MatchingPacket.matchingComplete = true;
 
                 indianPokerServer.SendMessage(Header.Matching, SendUser1MatchingPacket, WaitingMatchClientList[0].ClientSocket);
+                Thread.Sleep(3000);
                 indianPokerServer.SendMessage(Header.Matching, SendUser2MatchingPacket, WaitingMatchClientList[1].ClientSocket);
 
                 //2. RoomManager에게 클라이언트 전송.
-                gameRoomManager.CreateGameRoom(WaitingMatchClientList[0], WaitingMatchClientList[1]);
-                gameRoomManager.gameRoomList[0].SendGameStartMessage += new GameRoom.DelegateSendGameStartMessage(SendGameStartMessage);
-                gameRoomManager.gameRoomList[0].GameStart();
+                int gameRoomNumber = gameRoomManager.CreateGameRoom(WaitingMatchClientList[0], WaitingMatchClientList[1]);
+                //gameRoomManager.GameRoomDic[gameRoomNumber].SendGameStartMessage += new GameRoom.DelegateSendGameStartMessage(SendGameStartMessage);
+                //gameRoomManager.GameRoomDic[gameRoomNumber].GameStart();
+
                 //3. 매칭리스트에서 클라이언트 제거
                 WaitingMatchClientList.Clear();
+
+                //4. 매칭패킷 저장 객체 초기화
+                SendUser1MatchingPacket = new MatchingPacket();
+                SendUser2MatchingPacket = new MatchingPacket();
+
+                //매칭완료 메세지를 클라이언트에게 보내고, 입장 후 로딩완료 메세지를 받은뒤에 게임을 시작한다.
             }
         }
 
         private void Instance_IndianPokerGamePacketEvent(DataHandler.EventManager.IndianPokerGamePacketReceivedArgs e)
         {
-            ClientInfo asd = clientManagement.ClientInfoDic[e.Data.clientID];
+            //if(e.Data.loadingComplete)
+            //{
+            //    if(e.Data.clientID == gameRoomManager.)
+            //}
+            //ClientInfo asd = clientManagement.ClientInfoDic[e.Data.clientID];
 
-            asd.gameRoom.RequestBetting();
-        }
+            //asd.gameRoom.RequestBetting();
+            //Console.Write("asd");
 
-        private void HandleMatching()
-        {
-
+            PrintText(e.Data.clientID);
         }
 
         private void PrintText(string message)
@@ -170,9 +179,9 @@ namespace MainServer
             LogMessage = message;
         }
 
-        public void SendGameStartMessage(Header header, IndianPokerGamePacket gamePacket, Socket clientSocket)
+        public void SendGameStartMessage(Header header, IndianPokerGamePacket gamePacket, ClientInfo clientInfoParam)
         {
-
+            indianPokerServer.SendMessage(header, gamePacket, clientInfoParam.ClientSocket);
         }
 
         //프로그램 실행 시 인디언 포커, 기억의 미로 서버 실행

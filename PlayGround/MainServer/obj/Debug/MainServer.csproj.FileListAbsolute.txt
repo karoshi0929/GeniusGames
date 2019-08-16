@@ -26,11 +26,11 @@ C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\MainServer\obj\Deb
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\MainServer\bin\Debug\MainServer.exe.config
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\MainServer\bin\Debug\MainServer.exe
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\MainServer\bin\Debug\MainServer.pdb
-C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\MainServer\bin\Debug\TCPcommunication.dll
-C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\MainServer\bin\Debug\TCPcommunication.pdb
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\MainServer\obj\Debug\MainWindow.baml
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\MainServer\obj\Debug\MainServer.g.resources
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\MainServer\obj\Debug\MainServer.Properties.Resources.resources
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\MainServer\obj\Debug\MainServer.csproj.GenerateResource.cache
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\MainServer\obj\Debug\MainServer.csproj.CoreCompileInputs.cache
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\MainServer\obj\Debug\MainServer.csproj.CopyComplete
+C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\MainServer\bin\Debug\DataHandler.dll
+C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\MainServer\bin\Debug\DataHandler.pdb

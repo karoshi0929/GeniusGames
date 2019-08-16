@@ -59,16 +59,17 @@ namespace MainServer
             AsyncObject ao = new AsyncObject(1024);
             ao.WorkingSocket = ClientSocket;
             ClientSocket.BeginReceive(ao.Buffer, 0, ao.BufferSize, 0, ReceiveMessage, ao);
-            //ClientSocket.BeginReceive(ReceiveBuffer, 0, ReceiveBuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveMessage), ClientSocket);
-            //ClientSocket.BeginReceive(ReceiveBuffer, 0, ReceiveBuffer.Length, SocketFlags.None, new AsyncCallback(ReceiveMessage), ClientSocket);
         }
 
         public void SendMessage(Header header, object data, Socket EndPointClientSocket)
         {
             byte[] sendData = PacketDefine.MakePacket(header, data);
+            //ServerSocket.SendTo(sendData, EndPointClientSocket);
+            //ServerSocket.SendTo(sendData, EndPointClientSocket.RemoteEndPoint);
 
             EndPointClientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, new AsyncCallback(SendMessage2), EndPointClientSocket);
         }
+
         private void SendMessage2(IAsyncResult iar)
         {
             Socket client = (Socket)iar.AsyncState;
@@ -77,27 +78,31 @@ namespace MainServer
 
         private void ReceiveMessage(IAsyncResult iar)
         {
-            AsyncObject client = (AsyncObject)iar.AsyncState;
-            
-            int recv = client.WorkingSocket.EndReceive(iar);
-
-            if(recv > 0)
+            try
             {
-                //메세지를 받았을 경우
-                //byte[] recvData = ReceiveBuffer;
-                PacketParser.PacketParsing(client.Buffer, client.WorkingSocket);
+                AsyncObject client = (AsyncObject)iar.AsyncState;
+                int recv = client.WorkingSocket.EndReceive(iar);
 
-                //printText("클라이언트 매칭 요청하였습니다.");
+                //Thread.Sleep(1000);
+
+                if (recv > 0)
+                {
+                    //메세지를 받았을 경우
+                    PacketParser.PacketParsing(client.Buffer, client.WorkingSocket);
+                }
+                else
+                {
+                    //메세지를 못받았을 경우
+                    client.WorkingSocket.Close();
+                    return;
+                }
+                client.ClearBuffer();
+                ClientSocket.BeginReceive(client.Buffer, 0, client.Buffer.Length, SocketFlags.None, ReceiveMessage, client);
             }
-            else
+            catch (ArgumentException e)
             {
-                //메세지를 못받았을 경우
-                client.WorkingSocket.Close();
-                return;
+                Console.WriteLine(e.ToString() + e.GetType().Name + e.Message);
             }
-            client.ClearBuffer();
-            ClientSocket.BeginReceive(client.Buffer, 0, client.Buffer.Length, SocketFlags.None, ReceiveMessage, client);
-            //ClientSocket.BeginReceive(ReceiveBuffer, 0, ReceiveBuffer.Length, SocketFlags.None, ReceiveMessage, client);
         }
 
     }

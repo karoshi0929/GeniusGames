@@ -21,9 +21,9 @@ C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\DataHandler1\obj\D
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\DataHandler1\obj\Debug\DataHandler.csproj.CoreCompileInputs.cache
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\DataHandler1\obj\Debug\TCPcommunication.dll
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\DataHandler1\obj\Debug\TCPcommunication.pdb
-C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\DataHandler\bin\Debug\TCPcommunication.dll
-C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\DataHandler\bin\Debug\TCPcommunication.pdb
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\DataHandler\obj\Debug\DataHandler.csprojAssemblyReference.cache
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\DataHandler\obj\Debug\DataHandler.csproj.CoreCompileInputs.cache
-C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\DataHandler\obj\Debug\TCPcommunication.dll
-C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\DataHandler\obj\Debug\TCPcommunication.pdb
+C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\DataHandler\bin\Debug\DataHandler.dll
+C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\DataHandler\bin\Debug\DataHandler.pdb
+C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\DataHandler\obj\Debug\DataHandler.dll
+C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\DataHandler\obj\Debug\DataHandler.pdb

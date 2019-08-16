@@ -37,7 +37,14 @@ namespace GameUser
             this.LoginScreen.Loginbtn_event += LoginScreen_Loginbtn_event;
             this.SelectGameScreen.indianbtn_event += SelectedGameScreen_SelectGame;
             this.SelectGameScreen.mazebtn_event += SelectedGameScreen_SelectGame;
+
             DataHandler.EventManager.Instance.MatchingPacketEvent += Instance_MatchingPacketEvent;
+            DataHandler.EventManager.Instance.IndianPokerGamePacketEvent += Instance_IndianPokerGamePacketEvent;
+        }
+
+        private void Instance_IndianPokerGamePacketEvent(DataHandler.EventManager.IndianPokerGamePacketReceivedArgs e)
+        {
+            
         }
 
         private void SetVisible(Screen selectedscreen)
@@ -58,6 +65,7 @@ namespace GameUser
                         this.LoginScreen.Visibility = Visibility.Collapsed;
                         this.SelectGameScreen.Visibility = Visibility.Collapsed;
                         this.IndianPokerScreen.Visibility = Visibility.Visible;
+                        this.isPlaying = true;
                     }));
                     break;
 
@@ -91,7 +99,7 @@ namespace GameUser
                 LoginPacket loginPacket = new LoginPacket();
                 loginPacket.clientID = this.ClientID;
                 loginPacket.isLogin = true;
-                loginPacket.Ack = 1;
+                loginPacket.Ack = 0x01;
 
                 indianPokserClient.SendMessage(Header.Login, loginPacket);
             }
@@ -124,7 +132,7 @@ namespace GameUser
                 matchingPacket.clientID = this.ClientID;
                 matchingPacket.GameID = (byte)KindOfGame.IndianPokser;
                 matchingPacket.matchingMsg = (byte)Matching.StartMatching;
-                matchingPacket.Ack = 1;
+                matchingPacket.Ack = 0x01;
 
                 indianPokserClient.SendMessage(Header.Matching, matchingPacket);
 
@@ -138,14 +146,19 @@ namespace GameUser
             if(e.Data.matchingComplete)
             {
                 this.SetVisible(Screen.IndianPoker);
-            }
+                if(isPlaying)
+                {
+                    IndianPokerGamePacket gamePakcet = new IndianPokerGamePacket();
+                    gamePakcet.clientID = this.ClientID;
+                    gamePakcet.loadingComplete = true;
+                    gamePakcet.startGame = false;
+                    gamePakcet.betting = 0;
+                    gamePakcet.card = 0;
+                    gamePakcet.playerTurn = 0;
 
-            //this.isMatching = true;
-            //if (!this.isPlaying)
-            //{
-            //    this.SetVisible(Screen.IndianPoker);
-            //    this.isPlaying = true;
-            //}
+                    indianPokserClient.SendMessage(Header.Game, gamePakcet);
+                }
+            }
         }
 
 

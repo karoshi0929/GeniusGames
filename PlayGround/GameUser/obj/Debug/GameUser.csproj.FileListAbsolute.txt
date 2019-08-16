@@ -49,8 +49,6 @@ C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround_20190711\GameUser\
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\GameUser\bin\Debug\GameUser.exe.config
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\GameUser\bin\Debug\GameUser.exe
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\GameUser\bin\Debug\GameUser.pdb
-C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\GameUser\bin\Debug\TCPcommunication.dll
-C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\GameUser\bin\Debug\TCPcommunication.pdb
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\GameUser\obj\Debug\GameUser.csprojAssemblyReference.cache
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\GameUser\obj\Debug\MainWindow.g.cs
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\GameUser\obj\Debug\UCIndianPoker.g.cs
@@ -71,3 +69,5 @@ C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\GameUser\obj\Debug
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\GameUser\obj\Debug\GameUser.csproj.CopyComplete
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\GameUser\obj\Debug\GameUser.exe
 C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\GameUser\obj\Debug\GameUser.pdb
+C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\GameUser\bin\Debug\DataHandler.dll
+C:\Users\Administrator\Desktop\Project\GeniusGames\PlayGround\GameUser\bin\Debug\DataHandler.pdb

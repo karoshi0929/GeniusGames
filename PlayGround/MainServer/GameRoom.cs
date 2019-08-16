@@ -10,7 +10,7 @@ namespace MainServer
 {
     public class GameRoom
     {
-        public delegate void DelegateSendGameStartMessage(Header header, IndianPokerGamePacket gamePacket, Socket clientSocket);
+        public delegate void DelegateSendGameStartMessage(Header header, IndianPokerGamePacket gamePacket, ClientInfo clientSocket);
         public DelegateSendGameStartMessage SendGameStartMessage;
 
         const short CARDMINNUM = 1;
@@ -35,8 +35,6 @@ namespace MainServer
 
             user1.EnterClientGameRoom(player1, this);
             user2.EnterClientGameRoom(player2, this);
-            
-            //GameStart();
         }
 
         public void GameStart()
@@ -44,16 +42,16 @@ namespace MainServer
             Random random = new Random();
             
             IndianPokerGamePacket player1GamePacket = new IndianPokerGamePacket();
-            player1GamePacket.startGame = 0x01;
+            //player1GamePacket.startGame = 0x01;
             //gamePacket.playerTurn = player1.PlyaerIndex;
             player1GamePacket.card = (short)random.Next(CARDMINNUM, CARDMAXNUM);
-            SendGameStartMessage(Header.Game, player1GamePacket, player1.owner.ClientSocket);
+            SendGameStartMessage(Header.Game, player1GamePacket, player1.owner);
 
             IndianPokerGamePacket player2GamePacket = new IndianPokerGamePacket();
-            player2GamePacket.startGame = 0x01;
+            //player2GamePacket.startGame = 0x01;
             //gamePacket.playerTurn = player1.PlyaerIndex;
             player2GamePacket.card = (short)random.Next(CARDMINNUM, CARDMAXNUM);
-            SendGameStartMessage(Header.Game, player2GamePacket, player2.owner.ClientSocket);
+            SendGameStartMessage(Header.Game, player2GamePacket, player2.owner);
 
         }
 
@@ -65,9 +63,9 @@ namespace MainServer
 
     public class GameRoomManager
     {
-        
-        //Dictionary<int, GameRoom> GameRoomDic = new Dictionary<int, GameRoom>();
-        public List<GameRoom> gameRoomList = new List<GameRoom>();
+        int gameRoomIndex = 0;
+        public Dictionary<int, GameRoom> GameRoomDic = new Dictionary<int, GameRoom>();
+        //public List<GameRoom> gameRoomList = new List<GameRoom>();
 
         //public GameRoomManager(ClientInfo Player1, ClientInfo Player2)
         //{
@@ -80,16 +78,18 @@ namespace MainServer
             
         }
 
-        public void CreateGameRoom(ClientInfo Player1, ClientInfo Player2)
+        public int CreateGameRoom(ClientInfo Player1, ClientInfo Player2)
         {
             GameRoom gameRoom = new GameRoom();
-            gameRoom.EnterGameRoom(Player1, Player2, gameRoomList.Count);
-            gameRoomList.Add(gameRoom);
+            gameRoom.EnterGameRoom(Player1, Player2, gameRoomIndex);
+            GameRoomDic.Add(gameRoomIndex, gameRoom);
+            gameRoomIndex++;
+            return gameRoomIndex - 1;
         }
 
-        public void DestroyGameRoom(GameRoom gameRoom)
+        public void DestroyGameRoom(int roomIndex, GameRoom gameRoom)
         {
-            gameRoomList.Remove(gameRoom);
+            GameRoomDic.Remove(roomIndex);
         }
     }
 }

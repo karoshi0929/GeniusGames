@@ -43,18 +43,15 @@ namespace DataHandler
         {
             public MatchingPacket Data
             { get; set; }
-            public Socket ClientSocket
-            { get; set; }
         }
 
         public delegate void MatchingPacketEventHandler(MatchingPacketReceivedArgs e);
         public event MatchingPacketEventHandler MatchingPacketEvent;
 
-        public void ReceiveMatchingPacket(MatchingPacket matchingPacket, Socket clientSocket)
+        public void ReceiveMatchingPacket(MatchingPacket matchingPacket)
         {
             MatchingPacketReceivedArgs parameter = new MatchingPacketReceivedArgs();
             parameter.Data = matchingPacket;
-            parameter.ClientSocket = clientSocket;
 
             MatchingPacketEvent(parameter);
         }
@@ -64,14 +61,12 @@ namespace DataHandler
         {
             public IndianPokerGamePacket Data
             { get; set; }
-            public Socket ClientSocket
-            { get; set; }
         }
 
         public delegate void IndianPokerGamePacketEventHandler(IndianPokerGamePacketReceivedArgs e);
         public event IndianPokerGamePacketEventHandler IndianPokerGamePacketEvent;
 
-        public void ReceiveIndianPokerGamePacket(IndianPokerGamePacket indianPokerGamePacket, Socket clientSocket)
+        public void ReceiveIndianPokerGamePacket(IndianPokerGamePacket indianPokerGamePacket)
         {
             IndianPokerGamePacketReceivedArgs parameter = new IndianPokerGamePacketReceivedArgs();
             parameter.Data = indianPokerGamePacket;
