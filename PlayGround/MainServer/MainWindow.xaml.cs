@@ -108,6 +108,7 @@ namespace MainServer
                     {
                         //2. 매칭 대기 리스트에 담기
                         WaitingMatchClientList.Add(asd);
+                        PrintText(asd.ClientSocket.ToString() + "님께서 인디언포커 게임 매칭요청 하였습니다.");
                     }
                     //클라이언트로부터 매칭 멈춤 메세지 받았을 시
                     else if (e.Data.matchingMsg == (byte)Matching.StopMatching)

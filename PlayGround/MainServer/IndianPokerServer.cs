@@ -27,11 +27,19 @@ namespace MainServer
 
         public void OpenIndianPokerServer()
         {
-            ServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10000);
-            ServerSocket.Bind(endPoint);
-            ServerSocket.Listen(10);
-            ServerSocket.BeginAccept(new AsyncCallback(AcceptConnection), ServerSocket);
+            try
+            {
+                ServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10000);
+                ServerSocket.Bind(endPoint);
+                ServerSocket.Listen(10);
+                ServerSocket.BeginAccept(new AsyncCallback(AcceptConnection), ServerSocket);
+                printText("서버가 시작되었습니다.");
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
         }
 
         private void AcceptConnection(IAsyncResult iar)
