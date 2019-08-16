@@ -26,9 +26,12 @@ namespace MainServer
         IndianPokerServer indianPokerServer;
         ClientManagement clientManagement;
         GameRoomManager gameRoomManager;
+        GameRoom gameRoom;
 
-        //Queue<ClientInfo> MatchingClientQueue = new Queue<ClientInfo>();
         List<ClientInfo> WaitingMatchClientList = new List<ClientInfo>();
+
+        MatchingPacket SendUser1MatchingPacket = new MatchingPacket();
+        MatchingPacket SendUser2MatchingPacket = new MatchingPacket();
 
         /********************************************************************************/
         //TextBox에 출력할 문자열(LogMessage)
@@ -64,6 +67,10 @@ namespace MainServer
             clientManagement = new ClientManagement();
             gameRoomManager = new GameRoomManager();
 
+            gameRoom = new GameRoom();
+            
+
+
             //클라이언트로부터 Login Message를 받았을 때
             DataHandler.EventManager.Instance.LoginPacketEvent += Instance_LoginPacketEvent;
             //클라이언트로부터 GameMatching요청 Message를 받았을 때
@@ -87,10 +94,18 @@ namespace MainServer
             //0. 클라이언트 정보 가지고 오기 Param = 클라이언트 아이디
             ClientInfo asd = clientManagement.ClientInfoDic[e.Data.clientID];
 
-            MatchingPacket matchingPacket = e.Data;
+            //매칭요청패킷 저장하기위한 코드
+            if(SendUser1MatchingPacket.clientID == null)
+            {
+                SendUser1MatchingPacket = e.Data;
+            }
+            else
+            {
+                SendUser2MatchingPacket = e.Data;
+            }
 
             //1. 어떤 게임의 매칭 요청인지 확인
-            switch(e.Data.GameID)
+            switch (e.Data.GameID)
             {
                 case (byte)KindOfGame.IndianPokser:
                     //클라이언트로부터 매칭 시작 메세지 받았을 시
@@ -98,6 +113,7 @@ namespace MainServer
                     {
                         //2. 매칭 대기 리스트에 담기
                         WaitingMatchClientList.Add(asd);
+                        PrintText(asd.ClientSocket.RemoteEndPoint.ToString() + "님께서 인디언포커 게임 매칭요청 하였습니다.");
                     }
                     //클라이언트로부터 매칭 멈춤 메세지 받았을 시
                     else if (e.Data.matchingMsg == (byte)Matching.StopMatching)
@@ -122,18 +138,24 @@ namespace MainServer
             if(WaitingMatchClientList.Count == 2)
             {
                 //1. 매칭 성사된 클라이언트에게 SendMessage
-                matchingPacket.matchingComplete = true;
+                SendUser1MatchingPacket.matchingComplete = true;
+                SendUser2MatchingPacket.matchingComplete = true;
 
+<<<<<<< HEAD
                 //여기서 오류남 수정 해야함.
                 indianPokerServer.SendMessage(Header.Matching, matchingPacket, WaitingMatchClientList[0].ClientSocket);
                 indianPokerServer.SendMessage(Header.Matching, matchingPacket, WaitingMatchClientList[1].ClientSocket);
+=======
+                indianPokerServer.SendMessage(Header.Matching, SendUser1MatchingPacket, WaitingMatchClientList[0].ClientSocket);
+                indianPokerServer.SendMessage(Header.Matching, SendUser2MatchingPacket, WaitingMatchClientList[1].ClientSocket);
+>>>>>>> fd1161ac8546f6db69de89987988aadc417d1c1b
 
                 //2. RoomManager에게 클라이언트 전송.
                 gameRoomManager.CreateGameRoom(WaitingMatchClientList[0], WaitingMatchClientList[1]);
-                
+                gameRoomManager.gameRoomList[0].SendGameStartMessage += new GameRoom.DelegateSendGameStartMessage(SendGameStartMessage);
+                gameRoomManager.gameRoomList[0].GameStart();
                 //3. 매칭리스트에서 클라이언트 제거
-                WaitingMatchClientList.Remove(WaitingMatchClientList[0]);
-                WaitingMatchClientList.Remove(WaitingMatchClientList[1]);
+                WaitingMatchClientList.Clear();
             }
         }
 
@@ -152,6 +174,11 @@ namespace MainServer
         private void PrintText(string message)
         {
             LogMessage = message;
+        }
+
+        public void SendGameStartMessage(Header header, IndianPokerGamePacket gamePacket, Socket clientSocket)
+        {
+
         }
 
         //프로그램 실행 시 인디언 포커, 기억의 미로 서버 실행

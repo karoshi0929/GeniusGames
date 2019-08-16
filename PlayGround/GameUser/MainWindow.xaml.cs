@@ -25,7 +25,7 @@ namespace GameUser
 
         private IndianPokerClient indianPokserClient;
         private PacketDefine packetDefine = new PacketDefine();
-        private DataHandler.EventManager manager = new DataHandler.EventManager();
+        //private DataHandler.EventManager manager = new DataHandler.EventManager();
 
         private bool isMatching = false;
         private bool isPlaying = false;
@@ -37,7 +37,7 @@ namespace GameUser
             this.LoginScreen.Loginbtn_event += LoginScreen_Loginbtn_event;
             this.SelectGameScreen.indianbtn_event += SelectedGameScreen_SelectGame;
             this.SelectGameScreen.mazebtn_event += SelectedGameScreen_SelectGame;
-            this.manager.MatchingPacketEvent += Instance_MatchingPacketEvent;
+            DataHandler.EventManager.Instance.MatchingPacketEvent += Instance_MatchingPacketEvent;
         }
 
         private void SetVisible(Screen selectedscreen)
@@ -51,11 +51,16 @@ namespace GameUser
                     this.SelectGameScreen.Visibility = Visibility.Visible;
                     this.IndianPokerScreen.Visibility = Visibility.Collapsed;
                     break;
+
                 case Screen.IndianPoker:
-                    this.LoginScreen.Visibility = Visibility.Collapsed;
-                    this.SelectGameScreen.Visibility = Visibility.Collapsed;
-                    this.IndianPokerScreen.Visibility = Visibility.Visible;
+                    Dispatcher.Invoke(new Action(() =>
+                    {
+                        this.LoginScreen.Visibility = Visibility.Collapsed;
+                        this.SelectGameScreen.Visibility = Visibility.Collapsed;
+                        this.IndianPokerScreen.Visibility = Visibility.Visible;
+                    }));
                     break;
+
                 case Screen.MazeofMemory:
                     this.LoginScreen.Visibility = Visibility.Collapsed;
                     this.SelectGameScreen.Visibility = Visibility.Collapsed;
@@ -130,12 +135,17 @@ namespace GameUser
         //서버에서 매칭 메시지 수신 시 게임 화면 표시
         private void Instance_MatchingPacketEvent(DataHandler.EventManager.MatchingPacketReceivedArgs e)
         {
-            this.isMatching = true;
-            if (!this.isPlaying)
+            if(e.Data.matchingComplete)
             {
                 this.SetVisible(Screen.IndianPoker);
-                this.isPlaying = true;
             }
+
+            //this.isMatching = true;
+            //if (!this.isPlaying)
+            //{
+            //    this.SetVisible(Screen.IndianPoker);
+            //    this.isPlaying = true;
+            //}
         }
 
 
