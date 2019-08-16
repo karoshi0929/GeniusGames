@@ -141,11 +141,10 @@ namespace MainServer
                 SendUser2MatchingPacket.matchingComplete = true;
 
                 indianPokerServer.SendMessage(Header.Matching, SendUser1MatchingPacket, WaitingMatchClientList[0].ClientSocket);
-                Thread.Sleep(3000);
                 indianPokerServer.SendMessage(Header.Matching, SendUser2MatchingPacket, WaitingMatchClientList[1].ClientSocket);
 
                 //2. RoomManager에게 클라이언트 전송.
-                int gameRoomNumber = gameRoomManager.CreateGameRoom(WaitingMatchClientList[0], WaitingMatchClientList[1]);
+                //int gameRoomNumber = gameRoomManager.CreateGameRoom(WaitingMatchClientList[0], WaitingMatchClientList[1]);
                 //gameRoomManager.GameRoomDic[gameRoomNumber].SendGameStartMessage += new GameRoom.DelegateSendGameStartMessage(SendGameStartMessage);
                 //gameRoomManager.GameRoomDic[gameRoomNumber].GameStart();
 
@@ -162,6 +161,9 @@ namespace MainServer
 
         private void Instance_IndianPokerGamePacketEvent(DataHandler.EventManager.IndianPokerGamePacketReceivedArgs e)
         {
+            //ClientInfo asd = clientManagement.ClientInfoDic[e.Data.clientID];
+            //asd.gameRoom.RequestBetting();
+
             //if(e.Data.loadingComplete)
             //{
             //    if(e.Data.clientID == gameRoomManager.)

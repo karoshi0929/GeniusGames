@@ -42,11 +42,6 @@ namespace GameUser
             DataHandler.EventManager.Instance.IndianPokerGamePacketEvent += Instance_IndianPokerGamePacketEvent;
         }
 
-        private void Instance_IndianPokerGamePacketEvent(DataHandler.EventManager.IndianPokerGamePacketReceivedArgs e)
-        {
-            
-        }
-
         private void SetVisible(Screen selectedscreen)
         {
             switch (selectedscreen)
@@ -159,6 +154,11 @@ namespace GameUser
                     indianPokserClient.SendMessage(Header.Game, gamePakcet);
                 }
             }
+        }
+
+        private void Instance_IndianPokerGamePacketEvent(DataHandler.EventManager.IndianPokerGamePacketReceivedArgs e)
+        {
+
         }
 
 
