@@ -124,6 +124,7 @@ namespace MainServer
                 //1. 매칭 성사된 클라이언트에게 SendMessage
                 matchingPacket.matchingComplete = true;
 
+                //여기서 오류남 수정 해야함.
                 indianPokerServer.SendMessage(Header.Matching, matchingPacket, WaitingMatchClientList[0].ClientSocket);
                 indianPokerServer.SendMessage(Header.Matching, matchingPacket, WaitingMatchClientList[1].ClientSocket);
 
