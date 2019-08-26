@@ -38,6 +38,8 @@ namespace GameUser
             this.SelectGameScreen.indianbtn_event += SelectedGameScreen_SelectGame;
             this.SelectGameScreen.mazebtn_event += SelectedGameScreen_SelectGame;
 
+            IndianPokerScreen.SendGameBettingMessage += new UCIndianPoker.DelegateSendGameBettingMessage(SendGameBettingMessage);
+
             DataHandler.EventManager.Instance.MatchingPacketEvent += Instance_MatchingPacketEvent;
             DataHandler.EventManager.Instance.IndianPokerGamePacketEvent += Instance_IndianPokerGamePacketEvent;
         }
@@ -151,7 +153,7 @@ namespace GameUser
                     gamePakcet.card = 0;
                     gamePakcet.playerTurn = 0;
 
-                    indianPokserClient.SendMessage(Header.Game, gamePakcet);
+                    //indianPokserClient.SendMessage(Header.Game, gamePakcet);
                 }
             }
         }
@@ -161,6 +163,11 @@ namespace GameUser
 
         }
 
-
+        private void SendGameBettingMessage(IndianPokerGamePacket gamePacketParam)
+        {
+            IndianPokerGamePacket gamePacket = new IndianPokerGamePacket();
+            //gamePacket.
+            indianPokserClient.SendMessage(Header.Game, gamePacket);
+        }
     }
 }

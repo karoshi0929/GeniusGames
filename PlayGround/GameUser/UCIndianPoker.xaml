@@ -36,12 +36,12 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" Height="80" VerticalAlignment="Top" >
-                <Button x:Name="Button_Die" Content="다이" Width="50" Height="30"/>
-                <Button x:Name="Button_Bbing" Content="삥" Margin="10,0,0,0" Width="50" Height="30"/>
-                <Button x:Name="Button_Double" Content="따당" Margin="10,0,0,0" Width="50" Height="30"/>
-                <Button x:Name="Button_Check" Content="체크" Margin="10,0,0,0" Width="50" Height="30"/>
-                <Button x:Name="Button_Queter" Content="쿼터" Margin="10,0,0,0" Width="50" Height="30"/>
-                <Button x:Name="Button_Half" Content="하프" Margin="10,0,0,0" Width="50" Height="30"/>
+                <Button x:Name="Button_Die" Content="다이" Width="50" Height="30" Click="Button_Die_Click"/>
+                <Button x:Name="Button_Bbing" Content="삥" Margin="10,0,0,0" Width="50" Height="30" Click="Button_Bbing_Click"/>
+                <Button x:Name="Button_Double" Content="따당" Margin="10,0,0,0" Width="50" Height="30" Click="Button_Double_Click"/>
+                <Button x:Name="Button_Check" Content="체크" Margin="10,0,0,0" Width="50" Height="30" Click="Button_Check_Click"/>
+                <Button x:Name="Button_Queter" Content="쿼터" Margin="10,0,0,0" Width="50" Height="30" Click="Button_Queter_Click"/>
+                <Button x:Name="Button_Half" Content="하프" Margin="10,0,0,0" Width="50" Height="30" Click="Button_Half_Click"/>
             </StackPanel>
         </Grid>
         

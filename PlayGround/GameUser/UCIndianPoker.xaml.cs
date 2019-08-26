@@ -20,10 +20,42 @@ namespace GameUser
     /// </summary>
     public partial class UCIndianPoker : UserControl
     {
+        public delegate void DelegateSendGameBettingMessage(DataHandler.IndianPokerGamePacket gamePacket);
+        public DelegateSendGameBettingMessage SendGameBettingMessage;
         public UCIndianPoker()
         {
             InitializeComponent();
         }
 
+        private void Button_Die_Click(object sender, RoutedEventArgs e)
+        {
+            DataHandler.IndianPokerGamePacket gamePacket = new DataHandler.IndianPokerGamePacket();
+
+        }
+
+        private void Button_Bbing_Click(object sender, RoutedEventArgs e)
+        {
+            DataHandler.IndianPokerGamePacket gamePacket = new DataHandler.IndianPokerGamePacket();
+        }
+
+        private void Button_Double_Click(object sender, RoutedEventArgs e)
+        {
+            DataHandler.IndianPokerGamePacket gamePacket = new DataHandler.IndianPokerGamePacket();
+        }
+
+        private void Button_Check_Click(object sender, RoutedEventArgs e)
+        {
+            DataHandler.IndianPokerGamePacket gamePacket = new DataHandler.IndianPokerGamePacket();
+        }
+
+        private void Button_Queter_Click(object sender, RoutedEventArgs e)
+        {
+            DataHandler.IndianPokerGamePacket gamePacket = new DataHandler.IndianPokerGamePacket();
+        }
+
+        private void Button_Half_Click(object sender, RoutedEventArgs e)
+        {
+            DataHandler.IndianPokerGamePacket gamePacket = new DataHandler.IndianPokerGamePacket();
+        }
     }
 }
