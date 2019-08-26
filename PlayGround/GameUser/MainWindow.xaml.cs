@@ -153,7 +153,7 @@ namespace GameUser
                     gamePakcet.card = 0;
                     gamePakcet.playerTurn = 0;
 
-                    //indianPokserClient.SendMessage(Header.Game, gamePakcet);
+                    indianPokserClient.SendMessage(Header.Game, gamePakcet);
                 }
             }
         }
