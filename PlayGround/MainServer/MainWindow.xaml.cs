@@ -144,9 +144,9 @@ namespace MainServer
                 indianPokerServer.SendMessage(Header.Matching, SendUser2MatchingPacket, WaitingMatchClientList[1].ClientSocket);
 
                 //2. RoomManager에게 클라이언트 전송.
-                //int gameRoomNumber = gameRoomManager.CreateGameRoom(WaitingMatchClientList[0], WaitingMatchClientList[1]);
-                //gameRoomManager.GameRoomDic[gameRoomNumber].SendGameStartMessage += new GameRoom.DelegateSendGameStartMessage(SendGameStartMessage);
-                //gameRoomManager.GameRoomDic[gameRoomNumber].GameStart();
+                int gameRoomNumber = gameRoomManager.CreateGameRoom(WaitingMatchClientList[0], WaitingMatchClientList[1]);
+                gameRoomManager.GameRoomDic[gameRoomNumber].SendGameStartMessage += new GameRoom.DelegateSendGameStartMessage(SendGameStartMessage);
+                gameRoomManager.GameRoomDic[gameRoomNumber].GameStart();
 
                 //3. 매칭리스트에서 클라이언트 제거
                 WaitingMatchClientList.Clear();
@@ -161,9 +161,10 @@ namespace MainServer
 
         private void Instance_IndianPokerGamePacketEvent(DataHandler.EventManager.IndianPokerGamePacketReceivedArgs e)
         {
-            //ClientInfo asd = clientManagement.ClientInfoDic[e.Data.clientID];
-            //asd.gameRoom.RequestBetting();
+            //ClientInfo currentGameRoomClient = clientManagement.ClientInfoDic[e.Data.clientID];
+            //currentGameRoomClient.gameRoom.RequestBetting();
 
+            /**********************************************************************************/
             //if(e.Data.loadingComplete)
             //{
             //    if(e.Data.clientID == gameRoomManager.)
@@ -172,6 +173,7 @@ namespace MainServer
 
             //asd.gameRoom.RequestBetting();
             //Console.Write("asd");
+            /**********************************************************************************/
 
             PrintText(e.Data.clientID);
         }
