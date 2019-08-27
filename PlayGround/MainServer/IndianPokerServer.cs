@@ -60,7 +60,7 @@ namespace MainServer
 
             AsyncObject ao = new AsyncObject(1024);
             ao.WorkingSocket = ClientSocket;
-            ClientSocket.BeginReceive(ao.Buffer, 0, ao.BufferSize, 0, ReceiveMessage, ao);
+            ClientSocket.BeginReceive(ao.Buffer, 0, ao.BufferSize, 0, new AsyncCallback(ReceiveMessage), ao);
         }
 
         public void SendMessage(Header header, object data, Socket EndPointClientSocket)
@@ -80,7 +80,6 @@ namespace MainServer
 
         private void ReceiveMessage(IAsyncResult iar)
         {
-
             //받은 메세지를 처리하기전에 다른 메세지가 들어온다면 에러가 나기때문에
             //동기 코드가 필요할꺼같다.
             lock (Lock)
@@ -88,18 +87,10 @@ namespace MainServer
                 AsyncObject client = (AsyncObject)iar.AsyncState;
                 int recv = client.WorkingSocket.EndReceive(iar);
 
-                //Thread.Sleep(1000);
-
                 if (recv > 0)
                 {
-
                     //메세지를 받았을 경우
                     PacketParser.PacketParsing(client.Buffer, client.WorkingSocket);
-
-                    client.ClearBuffer();
-                    ClientSocket.BeginReceive(client.Buffer, 0, client.Buffer.Length, SocketFlags.None, ReceiveMessage, client);
-
-
                 }
                 else
                 {
@@ -107,7 +98,8 @@ namespace MainServer
                     client.WorkingSocket.Close();
                     return;
                 }
-
+                client.ClearBuffer();
+                ClientSocket.BeginReceive(client.Buffer, 0, client.Buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveMessage), client);
             }
         }
     }
