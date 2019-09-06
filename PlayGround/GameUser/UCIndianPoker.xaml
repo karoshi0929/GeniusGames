@@ -18,14 +18,19 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <Image  x:Name="MyCard" HorizontalAlignment="Left"  Margin="40,50,0,0" VerticalAlignment="Top" Width="90" Height="150"/>
+                <Label  x:Name="Card1" Content="나의 카드"  HorizontalAlignment="Center" VerticalAlignment="Center" Width="70" Height="40"/>
+            </StackPanel>
+            
+            
+            <Label Grid.Column="1" x:Name="BetMoney" Content="베팅 금액" HorizontalAlignment="Center" Height="100" VerticalAlignment="Center" Width="151"/>
+            <Button Grid.Column="1" x:Name="Button_Ready" Content="준비완료" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Height="30" Margin="0,170,0,0" Click="Button_Ready_Click"/>
 
-            <Image Grid.Column="0" x:Name="MyCard" HorizontalAlignment="Left"  Margin="40,80,0,0" VerticalAlignment="Top" Width="90" Height="150"/>
-            <Label Grid.Column="0" x:Name="Card1" Content="Label" HorizontalAlignment="Center" Height="100" VerticalAlignment="Center" Width="151"/>
-            
-            <Label Grid.Column="1" x:Name="BetMoney" Content="Label" HorizontalAlignment="Center" Height="100" VerticalAlignment="Center" Width="151"/>
-            
-            <Image Grid.Column="2" x:Name="OtherPlayerCard" HorizontalAlignment="Right"  Margin="0,80,40,0" VerticalAlignment="Top" Width="90" Height="150"/>
-            <Label Grid.Column="2" x:Name="Card2" Content="Label" HorizontalAlignment="Center" Height="100" VerticalAlignment="Center" Width="151"/>
+            <StackPanel Grid.Column="2">
+                <Image  x:Name="OtherPlayerCard" HorizontalAlignment="Right"  Margin="0,50,40,0" VerticalAlignment="Top" Width="90" Height="150"/>
+                <Label  x:Name="Card2" Content="상대방 카드" HorizontalAlignment="Center" VerticalAlignment="Center" Width="70" Height="40"/>
+            </StackPanel>
         </Grid>
 
 
@@ -34,15 +39,29 @@
                 <ColumnDefinition Width="0.4*"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Label Content="여기는 남은돈 출력 창"/>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                
+                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Height="80" VerticalAlignment="Center" >
+                    <Button x:Name="Button_Call" Content="콜" Margin="10,0,0,0" Width="50" Height="30" Click="Button_Die_Click"/>
+                    <Button x:Name="Button_Die" Content="다이" Margin="10,0,0,0" Width="50" Height="30" Click="Button_Die_Click"/>
+                    <Button x:Name="Button_Bbing" Content="삥" Margin="10,0,0,0" Width="50" Height="30" Click="Button_Bbing_Click"/>
+                    <Button x:Name="Button_Double" Content="따당" Margin="10,0,0,0" Width="50" Height="30" Click="Button_Double_Click"/>
+                </StackPanel>
 
-            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" Height="80" VerticalAlignment="Top" >
-                <Button x:Name="Button_Die" Content="다이" Width="50" Height="30" Click="Button_Die_Click"/>
-                <Button x:Name="Button_Bbing" Content="삥" Margin="10,0,0,0" Width="50" Height="30" Click="Button_Bbing_Click"/>
-                <Button x:Name="Button_Double" Content="따당" Margin="10,0,0,0" Width="50" Height="30" Click="Button_Double_Click"/>
-                <Button x:Name="Button_Check" Content="체크" Margin="10,0,0,0" Width="50" Height="30" Click="Button_Check_Click"/>
-                <Button x:Name="Button_Queter" Content="쿼터" Margin="10,0,0,0" Width="50" Height="30" Click="Button_Queter_Click"/>
-                <Button x:Name="Button_Half" Content="하프" Margin="10,0,0,0" Width="50" Height="30" Click="Button_Half_Click"/>
-            </StackPanel>
+                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left" Height="80" VerticalAlignment="Center">
+                    <Button x:Name="Button_Check" Content="체크" Margin="10,0,0,0" Width="50" Height="30" Click="Button_Check_Click"/>
+                    <Button x:Name="Button_Queter" Content="쿼터" Margin="10,0,0,0" Width="50" Height="30" Click="Button_Queter_Click"/>
+                    <Button x:Name="Button_Half" Content="하프" Margin="10,0,0,0" Width="50" Height="30" Click="Button_Half_Click"/>
+                </StackPanel>
+            </Grid>
+            
         </Grid>
         
     </Grid>

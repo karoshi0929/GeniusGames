@@ -21,7 +21,7 @@ namespace GameUser
     public partial class UCIndianPoker : UserControl
     {
         public delegate void DelegateSendGameBettingMessage(DataHandler.IndianPokerGamePacket gamePacket);
-        public DelegateSendGameBettingMessage SendGameBettingMessage;
+        public DelegateSendGameBettingMessage SendGamePacketMessage;
         public UCIndianPoker()
         {
             InitializeComponent();
@@ -56,6 +56,23 @@ namespace GameUser
         private void Button_Half_Click(object sender, RoutedEventArgs e)
         {
             DataHandler.IndianPokerGamePacket gamePacket = new DataHandler.IndianPokerGamePacket();
+        }
+
+        private void Button_Ready_Click(object sender, RoutedEventArgs e)
+        {
+            DataHandler.IndianPokerGamePacket gamePacket = new DataHandler.IndianPokerGamePacket();
+            gamePacket.loadingComplete = true;
+            gamePacket.startGame = false;
+            gamePacket.betting = 0;
+            gamePacket.card = 0;
+            gamePacket.playerTurn = 0;
+
+            SendGamePacketMessage(gamePacket);
+
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                Button_Ready.Visibility = Visibility.Collapsed;
+            }));
         }
     }
 }
