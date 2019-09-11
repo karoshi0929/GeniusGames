@@ -22,6 +22,10 @@ namespace GameUser
     {
         public delegate void DelegateSendGameBettingMessage(DataHandler.IndianPokerGamePacket gamePacket);
         public DelegateSendGameBettingMessage SendGamePacketMessage;
+
+        int card = 0;
+        int money = 0;
+
         public UCIndianPoker()
         {
             InitializeComponent();
@@ -62,7 +66,7 @@ namespace GameUser
         {
             DataHandler.IndianPokerGamePacket gamePacket = new DataHandler.IndianPokerGamePacket();
             gamePacket.loadingComplete = true;
-            gamePacket.startGame = false;
+            gamePacket.startGame = true;
             gamePacket.betting = 0;
             gamePacket.card = 0;
             gamePacket.playerTurn = 0;
