@@ -82,25 +82,26 @@ namespace MainServer
         {
             //받은 메세지를 처리하기전에 다른 메세지가 들어온다면 에러가 나기때문에
             //동기 코드가 필요할꺼같다.
-            lock (Lock)
-            {
-                AsyncObject client = (AsyncObject)iar.AsyncState;
-                int recv = client.WorkingSocket.EndReceive(iar);
+            
+            AsyncObject client = (AsyncObject)iar.AsyncState;
+            int recv = client.WorkingSocket.EndReceive(iar);
 
-                if (recv > 0)
-                {
-                    //메세지를 받았을 경우
-                    PacketParser.PacketParsing(client.Buffer, client.WorkingSocket);
-                }
-                else
-                {
-                    //메세지를 못받았을 경우
-                    client.WorkingSocket.Close();
-                    return;
-                }
+            if (recv > 0)
+            {
+                //메세지를 받았을 경우
+                PacketParser.PacketParsing(client.Buffer, client.WorkingSocket);
+
                 client.ClearBuffer();
                 ClientSocket.BeginReceive(client.Buffer, 0, client.Buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveMessage), client);
             }
+            else
+            {
+                //메세지를 못받았을 경우
+                client.WorkingSocket.Close();
+                return;
+            }
+            
+            
         }
     }
 

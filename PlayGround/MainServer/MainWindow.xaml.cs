@@ -36,6 +36,8 @@ namespace MainServer
         MatchingPacket SendUser1MatchingPacket = new MatchingPacket();
         MatchingPacket SendUser2MatchingPacket = new MatchingPacket();
 
+        private int gameRoomNumber = 0;
+
         /********************************************************************************/
         //TextBox에 출력할 문자열(LogMessage)
         private string strLogMessage = string.Empty;
@@ -144,9 +146,9 @@ namespace MainServer
                 indianPokerServer.SendMessage(Header.Matching, SendUser2MatchingPacket, WaitingMatchClientList[1].ClientSocket);
 
                 //2. RoomManager에게 클라이언트 전송.
-                int gameRoomNumber = gameRoomManager.CreateGameRoom(WaitingMatchClientList[0], WaitingMatchClientList[1]);
-                gameRoomManager.GameRoomDic[gameRoomNumber].SendGameStartMessage += new GameRoom.DelegateSendGameStartMessage(SendGameStartMessage);
-                gameRoomManager.GameRoomDic[gameRoomNumber].GameStart();
+                gameRoomNumber = gameRoomManager.CreateGameRoom(WaitingMatchClientList[0], WaitingMatchClientList[1]);
+                //gameRoomManager.GameRoomDic[gameRoomNumber].SendGameStartMessage += new GameRoom.DelegateSendGameStartMessage(SendGameStartMessage);
+                //gameRoomManager.GameRoomDic[gameRoomNumber].GameStart();
 
                 //3. 매칭리스트에서 클라이언트 제거
                 WaitingMatchClientList.Clear();
@@ -161,11 +163,24 @@ namespace MainServer
 
         private void Instance_IndianPokerGamePacketEvent(DataHandler.EventManager.IndianPokerGamePacketReceivedArgs e)
         {
-            //ClientInfo currentGameRoomClient = clientManagement.ClientInfoDic[e.Data.clientID];
+            //1. 매칭완료된 클라이언트로부터 준비완료 메세지 수신.
+            ClientInfo currentGameRoomClient = clientManagement.ClientInfoDic[e.Data.clientID];
+            currentGameRoomClient.isReadyForGame = e.Data.startGame;
+
+            //2. 게임방 안의 두 클라이언트에게 준비완료 메세지 수신 받고, 게임 시작 메세지 전송
+
+            //2-1. 게임시작 메세지 전송과 동시에 턴을 결정할 카드숫자 랜덤으로 송신.
+
+            
+
+            //if (e.Data.loadingComplete)
+            //{
+
+            //}
             //currentGameRoomClient.gameRoom.RequestBetting();
 
             /**********************************************************************************/
-            //if(e.Data.loadingComplete)
+
             //{
             //    if(e.Data.clientID == gameRoomManager.)
             //}
@@ -176,6 +191,8 @@ namespace MainServer
             /**********************************************************************************/
 
             PrintText(e.Data.clientID);
+
+            
         }
 
         private void PrintText(string message)

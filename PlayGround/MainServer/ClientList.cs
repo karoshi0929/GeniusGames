@@ -34,12 +34,13 @@ namespace MainServer
     public class ClientInfo
     {
         Socket clientSocket;
+        GamePlayer gamePlayer;
         bool isLogin;
         bool isPlayGame;
         string clientID;
-        GamePlayer gamePlayer;
-        public GameRoom gameRoom;
 
+        public GameRoom gameRoom;
+        public bool isReadyForGame;
         public Socket ClientSocket
         {
             get
@@ -107,6 +108,7 @@ namespace MainServer
     {
         //GameStart()함수에서 Send할때 사용하기때문에 public이지만, private로 지정해야함. 
         public ClientInfo owner;
+        public bool isReadyForGame = false;
 
         int playerInRoomNumber;
         short playerIndex;
@@ -121,9 +123,10 @@ namespace MainServer
                 playerIndex = value;
             }
         }
+
         //게임에 입장한 플레이어에게 필요한 요소
-        public int money;
-        public int card;
+        public int money = 0;
+        public int card = 0;
 
         public GamePlayer(ClientInfo user, short playerNumber, int gameRoomNumber)
         {
