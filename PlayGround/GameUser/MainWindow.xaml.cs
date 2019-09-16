@@ -23,7 +23,7 @@ namespace GameUser
     public partial class MainWindow : Window
     {
 
-        private IndianPokerClient indianPokserClient;
+        private IndianPokerClient indianPokerClient;
         private PacketDefine packetDefine = new PacketDefine();
         //private DataHandler.EventManager manager = new DataHandler.EventManager();
 
@@ -37,6 +37,8 @@ namespace GameUser
             this.LoginScreen.Loginbtn_event += LoginScreen_Loginbtn_event;
             this.SelectGameScreen.indianbtn_event += SelectedGameScreen_SelectGame;
             this.SelectGameScreen.mazebtn_event += SelectedGameScreen_SelectGame;
+
+            IndianPokerScreen.SendGamePacketMessage += new UCIndianPoker.DelegateSendGameBettingMessage(SendGameMessage);
 
             DataHandler.EventManager.Instance.MatchingPacketEvent += Instance_MatchingPacketEvent;
             DataHandler.EventManager.Instance.IndianPokerGamePacketEvent += Instance_IndianPokerGamePacketEvent;
@@ -85,9 +87,9 @@ namespace GameUser
         {
 
             this.ClientID = this.LoginScreen.IDboxString;
-            this.indianPokserClient = new IndianPokerClient("127.0.0.1", 10000, this.ClientID);
+            this.indianPokerClient = new IndianPokerClient("127.0.0.1", 10000, this.ClientID);
 
-            if (this.indianPokserClient.ConnectedServer())
+            if (this.indianPokerClient.ConnectedServer())
             {
                 this.SetVisible(Screen.SelectedGame);
 
@@ -96,7 +98,7 @@ namespace GameUser
                 loginPacket.isLogin = true;
                 loginPacket.Ack = 0x01;
 
-                indianPokserClient.SendMessage(Header.Login, loginPacket);
+                indianPokerClient.SendMessage(Header.Login, loginPacket, indianPokerClient.ao.WorkingSocket);
             }
             else
             {
@@ -129,7 +131,7 @@ namespace GameUser
                 matchingPacket.matchingMsg = (byte)Matching.StartMatching;
                 matchingPacket.Ack = 0x01;
 
-                indianPokserClient.SendMessage(Header.Matching, matchingPacket);
+                indianPokerClient.SendMessage(Header.Matching, matchingPacket, indianPokerClient.ao.WorkingSocket);
 
                 //기다리는 화면 표시
             }
@@ -150,8 +152,7 @@ namespace GameUser
                     gamePakcet.betting = 0;
                     gamePakcet.card = 0;
                     gamePakcet.playerTurn = 0;
-
-                    indianPokserClient.SendMessage(Header.Game, gamePakcet);
+                    indianPokerClient.SendMessage(Header.Game, gamePakcet, indianPokerClient.ao.WorkingSocket);
                 }
             }
         }
@@ -161,6 +162,11 @@ namespace GameUser
 
         }
 
-
+        private void SendGameMessage(IndianPokerGamePacket gamePacketParam)
+        {
+            //IndianPokerGamePacket gamePacket = gamePacketParam;
+            gamePacketParam.clientID = this.ClientID;
+            indianPokerClient.SendMessage(Header.Game, gamePacketParam, indianPokerClient.ao.WorkingSocket);
+        }
     }
 }

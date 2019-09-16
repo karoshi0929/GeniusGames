@@ -22,6 +22,8 @@ namespace MainServer
         GamePlayer player2;
 
         int currentTurnPlayer;
+        int totalBettingMoney = 0;
+
         short[] card = new short[]{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
                                     1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
@@ -43,7 +45,7 @@ namespace MainServer
             
             IndianPokerGamePacket player1GamePacket = new IndianPokerGamePacket();
             //player1GamePacket.startGame = 0x01;
-            //gamePacket.playerTurn = player1.PlyaerIndex;
+            //player1GamePacket.playerTurn = player1.PlyaerIndex;
             player1GamePacket.card = (short)random.Next(CARDMINNUM, CARDMAXNUM);
             SendGameStartMessage(Header.Game, player1GamePacket, player1.owner);
 
@@ -52,12 +54,19 @@ namespace MainServer
             //gamePacket.playerTurn = player1.PlyaerIndex;
             player2GamePacket.card = (short)random.Next(CARDMINNUM, CARDMAXNUM);
             SendGameStartMessage(Header.Game, player2GamePacket, player2.owner);
-
         }
 
         public void RequestBetting()
         {
+            if(currentTurnPlayer == player1.PlyaerIndex)
+            {
 
+            }
+            //if(currentTurnPlayer == player2.PlyaerIndex)
+            else
+            {
+
+            }
         }
     }
 

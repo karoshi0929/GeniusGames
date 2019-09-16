@@ -14,7 +14,7 @@ namespace TCPcommunication
         //private TcpClient ClientSocket;
         private Socket ClientSocket;
         private IPEndPoint ep;
-        private AsyncObject ao = new AsyncObject(1024);
+        public AsyncObject ao = new AsyncObject(1024);
         private string strServerAddress;
         private int Port;
         private string ID;
@@ -50,7 +50,7 @@ namespace TCPcommunication
             return true;
         }
 
-        public bool SendMessage(Header header, object data)
+        public bool SendMessage(Header header, object data, Socket EndPointServerSocket)
         {
             byte[] sendData = PacketDefine.MakePacket(header, data);
 
@@ -58,10 +58,16 @@ namespace TCPcommunication
             {
                 return false;
             }
-
-            this.ClientSocket.Send(sendData);
+            EndPointServerSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, new AsyncCallback(SendMessage2), EndPointServerSocket);
+            //this.ClientSocket.Send(sendData);
 
             return true;
+        }
+
+        private void SendMessage2(IAsyncResult iar)
+        {
+            Socket server = (Socket)iar.AsyncState;
+            int sent = server.EndSend(iar);
         }
 
         private void ReceiveMessage(IAsyncResult iar)
