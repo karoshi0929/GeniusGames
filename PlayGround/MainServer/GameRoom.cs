@@ -44,14 +44,14 @@ namespace MainServer
             Random random = new Random();
             
             IndianPokerGamePacket player1GamePacket = new IndianPokerGamePacket();
-            //player1GamePacket.startGame = 0x01;
-            //player1GamePacket.playerTurn = player1.PlyaerIndex;
+            player1GamePacket.startGame = true;
+            player1GamePacket.playerTurn = player1.PlyaerIndex;
             player1GamePacket.card = (short)random.Next(CARDMINNUM, CARDMAXNUM);
             SendGameStartMessage(Header.Game, player1GamePacket, player1.owner);
 
             IndianPokerGamePacket player2GamePacket = new IndianPokerGamePacket();
-            //player2GamePacket.startGame = 0x01;
-            //gamePacket.playerTurn = player1.PlyaerIndex;
+            player2GamePacket.startGame = true;
+            player2GamePacket.playerTurn = player1.PlyaerIndex;
             player2GamePacket.card = (short)random.Next(CARDMINNUM, CARDMAXNUM);
             SendGameStartMessage(Header.Game, player2GamePacket, player2.owner);
         }

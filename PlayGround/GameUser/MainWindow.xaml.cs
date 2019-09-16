@@ -159,7 +159,7 @@ namespace GameUser
 
         private void Instance_IndianPokerGamePacketEvent(DataHandler.EventManager.IndianPokerGamePacketReceivedArgs e)
         {
-
+            int a = e.Data.card;
         }
 
         private void SendGameMessage(IndianPokerGamePacket gamePacketParam)
