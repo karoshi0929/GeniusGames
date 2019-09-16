@@ -22,10 +22,9 @@
                 <Image  x:Name="MyCard" HorizontalAlignment="Left"  Margin="40,50,0,0" VerticalAlignment="Top" Width="90" Height="150"/>
                 <Label  x:Name="Card1" Content="나의 카드"  HorizontalAlignment="Center" VerticalAlignment="Center" Width="70" Height="40"/>
             </StackPanel>
-            
-            
+
+
             <Label Grid.Column="1" x:Name="BetMoney" Content="베팅 금액" HorizontalAlignment="Center" Height="100" VerticalAlignment="Center" Width="151"/>
-            <Button Grid.Column="1" x:Name="Button_Ready" Content="준비완료" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Height="30" Margin="0,170,0,0" Click="Button_Ready_Click"/>
 
             <StackPanel Grid.Column="2">
                 <Image  x:Name="OtherPlayerCard" HorizontalAlignment="Right"  Margin="0,50,40,0" VerticalAlignment="Top" Width="90" Height="150"/>

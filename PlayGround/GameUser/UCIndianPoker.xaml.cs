@@ -72,11 +72,6 @@ namespace GameUser
             gamePacket.playerTurn = 0;
 
             SendGamePacketMessage(gamePacket);
-
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                Button_Ready.Visibility = Visibility.Collapsed;
-            }));
         }
     }
 }
