@@ -29,10 +29,9 @@ namespace MainServer
         GameRoomManager gameRoomManager;
         GameRoom gameRoom;
 
-        List<ClientInfo> WaitingMatchClientList = new List<ClientInfo>();
 
         //List<MatchingPacket> responseMatching = new List<MatchingPacket>();
-
+        List<ClientInfo> WaitingMatchClientList = new List<ClientInfo>();
         MatchingPacket SendUser1MatchingPacket = new MatchingPacket();
         MatchingPacket SendUser2MatchingPacket = new MatchingPacket();
 
@@ -165,13 +164,18 @@ namespace MainServer
         {
             //1. 매칭완료된 클라이언트로부터 준비완료 메세지 수신.
             ClientInfo currentGameRoomClient = clientManagement.ClientInfoDic[e.Data.clientID];
-            currentGameRoomClient.isReadyForGame = e.Data.startGame;
 
+            //int gameRoomNumber = gameRoomManager.CreateGameRoom(indianPokerServer.WaitingMatchClientList[0], indianPokerServer.WaitingMatchClientList[1]);
+            //gameRoomManager.GameRoomDic[gameRoomNumber].SendGameStartMessage += new GameRoom.DelegateSendGameStartMessage(SendGameStartMessage);
+            //gameRoomManager.GameRoomDic[gameRoomNumber].GameStart();
+
+            //indianPokerServer.WaitingMatchClientList.Clear();
+            
             //2. 게임방 안의 두 클라이언트에게 준비완료 메세지 수신 받고, 게임 시작 메세지 전송
 
             //2-1. 게임시작 메세지 전송과 동시에 턴을 결정할 카드숫자 랜덤으로 송신.
 
-            
+
 
             //if (e.Data.loadingComplete)
             //{

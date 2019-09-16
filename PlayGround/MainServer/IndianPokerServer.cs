@@ -14,10 +14,6 @@ namespace MainServer
     {
         public delegate void PrintTextDelegate(string text);
         public PrintTextDelegate printText;
-        
-        //클라이언트 리스트 저장 컬렉션
-        public List<Socket> ClientList = new List<Socket>();
-        //Dictionary<string, Socket> ClientInfoDic = new Dictionary<string, Socket>();
 
         const int bufferSize = 1024;
         byte[] ReceiveBuffer = new byte[bufferSize];
@@ -32,7 +28,8 @@ namespace MainServer
             try
             {
                 ServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10000);
+                //IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10000);
+                IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("192.168.2.42"), 10000);
                 ServerSocket.Bind(endPoint);
                 ServerSocket.Listen(10);
                 ServerSocket.BeginAccept(new AsyncCallback(AcceptConnection), ServerSocket);
@@ -80,30 +77,31 @@ namespace MainServer
 
         private void ReceiveMessage(IAsyncResult iar)
         {
-            //받은 메세지를 처리하기전에 다른 메세지가 들어온다면 에러가 나기때문에
-            //동기 코드가 필요할꺼같다.
-            
-            AsyncObject client = (AsyncObject)iar.AsyncState;
-            int recv = client.WorkingSocket.EndReceive(iar);
-
-            if (recv > 0)
+            AsyncObject client = new AsyncObject(1024);
+            lock (Lock)
             {
-                //메세지를 받았을 경우
-                PacketParser.PacketParsing(client.Buffer, client.WorkingSocket);
+                client = (AsyncObject)iar.AsyncState;
+                int recv = client.WorkingSocket.EndReceive(iar);
 
-                client.ClearBuffer();
-                ClientSocket.BeginReceive(client.Buffer, 0, client.Buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveMessage), client);
+                if (recv > 0)
+                {
+                    //메세지를 받았을 경우
+                    PacketParser.PacketParsing(client.Buffer, client.WorkingSocket);
+
+                    client.ClearBuffer();
+                    client.WorkingSocket.BeginReceive(client.Buffer, 0, client.Buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveMessage), client);
+                }
+                else
+                {
+                    //메세지를 못받았을 경우
+                    client.WorkingSocket.Close();
+                    return;
+                }
             }
-            else
-            {
-                //메세지를 못받았을 경우
-                client.WorkingSocket.Close();
-                return;
-            }
-            
-            
         }
     }
+
+    
 
     public class AsyncObject
     {
