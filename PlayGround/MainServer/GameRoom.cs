@@ -16,17 +16,16 @@ namespace MainServer
         const short CARDMINNUM = 1;
         const short CARDMAXNUM = 20;
 
-        int gameRoomNumber = 0;
+        private int currentTurnPlayer;
+        private int totalBettingMoney = 0;
 
-        GamePlayer player1;
-        GamePlayer player2;
-
-        int currentTurnPlayer;
-        int totalBettingMoney = 0;
-
-        short[] card = new short[]{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+        private short[] card = new short[]{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
                                     1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
+        public int gameRoomNumber = 0;
+
+        public GamePlayer player1;
+        public GamePlayer player2;
 
         public void EnterGameRoom(ClientInfo user1, ClientInfo user2,int RoomNumber)
         {

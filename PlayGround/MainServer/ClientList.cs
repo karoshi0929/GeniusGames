@@ -33,14 +33,18 @@ namespace MainServer
 
     public class ClientInfo
     {
-        Socket clientSocket;
-        GamePlayer gamePlayer;
-        bool isLogin;
-        bool isPlayGame;
-        string clientID;
+        private Socket clientSocket;
+        
+        private bool isLogin;
+        private bool isPlayGame;
 
+        private string clientID;
+
+        public GamePlayer gamePlayer;
         public GameRoom gameRoom;
+
         public bool isReadyForGame;
+
         public Socket ClientSocket
         {
             get
