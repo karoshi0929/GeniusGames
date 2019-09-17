@@ -32,11 +32,12 @@ namespace MainServer
 
         //List<MatchingPacket> responseMatching = new List<MatchingPacket>();
         List<ClientInfo> WaitingMatchClientList = new List<ClientInfo>();
+        List<ClientInfo> LoadingCompleteClientList = new List<ClientInfo>();
         MatchingPacket SendUser1MatchingPacket = new MatchingPacket();
         MatchingPacket SendUser2MatchingPacket = new MatchingPacket();
 
         private int gameRoomNumber = 0;
-
+        private bool isGameStart = false;
         /********************************************************************************/
         //TextBox에 출력할 문자열(LogMessage)
         private string strLogMessage = string.Empty;
@@ -132,6 +133,7 @@ namespace MainServer
                 default:
                     break;
             }
+
             //count == 2가 되면 두 클라이언트 매칭.
             //매칭된 클라이언트에게 MessageSend
             //RoomManager에게 클라이언트 정보 전송
@@ -146,13 +148,15 @@ namespace MainServer
 
                 //2. RoomManager에게 클라이언트 정보 전송.
                 gameRoomNumber = gameRoomManager.CreateGameRoom(WaitingMatchClientList[0], WaitingMatchClientList[1]);
-                
+
                 //3. 매칭리스트에서 클라이언트 제거
                 WaitingMatchClientList.Clear();
 
                 //4. 매칭패킷 저장 객체 초기화
                 SendUser1MatchingPacket = new MatchingPacket();
                 SendUser2MatchingPacket = new MatchingPacket();
+
+                isGameStart = true;
             }
         }
 
@@ -161,30 +165,27 @@ namespace MainServer
             //1. 로딩이 완료된 
             ClientInfo currentGameRoomClient = clientManagement.ClientInfoDic[e.Data.clientID];
 
-            //매칭완료 메세지를 클라이언트에게 보내고, 입장 후 로딩완료 메세지를 받은뒤에 게임을 시작한다.
-            gameRoomManager.GameRoomDic[gameRoomNumber].SendGameStartMessage += new GameRoom.DelegateSendGameStartMessage(SendGameStartMessage);
-            gameRoomManager.GameRoomDic[gameRoomNumber].GameStart();
-
-            //2. 게임방 안의 두 클라이언트에게 준비완료 메세지 수신 받고, 게임 시작 메세지 전송
-
-            //2-1. 게임시작 메세지 전송과 동시에 턴을 결정할 카드숫자 랜덤으로 송신.
-
-            //if (e.Data.loadingComplete)
+            //if(clientInfo.IsPlayGame == false && e.Data.loadingComplete == true)
             //{
+            //    clientInfo.IsPlayGame = true;
+            //    int playerIndex = clientInfo.gamePlayer.PlyaerIndex;
+            //    switch(playerIndex)
+            //    {
+            //        case 1:
+            //            gameRoomManager.GameRoomDic[clientInfo.gameRoom.gameRoomNumber].player1.isReadyForGame = true;
+            //            break;
+            //        case 2:
+            //            gameRoomManager.GameRoomDic[clientInfo.gameRoom.gameRoomNumber].player2.isReadyForGame = true;
+            //            break;
+            //    }
 
+            //    if (gameRoomManager.GameRoomDic[clientInfo.gameRoom.gameRoomNumber].player1.isReadyForGame &&
+            //        gameRoomManager.GameRoomDic[clientInfo.gameRoom.gameRoomNumber].player2.isReadyForGame)
+            //    {
+            //        gameRoomManager.GameRoomDic[clientInfo.gameRoom.gameRoomNumber].SendGameStartMessage += new GameRoom.DelegateSendGameStartMessage(SendGameStartMessage);
+            //        gameRoomManager.GameRoomDic[clientInfo.gameRoom.gameRoomNumber].GameStart();
+            //    }
             //}
-            //currentGameRoomClient.gameRoom.RequestBetting();
-
-            /**********************************************************************************/
-
-            //{
-            //    if(e.Data.clientID == gameRoomManager.)
-            //}
-            //ClientInfo asd = clientManagement.ClientInfoDic[e.Data.clientID];
-
-            //asd.gameRoom.RequestBetting();
-            //Console.Write("asd");
-            /**********************************************************************************/
 
             PrintText(e.Data.clientID);
         }
