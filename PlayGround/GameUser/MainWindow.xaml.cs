@@ -44,8 +44,6 @@ namespace GameUser
             DataHandler.EventManager.Instance.HandleGamePacketEvent += Instance_HandleGamePacketEvent;
         }
 
-        
-
         private void SetVisible(Screen selectedscreen)
         {
             switch (selectedscreen)
@@ -145,13 +143,13 @@ namespace GameUser
             if(e.Data.matchingComplete)
             {
                 this.SetVisible(Screen.IndianPoker);
+
                 if(isPlaying)
                 {
                     HandleGamePacket handleGamePakcet = new HandleGamePacket();
                     handleGamePakcet.clientID = this.ClientID;
                     handleGamePakcet.loadingComplete = true;
                     handleGamePakcet.startGame = false;
-                    handleGamePakcet.betting = 0;
                     handleGamePakcet.card = 0;
                     handleGamePakcet.playerTurn = 0;
 
@@ -159,6 +157,7 @@ namespace GameUser
                 }
             }
         }
+
         private void Instance_HandleGamePacketEvent(DataHandler.EventManager.HandleGamePacketReceivedArgs e)
         {
             int a = e.Data.card;
@@ -167,7 +166,6 @@ namespace GameUser
 
         private void SendGameMessage(IndianPokerGamePacket gamePacketParam)
         {
-            //IndianPokerGamePacket gamePacket = gamePacketParam;
             gamePacketParam.clientID = this.ClientID;
             indianPokerClient.SendMessage(Header.GameMotion, gamePacketParam, indianPokerClient.ao.WorkingSocket);
         }

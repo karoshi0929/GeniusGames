@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GameUser"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="700" Width="800">
     <Grid>
         <local:UCLogin x:Name="LoginScreen" Visibility="Visible"/>
         <local:UCSelectedGame x:Name="SelectGameScreen" Visibility="Hidden"/>
