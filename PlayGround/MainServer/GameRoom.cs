@@ -46,15 +46,36 @@ namespace MainServer
             
             HandleGamePacket player1GamePacket = new HandleGamePacket();
             player1GamePacket.startGame = true;
-            player1GamePacket.playerTurn = player1.PlyaerIndex;
             player1GamePacket.card = (short)random.Next(CARDMINNUM, CARDMAXNUM);
             SendGameStartMessage(Header.Game, player1GamePacket, player1.owner);
 
             HandleGamePacket player2GamePacket = new HandleGamePacket();
             player2GamePacket.startGame = true;
-            player2GamePacket.playerTurn = player1.PlyaerIndex;
             player2GamePacket.card = (short)random.Next(CARDMINNUM, CARDMAXNUM);
             SendGameStartMessage(Header.Game, player2GamePacket, player2.owner);
+
+
+            //if(player1GamePacket.card < player2GamePacket.card)
+            //{
+            //    player1GamePacket.playerTurn = 1;
+            //    player2GamePacket.playerTurn = 2;
+            //}
+
+            //else if (player1GamePacket.card > player2GamePacket.card)
+            //{
+            //    player1GamePacket.playerTurn = 2;
+            //    player2GamePacket.playerTurn = 1;
+            //}
+
+            ////두 카드가 같을 경우 다시 셔플
+            //else 
+            //{
+            //    player1GamePacket.card = (short)random.Next(CARDMINNUM, CARDMAXNUM);
+            //    player2GamePacket.card = (short)random.Next(CARDMINNUM, CARDMAXNUM);
+            //}
+
+            //SendGameStartMessage(Header.Game, player1GamePacket, player1.owner);
+            //SendGameStartMessage(Header.Game, player2GamePacket, player2.owner);
         }
 
         public void RequestBetting()
@@ -63,7 +84,11 @@ namespace MainServer
             {
 
             }
-            //if(currentTurnPlayer == player2.PlyaerIndex)
+            else if(currentTurnPlayer == player2.PlyaerIndex)
+            {
+
+            }
+
             else
             {
 

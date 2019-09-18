@@ -234,7 +234,7 @@ namespace MainServer
             LogMessage = message;
         }
 
-        public void SendGameStartMessage(Header header, HandleGamePacket gamePacket, ClientInfo clientInfoParam)
+        public void SendGameStartMessage(Header header, DataHandler.HandleGamePacket gamePacket, ClientInfo clientInfoParam)
         {
             indianPokerServer.SendMessage(header, gamePacket, clientInfoParam.ClientSocket);
         }
