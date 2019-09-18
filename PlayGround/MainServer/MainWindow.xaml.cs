@@ -27,17 +27,15 @@ namespace MainServer
         IndianPokerServer indianPokerServer;
         ClientManagement clientManagement;
         GameRoomManager gameRoomManager;
-        GameRoom gameRoom;
-
 
         //List<MatchingPacket> responseMatching = new List<MatchingPacket>();
         List<ClientInfo> WaitingMatchClientList = new List<ClientInfo>();
-        List<ClientInfo> LoadingCompleteClientList = new List<ClientInfo>();
+
         MatchingPacket SendUser1MatchingPacket = new MatchingPacket();
         MatchingPacket SendUser2MatchingPacket = new MatchingPacket();
 
         private int gameRoomNumber = 0;
-        private bool isGameStart = false;
+
         /********************************************************************************/
         //TextBox에 출력할 문자열(LogMessage)
         private string strLogMessage = string.Empty;
@@ -76,9 +74,13 @@ namespace MainServer
             DataHandler.EventManager.Instance.LoginPacketEvent += Instance_LoginPacketEvent;
             //클라이언트로부터 GameMatching요청 Message를 받았을 때
             DataHandler.EventManager.Instance.MatchingPacketEvent += Instance_MatchingPacketEvent;
-            //클라이언트로부터 IndianPoker게임관련 Message를 받았을 때
+            //클라이언트로부터 게임로딩 및 시작 Message를 받았을 때
+            DataHandler.EventManager.Instance.HandleGamePacketEvent += Instance_HandleGamePacketEvent;
+            //클라이언트로부터 IndianPoker게임 베팅 Message를 받았을 때
             DataHandler.EventManager.Instance.IndianPokerGamePacketEvent += Instance_IndianPokerGamePacketEvent;
         }
+
+        
 
         private void Instance_LoginPacketEvent(DataHandler.EventManager.LoginPacketReceivedArgs e)
         {
@@ -114,7 +116,7 @@ namespace MainServer
                     {
                         //2. 매칭 대기 리스트에 담기
                         WaitingMatchClientList.Add(clientInfo);
-                        PrintText("유저 [" + clientInfo.ClientID + " ]님께서 인디언포커 게임 매칭요청 하였습니다.");
+                        PrintText("유저 [" + clientInfo.ClientID + "] " + clientInfo.ClientSocket.RemoteEndPoint.ToString() + " 님께서 인디언포커 게임 매칭요청 하였습니다.");
                     }
                     //클라이언트로부터 매칭 멈춤 메세지 받았을 시
                     else if (e.Data.matchingMsg == (byte)Matching.StopMatching)
@@ -155,39 +157,76 @@ namespace MainServer
                 //4. 매칭패킷 저장 객체 초기화
                 SendUser1MatchingPacket = new MatchingPacket();
                 SendUser2MatchingPacket = new MatchingPacket();
-
-                isGameStart = true;
             }
+        }
+        private void Instance_HandleGamePacketEvent(DataHandler.EventManager.HandleGamePacketReceivedArgs e)
+        {
+            //1. 로딩이 완료된 
+            ClientInfo clientInfo = clientManagement.ClientInfoDic[e.Data.clientID];
+
+            if (clientInfo.IsPlayGame == false && e.Data.loadingComplete == true)
+            {
+                clientInfo.IsPlayGame = true;
+
+                //방법 1.
+                clientInfo.gamePlayer.isReadyForGame = true;
+
+                if (clientInfo.gameRoom.player1.isReadyForGame && clientInfo.gameRoom.player2.isReadyForGame)
+                {
+                    clientInfo.gameRoom.SendGameStartMessage += new GameRoom.DelegateSendGameStartMessage(SendGameStartMessage);
+                    clientInfo.gameRoom.GameStart();
+                }
+
+                //방법 2. 
+                #region
+                //결과는 같으나 의미하는 코드가 무엇이 더 정확한지 생각해봐야함. 
+                //int playerIndex = clientInfo.gamePlayer.PlyaerIndex;
+                //switch (playerIndex)
+                //{
+                //    case 1:
+                //      gameRoomManager.GameRoomDic[clientInfo.gameRoom.gameRoomNumber].player1.isReadyForGame = true;
+                //      clientInfo.gameRoom.player1.isReadyForGame = true;
+                //    break;
+                //    case 2:
+                //      gameRoomManager.GameRoomDic[clientInfo.gameRoom.gameRoomNumber].player2.isReadyForGame = true;
+                //      clientInfo.gameRoom.player2.isReadyForGame = true;
+                //    break;
+                //}
+
+                //if (gameRoomManager.GameRoomDic[clientInfo.gameRoom.gameRoomNumber].player1.isReadyForGame &&
+                //    gameRoomManager.GameRoomDic[clientInfo.gameRoom.gameRoomNumber].player2.isReadyForGame)
+                //{
+                //    gameRoomManager.GameRoomDic[clientInfo.gameRoom.gameRoomNumber].SendGameStartMessage += new GameRoom.DelegateSendGameStartMessage(SendGameStartMessage);
+                //    gameRoomManager.GameRoomDic[clientInfo.gameRoom.gameRoomNumber].GameStart();
+                //}
+                #endregion
+
+                //방법 1-2 / 2-2.
+                #region
+                //Random random = new Random();
+
+                //IndianPokerGamePacket player1GamePacket = new IndianPokerGamePacket();
+                //player1GamePacket.startGame = true;
+                //player1GamePacket.playerTurn = player1.PlyaerIndex;
+                //player1GamePacket.card = (short)random.Next(CARDMINNUM, CARDMAXNUM);
+                //SendGameStartMessage(Header.Game, player1GamePacket, player1.owner);
+
+                //IndianPokerGamePacket player2GamePacket = new IndianPokerGamePacket();
+                //player2GamePacket.startGame = true;
+                //player2GamePacket.playerTurn = player1.PlyaerIndex;
+                //player2GamePacket.card = (short)random.Next(CARDMINNUM, CARDMAXNUM);
+                //SendGameStartMessage(Header.Game, player2GamePacket, player2.owner);
+                #endregion
+            }
+
+            PrintText(e.Data.clientID);
         }
 
         private void Instance_IndianPokerGamePacketEvent(DataHandler.EventManager.IndianPokerGamePacketReceivedArgs e)
         {
-            //1. 로딩이 완료된 
-            ClientInfo currentGameRoomClient = clientManagement.ClientInfoDic[e.Data.clientID];
+            ClientInfo clientInfo = clientManagement.ClientInfoDic[e.Data.clientID];
 
-            //if(clientInfo.IsPlayGame == false && e.Data.loadingComplete == true)
-            //{
-            //    clientInfo.IsPlayGame = true;
-            //    int playerIndex = clientInfo.gamePlayer.PlyaerIndex;
-            //    switch(playerIndex)
-            //    {
-            //        case 1:
-            //            gameRoomManager.GameRoomDic[clientInfo.gameRoom.gameRoomNumber].player1.isReadyForGame = true;
-            //            break;
-            //        case 2:
-            //            gameRoomManager.GameRoomDic[clientInfo.gameRoom.gameRoomNumber].player2.isReadyForGame = true;
-            //            break;
-            //    }
-
-            //    if (gameRoomManager.GameRoomDic[clientInfo.gameRoom.gameRoomNumber].player1.isReadyForGame &&
-            //        gameRoomManager.GameRoomDic[clientInfo.gameRoom.gameRoomNumber].player2.isReadyForGame)
-            //    {
-            //        gameRoomManager.GameRoomDic[clientInfo.gameRoom.gameRoomNumber].SendGameStartMessage += new GameRoom.DelegateSendGameStartMessage(SendGameStartMessage);
-            //        gameRoomManager.GameRoomDic[clientInfo.gameRoom.gameRoomNumber].GameStart();
-            //    }
-            //}
-
-            PrintText(e.Data.clientID);
+            PrintText("[" + clientInfo.ClientID + "] " + "로 부터 " + e.Data.betting.ToString() + "베팅 받았습니다.");
         }
 
         private void PrintText(string message)
@@ -195,7 +234,7 @@ namespace MainServer
             LogMessage = message;
         }
 
-        public void SendGameStartMessage(Header header, IndianPokerGamePacket gamePacket, ClientInfo clientInfoParam)
+        public void SendGameStartMessage(Header header, HandleGamePacket gamePacket, ClientInfo clientInfoParam)
         {
             indianPokerServer.SendMessage(header, gamePacket, clientInfoParam.ClientSocket);
         }

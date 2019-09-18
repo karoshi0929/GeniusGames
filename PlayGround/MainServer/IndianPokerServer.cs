@@ -48,12 +48,7 @@ namespace MainServer
             
             ServerSocket.BeginAccept(new AsyncCallback(AcceptConnection), ServerSocket);
 
-            //string strWelcome = "서버에 접속 하였습니다.";
-            //byte[] sendMessage = Encoding.UTF8.GetBytes(strWelcome);
-            //ClientSocket.BeginSend(sendMessage, 0, sendMessage.Length, SocketFlags.None, new AsyncCallback(SendMessage2), ClientSocket);
-
             printText("클라이언트" + ClientSocket.RemoteEndPoint.ToString() + "입장하였습니다.");
-
 
             AsyncObject ao = new AsyncObject(1024);
             ao.WorkingSocket = ClientSocket;

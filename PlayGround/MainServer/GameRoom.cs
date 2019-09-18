@@ -10,7 +10,7 @@ namespace MainServer
 {
     public class GameRoom
     {
-        public delegate void DelegateSendGameStartMessage(Header header, IndianPokerGamePacket gamePacket, ClientInfo clientSocket);
+        public delegate void DelegateSendGameStartMessage(Header header, HandleGamePacket gamePacket, ClientInfo clientSocket);
         public DelegateSendGameStartMessage SendGameStartMessage;
 
         const short CARDMINNUM = 1;
@@ -20,9 +20,11 @@ namespace MainServer
         private int totalBettingMoney = 0;
 
         private short[] card = new short[]{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-                                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+                                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
         public int gameRoomNumber = 0;
+
+        public bool playGame = false;
 
         public GamePlayer player1;
         public GamePlayer player2;
@@ -42,13 +44,13 @@ namespace MainServer
         {
             Random random = new Random();
             
-            IndianPokerGamePacket player1GamePacket = new IndianPokerGamePacket();
+            HandleGamePacket player1GamePacket = new HandleGamePacket();
             player1GamePacket.startGame = true;
             player1GamePacket.playerTurn = player1.PlyaerIndex;
             player1GamePacket.card = (short)random.Next(CARDMINNUM, CARDMAXNUM);
             SendGameStartMessage(Header.Game, player1GamePacket, player1.owner);
 
-            IndianPokerGamePacket player2GamePacket = new IndianPokerGamePacket();
+            HandleGamePacket player2GamePacket = new HandleGamePacket();
             player2GamePacket.startGame = true;
             player2GamePacket.playerTurn = player1.PlyaerIndex;
             player2GamePacket.card = (short)random.Next(CARDMINNUM, CARDMAXNUM);
