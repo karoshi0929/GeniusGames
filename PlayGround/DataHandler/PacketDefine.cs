@@ -12,7 +12,8 @@ namespace DataHandler
     {
         Login = 0x01,
         Matching = 0x02,
-        Game = 0x03
+        Game = 0x03,
+        GameMotion = 0x04
     }
 
     public enum KindOfGame
@@ -30,10 +31,11 @@ namespace DataHandler
         MatchComplete = 0xB3
     }
 
-    enum Betting
+    public enum Betting
     {
         //다이 삥 따당 체크 쿼터 하프
-        BettingDie = 0,
+        BettingCall = 0,
+        BettingDie,
         BettingBbing,
         BettingDouble,
         BettingCheck,
@@ -74,7 +76,7 @@ namespace DataHandler
         public bool matchingComplete;
     }
 
-    public struct IndianPokerGamePacket
+    public struct HandleGamePacket
     {
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 12)]
         public string clientID;
@@ -88,14 +90,20 @@ namespace DataHandler
         public short card;
         public short playerTurn;
     }
+
+    public struct IndianPokerGamePacket
+    {
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 12)]
+        public string clientID;
+
+        public int betting;
+        public short card;
+        public short playerTurn;
+    }
     /***********************************************************************************/
 
 
-    /********************************** 클라에게 보낼 패킷 *****************************/
-    public struct IndianPokerGameSendPacket
-    {
-        
-    }
+   
 
     /***********************************************************************************/
 

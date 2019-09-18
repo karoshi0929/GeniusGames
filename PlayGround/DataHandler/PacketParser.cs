@@ -49,8 +49,12 @@ namespace DataHandler
                     EventManager.Instance.ReceiveMatchingPacket(matchingPacket);
                     break;
                 case (byte)Header.Game:
-                    IndianPokerGamePacket indianPokerPacket = IndianPokerGame_ToStruct(packet);
-                    EventManager.Instance.ReceiveIndianPokerGamePacket(indianPokerPacket);
+                    HandleGamePacket handleGamePacket = HandleGamePacket_ToStruct(packet);
+                    EventManager.Instance.ReceiveHandleGamePacket(handleGamePacket);
+                    break;
+                case (byte)Header.GameMotion:
+                    IndianPokerGamePacket indianpokerGamePacket = IndianPokerGamePacket_ToStruct(packet);
+                    EventManager.Instance.ReceiveIndianPokerGamePacket(indianpokerGamePacket);
                     break;
             }
         }
@@ -72,7 +76,16 @@ namespace DataHandler
             return temp;
         }
 
-        public static IndianPokerGamePacket IndianPokerGame_ToStruct(byte[] packet)
+        public static HandleGamePacket HandleGamePacket_ToStruct(byte[] packet)
+        {
+            HandleGamePacket temp = new HandleGamePacket();
+            object obj = (object)temp;
+            PacketToStruct(packet, ref obj);
+            temp = (HandleGamePacket)obj;
+            return temp;
+        }
+
+        public static IndianPokerGamePacket IndianPokerGamePacket_ToStruct(byte[] packet)
         {
             IndianPokerGamePacket temp = new IndianPokerGamePacket();
             object obj = (object)temp;

@@ -57,6 +57,25 @@ namespace DataHandler
         }
         /* ************************************************************************************ */
 
+        public class HandleGamePacketReceivedArgs : EventArgs
+        {
+            public HandleGamePacket Data
+            { get; set; }
+        }
+
+        public delegate void HandleGamePacketEventHandler(HandleGamePacketReceivedArgs e);
+        public event HandleGamePacketEventHandler HandleGamePacketEvent;
+
+        public void ReceiveHandleGamePacket(HandleGamePacket handleGamePacket)
+        {
+            HandleGamePacketReceivedArgs parameter = new HandleGamePacketReceivedArgs();
+            parameter.Data = handleGamePacket;
+
+            HandleGamePacketEvent(parameter);
+        }
+
+        /* ************************************************************************************ */
+
         public class IndianPokerGamePacketReceivedArgs : EventArgs
         {
             public IndianPokerGamePacket Data
