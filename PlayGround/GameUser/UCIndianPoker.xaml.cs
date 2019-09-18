@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DataHandler;
 
 namespace GameUser
 {
@@ -20,7 +21,7 @@ namespace GameUser
     /// </summary>
     public partial class UCIndianPoker : UserControl
     {
-        public delegate void DelegateSendGameBettingMessage(DataHandler.IndianPokerGamePacket gamePacket);
+        public delegate void DelegateSendGameBettingMessage(IndianPokerGamePacket gamePacket);
         public DelegateSendGameBettingMessage SendGamePacketMessage;
 
         int card = 0;
@@ -31,47 +32,62 @@ namespace GameUser
             InitializeComponent();
         }
 
+        private void Button_Call_Click(object sender, RoutedEventArgs e)
+        {
+            IndianPokerGamePacket gamePacket = new IndianPokerGamePacket();
+            gamePacket.betting = (int)Betting.BettingCall;
+
+            SendGamePacketMessage(gamePacket);
+        }
+
         private void Button_Die_Click(object sender, RoutedEventArgs e)
         {
-            DataHandler.IndianPokerGamePacket gamePacket = new DataHandler.IndianPokerGamePacket();
+            IndianPokerGamePacket gamePacket = new IndianPokerGamePacket();
+            gamePacket.betting = (int)Betting.BettingDie;
 
+            SendGamePacketMessage(gamePacket);
         }
 
         private void Button_Bbing_Click(object sender, RoutedEventArgs e)
         {
-            DataHandler.IndianPokerGamePacket gamePacket = new DataHandler.IndianPokerGamePacket();
+            IndianPokerGamePacket gamePacket = new IndianPokerGamePacket();
+            gamePacket.betting = (int)Betting.BettingBbing;
+
+            SendGamePacketMessage(gamePacket);
         }
 
         private void Button_Double_Click(object sender, RoutedEventArgs e)
         {
-            DataHandler.IndianPokerGamePacket gamePacket = new DataHandler.IndianPokerGamePacket();
+            IndianPokerGamePacket gamePacket = new IndianPokerGamePacket();
+            gamePacket.betting = (int)Betting.BettingDouble;
+
+            SendGamePacketMessage(gamePacket);
         }
 
         private void Button_Check_Click(object sender, RoutedEventArgs e)
         {
-            DataHandler.IndianPokerGamePacket gamePacket = new DataHandler.IndianPokerGamePacket();
+            IndianPokerGamePacket gamePacket = new IndianPokerGamePacket();
+            gamePacket.betting = (int)Betting.BettingCheck;
+
+            SendGamePacketMessage(gamePacket);
         }
 
         private void Button_Queter_Click(object sender, RoutedEventArgs e)
         {
-            DataHandler.IndianPokerGamePacket gamePacket = new DataHandler.IndianPokerGamePacket();
+            IndianPokerGamePacket gamePacket = new IndianPokerGamePacket();
+            gamePacket.betting = (int)Betting.BettingQueter;
+
+            SendGamePacketMessage(gamePacket);
         }
 
         private void Button_Half_Click(object sender, RoutedEventArgs e)
         {
-            DataHandler.IndianPokerGamePacket gamePacket = new DataHandler.IndianPokerGamePacket();
-        }
-
-        private void Button_Ready_Click(object sender, RoutedEventArgs e)
-        {
-            DataHandler.IndianPokerGamePacket gamePacket = new DataHandler.IndianPokerGamePacket();
-            gamePacket.loadingComplete = true;
-            gamePacket.startGame = true;
-            gamePacket.betting = 0;
-            gamePacket.card = 0;
-            gamePacket.playerTurn = 0;
+            IndianPokerGamePacket gamePacket = new IndianPokerGamePacket();
+            gamePacket.betting = (int)Betting.BettingHalf;
 
             SendGamePacketMessage(gamePacket);
         }
+
+        
     }
 }

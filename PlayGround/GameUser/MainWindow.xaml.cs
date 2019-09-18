@@ -41,8 +41,10 @@ namespace GameUser
             IndianPokerScreen.SendGamePacketMessage += new UCIndianPoker.DelegateSendGameBettingMessage(SendGameMessage);
 
             DataHandler.EventManager.Instance.MatchingPacketEvent += Instance_MatchingPacketEvent;
-            DataHandler.EventManager.Instance.IndianPokerGamePacketEvent += Instance_IndianPokerGamePacketEvent;
+            DataHandler.EventManager.Instance.HandleGamePacketEvent += Instance_HandleGamePacketEvent;
         }
+
+        
 
         private void SetVisible(Screen selectedscreen)
         {
@@ -145,28 +147,29 @@ namespace GameUser
                 this.SetVisible(Screen.IndianPoker);
                 if(isPlaying)
                 {
-                    IndianPokerGamePacket gamePakcet = new IndianPokerGamePacket();
-                    gamePakcet.clientID = this.ClientID;
-                    gamePakcet.loadingComplete = true;
-                    gamePakcet.startGame = false;
-                    gamePakcet.betting = 0;
-                    gamePakcet.card = 0;
-                    gamePakcet.playerTurn = 0;
-                    indianPokerClient.SendMessage(Header.Game, gamePakcet, indianPokerClient.ao.WorkingSocket);
+                    HandleGamePacket handleGamePakcet = new HandleGamePacket();
+                    handleGamePakcet.clientID = this.ClientID;
+                    handleGamePakcet.loadingComplete = true;
+                    handleGamePakcet.startGame = false;
+                    handleGamePakcet.betting = 0;
+                    handleGamePakcet.card = 0;
+                    handleGamePakcet.playerTurn = 0;
+
+                    indianPokerClient.SendMessage(Header.Game, handleGamePakcet, indianPokerClient.ao.WorkingSocket);
                 }
             }
         }
-
-        private void Instance_IndianPokerGamePacketEvent(DataHandler.EventManager.IndianPokerGamePacketReceivedArgs e)
+        private void Instance_HandleGamePacketEvent(DataHandler.EventManager.HandleGamePacketReceivedArgs e)
         {
             int a = e.Data.card;
+            MessageBox.Show("게임이 시작되었습니다. 나의 카드는: " + a.ToString());
         }
 
         private void SendGameMessage(IndianPokerGamePacket gamePacketParam)
         {
             //IndianPokerGamePacket gamePacket = gamePacketParam;
             gamePacketParam.clientID = this.ClientID;
-            indianPokerClient.SendMessage(Header.Game, gamePacketParam, indianPokerClient.ao.WorkingSocket);
+            indianPokerClient.SendMessage(Header.GameMotion, gamePacketParam, indianPokerClient.ao.WorkingSocket);
         }
     }
 }
