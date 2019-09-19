@@ -116,7 +116,7 @@ namespace MainServer
 
         int playerInRoomNumber;
         short playerIndex;
-        public short PlyaerIndex
+        public short PlayerIndex
         {
             get
             {
@@ -136,7 +136,7 @@ namespace MainServer
         {
             this.playerInRoomNumber = gameRoomNumber;
             this.owner = user;
-            this.PlyaerIndex = playerNumber;
+            this.PlayerIndex = playerNumber;
             this.money = 100;
             this.card = 0;
         }

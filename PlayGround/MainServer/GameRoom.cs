@@ -13,6 +13,9 @@ namespace MainServer
         public delegate void DelegateSendGameStartMessage(Header header, HandleGamePacket gamePacket, ClientInfo clientSocket);
         public DelegateSendGameStartMessage SendGameStartMessage;
 
+        public delegate void DelegateSendPokerMessage(Header header, IndianPokerGamePacket pokerPacket, ClientInfo clientSocket);
+        public DelegateSendPokerMessage SendPokerGameMessage;
+
         const short CARDMINNUM = 1;
         const short CARDMAXNUM = 20;
 
@@ -46,12 +49,14 @@ namespace MainServer
             
             HandleGamePacket player1GamePacket = new HandleGamePacket();
             player1GamePacket.startGame = true;
-            player1GamePacket.card = (short)random.Next(CARDMINNUM, CARDMAXNUM);
+            //player1GamePacket.card = (short)random.Next(CARDMINNUM, CARDMAXNUM);
+            player1GamePacket.playerTurn = 1;
             SendGameStartMessage(Header.Game, player1GamePacket, player1.owner);
 
             HandleGamePacket player2GamePacket = new HandleGamePacket();
             player2GamePacket.startGame = true;
-            player2GamePacket.card = (short)random.Next(CARDMINNUM, CARDMAXNUM);
+            //player2GamePacket.card = (short)random.Next(CARDMINNUM, CARDMAXNUM);
+            player1GamePacket.playerTurn = 2;
             SendGameStartMessage(Header.Game, player2GamePacket, player2.owner);
 
 
@@ -78,21 +83,32 @@ namespace MainServer
             //SendGameStartMessage(Header.Game, player2GamePacket, player2.owner);
         }
 
-        public void RequestBetting()
+        public void RequestBetting(GamePlayer player,int bettingParam)
         {
-            if(currentTurnPlayer == player1.PlyaerIndex)
+            IndianPokerGamePacket pokerGamePacket = new IndianPokerGamePacket();
+            
+            pokerGamePacket.betting = bettingParam;
+            
+            if(player.PlayerIndex == 1)
             {
-
+                SendPokerGameMessage(Header.GameMotion, pokerGamePacket, player2.owner);
             }
-            else if(currentTurnPlayer == player2.PlyaerIndex)
-            {
-
-            }
-
             else
             {
-
+                SendPokerGameMessage(Header.GameMotion, pokerGamePacket, player1.owner);
             }
+            //currentTurnPlayer = player.PlayerIndex;
+
+            //if (currentTurnPlayer == player1.PlayerIndex)
+            //{
+
+            //}
+            //else if (currentTurnPlayer == player2.PlayerIndex)
+            //{
+
+            //}
+
+            
         }
     }
 

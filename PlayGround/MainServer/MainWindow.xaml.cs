@@ -174,6 +174,7 @@ namespace MainServer
                 if (clientInfo.gameRoom.player1.isReadyForGame && clientInfo.gameRoom.player2.isReadyForGame)
                 {
                     clientInfo.gameRoom.SendGameStartMessage += new GameRoom.DelegateSendGameStartMessage(SendGameStartMessage);
+                    clientInfo.gameRoom.SendPokerGameMessage += new GameRoom.DelegateSendPokerMessage(SendPokerGameMessage);
                     clientInfo.gameRoom.GameStart();
                 }
 
@@ -225,6 +226,8 @@ namespace MainServer
         private void Instance_IndianPokerGamePacketEvent(DataHandler.EventManager.IndianPokerGamePacketReceivedArgs e)
         {
             ClientInfo clientInfo = clientManagement.ClientInfoDic[e.Data.clientID];
+            int betting = e.Data.betting;
+            clientInfo.gameRoom.RequestBetting(clientInfo.gamePlayer, betting);
 
             PrintText("[" + clientInfo.ClientID + "] " + "로 부터 " + e.Data.betting.ToString() + "베팅 받았습니다.");
         }
@@ -234,9 +237,14 @@ namespace MainServer
             LogMessage = message;
         }
 
-        public void SendGameStartMessage(Header header, DataHandler.HandleGamePacket gamePacket, ClientInfo clientInfoParam)
+        public void SendGameStartMessage(Header header, DataHandler.HandleGamePacket gameHandlePacket, ClientInfo clientInfoParam)
         {
-            indianPokerServer.SendMessage(header, gamePacket, clientInfoParam.ClientSocket);
+            indianPokerServer.SendMessage(header, gameHandlePacket, clientInfoParam.ClientSocket);
+        }
+
+        private void SendPokerGameMessage(Header header, DataHandler.IndianPokerGamePacket pokerGamePacket, ClientInfo clientInfoParam)
+        {
+            indianPokerServer.SendMessage(header, pokerGamePacket, clientInfoParam.ClientSocket);
         }
 
         //프로그램 실행 시 인디언 포커, 기억의 미로 서버 실행
