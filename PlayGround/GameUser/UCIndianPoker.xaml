@@ -37,6 +37,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.4*"/>
                 <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
                 <Label Content="여기는 남은돈 출력 창"/>
@@ -59,6 +60,10 @@
                     <Button x:Name="Button_Queter" Content="쿼터" Margin="10,0,0,0" Width="50" Height="30" Click="Button_Queter_Click"/>
                     <Button x:Name="Button_Half" Content="하프" Margin="10,0,0,0" Width="50" Height="30" Click="Button_Half_Click"/>
                 </StackPanel>
+            </Grid>
+
+            <Grid Grid.Column="2">
+                <TextBox x:Name="TextBox_UserLog" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"/>
             </Grid>
             
         </Grid>

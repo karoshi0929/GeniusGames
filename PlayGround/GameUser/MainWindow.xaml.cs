@@ -42,7 +42,10 @@ namespace GameUser
 
             DataHandler.EventManager.Instance.MatchingPacketEvent += Instance_MatchingPacketEvent;
             DataHandler.EventManager.Instance.HandleGamePacketEvent += Instance_HandleGamePacketEvent;
+            DataHandler.EventManager.Instance.IndianPokerGamePacketEvent += Instance_IndianPokerGamePacketEvent;
         }
+
+        
 
         private void SetVisible(Screen selectedscreen)
         {
@@ -160,8 +163,31 @@ namespace GameUser
 
         private void Instance_HandleGamePacketEvent(DataHandler.EventManager.HandleGamePacketReceivedArgs e)
         {
-            int a = e.Data.card;
-            MessageBox.Show("게임이 시작되었습니다. 나의 카드는: " + a.ToString());
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                if (e.Data.playerTurn == 1)
+                {
+                    IndianPokerScreen.TextBox_UserLog.AppendText("게임이 시작되었습니다. 선턴입니다. 베팅 하세여 \n");
+                    IndianPokerScreen.Button_Call.IsEnabled = false;
+                }
+                else
+                {
+                    IndianPokerScreen.TextBox_UserLog.AppendText("게임이 시작되었습니다. 후턴입니다. \n");
+                    IndianPokerScreen.SetButtonsDisable();
+                }
+            }));
+            //int a = e.Data.card;
+        }
+
+        private void Instance_IndianPokerGamePacketEvent(DataHandler.EventManager.IndianPokerGamePacketReceivedArgs e)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                IndianPokerScreen.TextBox_UserLog.AppendText("상대방이 " + e.Data.betting.ToString() + "베팅 하였습니다. \n");
+
+                IndianPokerScreen.SetButtonsEnable();
+                
+            }));
         }
 
         private void SendGameMessage(IndianPokerGamePacket gamePacketParam)

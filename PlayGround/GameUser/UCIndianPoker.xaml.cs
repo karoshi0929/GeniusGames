@@ -34,6 +34,7 @@ namespace GameUser
 
         private void Button_Call_Click(object sender, RoutedEventArgs e)
         {
+            SetButtonsDisable();
             IndianPokerGamePacket gamePacket = new IndianPokerGamePacket();
             gamePacket.betting = (int)Betting.BettingCall;
 
@@ -42,6 +43,7 @@ namespace GameUser
 
         private void Button_Die_Click(object sender, RoutedEventArgs e)
         {
+            SetButtonsDisable();
             IndianPokerGamePacket gamePacket = new IndianPokerGamePacket();
             gamePacket.betting = (int)Betting.BettingDie;
 
@@ -50,6 +52,7 @@ namespace GameUser
 
         private void Button_Bbing_Click(object sender, RoutedEventArgs e)
         {
+            SetButtonsDisable();
             IndianPokerGamePacket gamePacket = new IndianPokerGamePacket();
             gamePacket.betting = (int)Betting.BettingBbing;
 
@@ -58,6 +61,7 @@ namespace GameUser
 
         private void Button_Double_Click(object sender, RoutedEventArgs e)
         {
+            SetButtonsDisable();
             IndianPokerGamePacket gamePacket = new IndianPokerGamePacket();
             gamePacket.betting = (int)Betting.BettingDouble;
 
@@ -66,6 +70,7 @@ namespace GameUser
 
         private void Button_Check_Click(object sender, RoutedEventArgs e)
         {
+            SetButtonsDisable();
             IndianPokerGamePacket gamePacket = new IndianPokerGamePacket();
             gamePacket.betting = (int)Betting.BettingCheck;
 
@@ -74,6 +79,7 @@ namespace GameUser
 
         private void Button_Queter_Click(object sender, RoutedEventArgs e)
         {
+            SetButtonsDisable();
             IndianPokerGamePacket gamePacket = new IndianPokerGamePacket();
             gamePacket.betting = (int)Betting.BettingQueter;
 
@@ -82,12 +88,33 @@ namespace GameUser
 
         private void Button_Half_Click(object sender, RoutedEventArgs e)
         {
+            SetButtonsDisable();
+
             IndianPokerGamePacket gamePacket = new IndianPokerGamePacket();
             gamePacket.betting = (int)Betting.BettingHalf;
 
             SendGamePacketMessage(gamePacket);
         }
 
-        
+        public void SetButtonsEnable()
+        {
+            Button_Call.IsEnabled = true;
+            Button_Die.IsEnabled = true;
+            Button_Bbing.IsEnabled = true;
+            Button_Double.IsEnabled = true;
+            Button_Check.IsEnabled = true;
+            Button_Queter.IsEnabled = true;
+            Button_Half.IsEnabled = true;
+        }
+        public void SetButtonsDisable()
+        {
+            Button_Call.IsEnabled = false;
+            Button_Die.IsEnabled = false;
+            Button_Bbing.IsEnabled = false;
+            Button_Double.IsEnabled = false;
+            Button_Check.IsEnabled = false;
+            Button_Queter.IsEnabled = false;
+            Button_Half.IsEnabled = false;
+        }
     }
 }
