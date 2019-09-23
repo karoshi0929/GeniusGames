@@ -80,8 +80,6 @@ namespace MainServer
             DataHandler.EventManager.Instance.IndianPokerGamePacketEvent += Instance_IndianPokerGamePacketEvent;
         }
 
-        
-
         private void Instance_LoginPacketEvent(DataHandler.EventManager.LoginPacketReceivedArgs e)
         {
             //클라이언트 정보 저장

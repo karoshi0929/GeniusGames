@@ -21,7 +21,8 @@ namespace MainServer
         private Socket ServerSocket;
         private Socket ClientSocket;
 
-        private object Lock = new object();
+        private object recvLock = new object();
+        private object sendLock = new object();
 
         public void OpenIndianPokerServer()
         {
@@ -58,9 +59,6 @@ namespace MainServer
         public void SendMessage(Header header, object data, Socket EndPointClientSocket)
         {
             byte[] sendData = PacketDefine.MakePacket(header, data);
-            //ServerSocket.SendTo(sendData, EndPointClientSocket);
-            //ServerSocket.SendTo(sendData, EndPointClientSocket.RemoteEndPoint);
-
             EndPointClientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, new AsyncCallback(SendMessage2), EndPointClientSocket);
         }
 
@@ -73,7 +71,7 @@ namespace MainServer
         private void ReceiveMessage(IAsyncResult iar)
         {
             AsyncObject client = new AsyncObject(1024);
-            lock (Lock)
+            lock (recvLock)
             {
                 client = (AsyncObject)iar.AsyncState;
                 int recv = client.WorkingSocket.EndReceive(iar);
