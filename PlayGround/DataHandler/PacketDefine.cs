@@ -86,8 +86,10 @@ namespace DataHandler
 
         //게임시작
         public bool startGame;
-        public short card;
+        public short MyCard;
+        public short OtherPlayerCard;
         public short playerTurn;
+        public int money;
     }
 
     public struct IndianPokerGamePacket
@@ -96,7 +98,8 @@ namespace DataHandler
         public string clientID;
 
         public int betting;
-        public short card;
+        public short Mycard;
+        public short OtherPlayerCard;
         public short playerTurn;
     }
     /***********************************************************************************/
