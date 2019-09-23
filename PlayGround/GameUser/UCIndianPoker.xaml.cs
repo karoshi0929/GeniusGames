@@ -24,8 +24,21 @@ namespace GameUser
         public delegate void DelegateSendGameBettingMessage(IndianPokerGamePacket gamePacket);
         public DelegateSendGameBettingMessage SendGamePacketMessage;
 
-        int card = 0;
-        int money = 0;
+        public int card = 0;
+        private int myMoney = 0;
+
+        private short bettingMoney = 0;
+        public int MyMoney
+        {
+            get
+            {
+                return myMoney;
+            }
+            set
+            {
+                myMoney = value;
+            }
+        }
 
         public UCIndianPoker()
         {

@@ -19,16 +19,22 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0">
-                <Image  x:Name="MyCard" HorizontalAlignment="Left"  Margin="40,50,0,0" VerticalAlignment="Top" Width="90" Height="150"/>
+                <!--<Image  x:Name="MyCard" HorizontalAlignment="Left"  Margin="40,50,0,0" VerticalAlignment="Top" Width="90" Height="150"/>-->
                 <Label  x:Name="Card1" Content="나의 카드"  HorizontalAlignment="Center" VerticalAlignment="Center" Width="70" Height="40"/>
+                <Button x:Name="ButtonMyCard" Content="뒷면" Height="400"/>
             </StackPanel>
 
-
-            <Label Grid.Column="1" x:Name="BetMoney" Content="베팅 금액" HorizontalAlignment="Center" Height="100" VerticalAlignment="Center" Width="151"/>
-
+            <StackPanel Grid.Column="1">
+                <Label  x:Name="BetMoney" Content="베팅 금액" HorizontalAlignment="Center" Height="100" VerticalAlignment="Center" Width="151"/>
+                <Label  x:Name="BetTotalMoney" Content="베팅 금액" HorizontalAlignment="Center" Height="100" VerticalAlignment="Center" Width="151"/>
+            </StackPanel>
+            
+            
             <StackPanel Grid.Column="2">
-                <Image  x:Name="OtherPlayerCard" HorizontalAlignment="Right"  Margin="0,50,40,0" VerticalAlignment="Top" Width="90" Height="150"/>
+                <!--<Image  x:Name="OtherPlayerCard" HorizontalAlignment="Right"  Margin="0,50,40,0" VerticalAlignment="Top" Width="90" Height="150"/>-->
+                
                 <Label  x:Name="Card2" Content="상대방 카드" HorizontalAlignment="Center" VerticalAlignment="Center" Width="70" Height="40"/>
+                <Button x:Name="ButtonOtherPlayerCard" Content="0" Height="400"/>
             </StackPanel>
         </Grid>
 
@@ -39,9 +45,10 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0">
+            <StackPanel Grid.Column="0">
                 <Label Content="여기는 남은돈 출력 창"/>
-            </Grid>
+                <Label x:Name="LabelMoneyLeft" Content="0"/>
+            </StackPanel>
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition/>

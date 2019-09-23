@@ -153,7 +153,7 @@ namespace GameUser
                     handleGamePakcet.clientID = this.ClientID;
                     handleGamePakcet.loadingComplete = true;
                     handleGamePakcet.startGame = false;
-                    handleGamePakcet.card = 0;
+                    handleGamePakcet.MyCard = 0;
                     handleGamePakcet.playerTurn = 0;
 
                     indianPokerClient.SendMessage(Header.Game, handleGamePakcet, indianPokerClient.ao.WorkingSocket);
@@ -165,6 +165,11 @@ namespace GameUser
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
+                IndianPokerScreen.MyMoney = e.Data.money;
+                IndianPokerScreen.ButtonMyCard.Content = e.Data.MyCard.ToString();
+                IndianPokerScreen.ButtonOtherPlayerCard.Content = e.Data.OtherPlayerCard.ToString();
+                IndianPokerScreen.LabelMoneyLeft.Content = e.Data.money.ToString();
+
                 if (e.Data.playerTurn == 1)
                 {
                     IndianPokerScreen.TextBox_UserLog.AppendText("게임이 시작되었습니다. 선턴입니다. 베팅 하세여 \n");
@@ -176,7 +181,6 @@ namespace GameUser
                     IndianPokerScreen.SetButtonsDisable();
                 }
             }));
-            //int a = e.Data.card;
         }
 
         private void Instance_IndianPokerGamePacketEvent(DataHandler.EventManager.IndianPokerGamePacketReceivedArgs e)
