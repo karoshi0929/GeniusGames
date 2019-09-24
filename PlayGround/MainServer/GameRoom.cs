@@ -17,7 +17,7 @@ namespace MainServer
         public DelegateSendPokerMessage SendPokerGameMessage;
 
         const short CARDMINNUM = 1;
-        const short CARDMAXNUM = 20;
+        const short CARDMAXNUM = 10;
 
         private int currentTurnPlayer;
         private int totalBettingMoney = 0;
@@ -55,14 +55,16 @@ namespace MainServer
 
             player1GamePacket.startGame = true;
             player1GamePacket.MyCard = (short)random.Next(CARDMINNUM, CARDMAXNUM);
+            player1Card = player1GamePacket.MyCard;
             player1GamePacket.playerTurn = 1;
-            player1GamePacket.money = 100;
+            player1GamePacket.MyMoney = 100;
             
 
             player2GamePacket.startGame = true;
             player2GamePacket.MyCard = (short)random.Next(CARDMINNUM, CARDMAXNUM);
+            player2Card = player2GamePacket.MyCard;
             player2GamePacket.playerTurn = 2;
-            player2GamePacket.money = 100;
+            player2GamePacket.MyMoney = 100;
 
             player1GamePacket.OtherPlayerCard = player2GamePacket.MyCard;
             player2GamePacket.OtherPlayerCard = player1GamePacket.MyCard;
