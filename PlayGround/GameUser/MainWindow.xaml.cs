@@ -165,10 +165,10 @@ namespace GameUser
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                IndianPokerScreen.MyMoney = e.Data.money;
+                IndianPokerScreen.MyMoney = e.Data.MyMoney;
                 IndianPokerScreen.ButtonMyCard.Content = e.Data.MyCard.ToString();
                 IndianPokerScreen.ButtonOtherPlayerCard.Content = e.Data.OtherPlayerCard.ToString();
-                IndianPokerScreen.LabelMoneyLeft.Content = e.Data.money.ToString();
+                IndianPokerScreen.LabelMoneyLeft.Content = e.Data.MyMoney.ToString();
 
                 if (e.Data.playerTurn == 1)
                 {
