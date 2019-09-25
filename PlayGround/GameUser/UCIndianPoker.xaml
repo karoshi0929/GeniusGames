@@ -21,7 +21,9 @@
             <StackPanel Grid.Column="0">
                 <!--<Image  x:Name="MyCard" HorizontalAlignment="Left"  Margin="40,50,0,0" VerticalAlignment="Top" Width="90" Height="150"/>-->
                 <Label  x:Name="Card1" Content="나의 카드"  HorizontalAlignment="Center" VerticalAlignment="Center" Width="70" Height="40"/>
-                <Button x:Name="ButtonMyCard" Content="뒷면" Height="400"/>
+                <Button x:Name="Button_MyCard" Content="뒷면" Height="400"/>
+                <Label Content="나의 남은 금액"/>
+                <Label x:Name="Label_MyMoney" Content="0"/>
             </StackPanel>
 
             <StackPanel Grid.Column="1">
@@ -33,8 +35,10 @@
             <StackPanel Grid.Column="2">
                 <!--<Image  x:Name="OtherPlayerCard" HorizontalAlignment="Right"  Margin="0,50,40,0" VerticalAlignment="Top" Width="90" Height="150"/>-->
                 
-                <Label  x:Name="Card2" Content="상대방 카드" HorizontalAlignment="Center" VerticalAlignment="Center" Width="70" Height="40"/>
-                <Button x:Name="ButtonOtherPlayerCard" Content="0" Height="400"/>
+                <Label  x:Name="Card2" Content="상대방 카드" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" Height="40"/>
+                <Button x:Name="Button_OtherPlayerCard" Content="0" Height="400"/>
+                <Label Content="상대방의 남은 금액"/>
+                <Label x:Name="Label_OtherPlayerMoney" Content="0"/>
             </StackPanel>
         </Grid>
 
@@ -46,8 +50,8 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0">
-                <Label Content="여기는 남은돈 출력 창"/>
-                <Label x:Name="LabelMoneyLeft" Content="0"/>
+                <!--<Label Content="여기는 남은돈 출력 창"/>-->
+                <!--<Label x:Name="LabelMoneyLeft" Content="0"/>-->
             </StackPanel>
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
