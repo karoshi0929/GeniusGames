@@ -7,9 +7,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="350" d:DesignWidth="525">
     <Grid>
-        <StackPanel>
-            <Button x:Name="indian" Content="Indian Poker" Click="indian_Click"/>
-            <Button x:Name="maze" Content="Maze of Memory" Click="maze_Click"/>
-        </StackPanel>
+        <Grid>
+            <Button x:Name="indian" Width="120" Height="50" Content="Matching Start" Click="indian_Click"/>
+        </Grid>
     </Grid>
 </UserControl>

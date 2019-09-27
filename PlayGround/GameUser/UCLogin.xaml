@@ -8,7 +8,7 @@
              d:DesignHeight="700" d:DesignWidth="800">
 
     <Grid>
-        <TextBox x:Name="IDbox" HorizontalAlignment="Left" Height="23" Margin="200,129,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="Loginbtn" Content="로그인" HorizontalAlignment="Left" Margin="200,207,0,0" VerticalAlignment="Top" Width="120" Click="Loginbtn_Click"/>
+        <TextBox x:Name="IDbox" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,100" Width="120"/>
+        <Button x:Name="Loginbtn" Content="로그인" VerticalAlignment="Center" HorizontalAlignment="Center" Width="120" Click="Loginbtn_Click"/>
     </Grid>
 </UserControl>
