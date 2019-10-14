@@ -16,24 +16,22 @@ namespace MainServer
         public delegate void DelegateSendPokerMessage(Header header, IndianPokerGamePacket pokerPacket, ClientInfo clientSocket);
         public DelegateSendPokerMessage SendPokerGameMessage;
 
-        const short CARDMINNUM = 1;
-        const short CARDMAXNUM = 10;
+        const short CARDMINNUM = 0;
+        const short CARDMAXNUM = 20;
 
         private int currentTurnPlayer;
         private int totalBettingMoney = 0;
 
         private short[] card = new short[]{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
                                             1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        short player1Card = 0;
+        short player2Card = 0;
 
         public int gameRoomNumber = 0;
-
         public bool playGame = false;
 
         public GamePlayer player1;
         public GamePlayer player2;
-
-        short player1Card = 0;
-        short player2Card = 0;
 
         public void EnterGameRoom(ClientInfo user1, ClientInfo user2,int RoomNumber)
         {
@@ -57,17 +55,23 @@ namespace MainServer
             player1GamePacket.MyCard = (short)random.Next(CARDMINNUM, CARDMAXNUM);
             player1Card = player1GamePacket.MyCard;
             player1GamePacket.playerTurn = 1;
-            player1GamePacket.MyMoney = 100;
+            player1GamePacket.TotalBettingMoney = totalBettingMoney;
+            player1GamePacket.MyMoney = 99;
             
 
             player2GamePacket.startGame = true;
             player2GamePacket.MyCard = (short)random.Next(CARDMINNUM, CARDMAXNUM);
             player2Card = player2GamePacket.MyCard;
             player2GamePacket.playerTurn = 2;
-            player2GamePacket.MyMoney = 100;
+            player2GamePacket.TotalBettingMoney = totalBettingMoney;
+            player2GamePacket.MyMoney = 99;
 
             player1GamePacket.OtherPlayerCard = player2GamePacket.MyCard;
             player2GamePacket.OtherPlayerCard = player1GamePacket.MyCard;
+            player1GamePacket.OtherPlayerMoney = player2GamePacket.MyMoney;
+            player2GamePacket.OtherPlayerMoney = player1GamePacket.MyMoney;
+
+            totalBettingMoney = 2;
 
             SendGameStartMessage(Header.Game, player1GamePacket, player1.owner);
             SendGameStartMessage(Header.Game, player2GamePacket, player2.owner);
