@@ -166,11 +166,15 @@ namespace GameUser
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 IndianPokerScreen.MyMoney = e.Data.MyMoney;
+
                 IndianPokerScreen.Button_MyCard.Content = e.Data.MyCard.ToString();
                 IndianPokerScreen.Button_OtherPlayerCard.Content = e.Data.OtherPlayerCard.ToString();
+
                 IndianPokerScreen.Label_MyMoney.Content = e.Data.MyMoney.ToString();
                 IndianPokerScreen.Label_OtherPlayerMoney.Content = e.Data.OtherPlayerMoney.ToString();
 
+                IndianPokerScreen.Label_BetTotalMoney.Content = e.Data.TotalBettingMoney.ToString();
+                IndianPokerScreen.isGameStart = true;
                 if (e.Data.playerTurn == 1)
                 {
                     IndianPokerScreen.TextBox_UserLog.AppendText("게임이 시작되었습니다. 선턴입니다. 베팅 하세여 \n");
@@ -186,12 +190,13 @@ namespace GameUser
 
         private void Instance_IndianPokerGamePacketEvent(DataHandler.EventManager.IndianPokerGamePacketReceivedArgs e)
         {
+            IndianPokerScreen.HandleBettingMoney((Betting)e.Data.betting, IndianPokerScreen.ReceiveBetting);
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 IndianPokerScreen.TextBox_UserLog.AppendText("상대방이 " + e.Data.betting.ToString() + "베팅 하였습니다. \n");
 
+                //IndianPokerScreen.TotalBettingMoney = e.Data.betting;
                 IndianPokerScreen.SetButtonsEnable();
-                
             }));
         }
 

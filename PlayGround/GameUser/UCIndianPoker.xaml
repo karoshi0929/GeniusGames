@@ -28,7 +28,7 @@
 
             <StackPanel Grid.Column="1">
                 <Label  x:Name="BetMoney" Content="베팅 금액" HorizontalAlignment="Center" Height="100" VerticalAlignment="Center" Width="151"/>
-                <Label  x:Name="BetTotalMoney" Content="베팅 금액" HorizontalAlignment="Center" Height="100" VerticalAlignment="Center" Width="151"/>
+                <Label  x:Name="Label_BetTotalMoney" Content="베팅 금액" HorizontalAlignment="Center" Height="100" VerticalAlignment="Center" Width="151"/>
             </StackPanel>
             
             

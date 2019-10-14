@@ -24,10 +24,48 @@ namespace GameUser
         public delegate void DelegateSendGameBettingMessage(IndianPokerGamePacket gamePacket);
         public DelegateSendGameBettingMessage SendGamePacketMessage;
 
-        public int card = 0;
-        private int myMoney = 0;
+        public bool isGameStart = false;
 
-        private short bettingMoney = 0;
+        private int card = 0;
+        private int myMoney = 0;
+        private int bettingMoney = 0;
+        private int totalBettingMoney = 0;
+
+        public string SendBetting = "Send";
+        public string ReceiveBetting = "Receive";
+        public int TotalBettingMoney //상대방이 베팅한 것에 대한 처리
+        {
+            get
+            {
+                return totalBettingMoney;
+            }
+            set
+            {
+                if (!isGameStart)
+                {
+                    totalBettingMoney = value;
+                }
+                else
+                {
+                    switch (bettingMoney)
+                    {
+                        case (int)Betting.BettingCall:
+                            break;
+                        case (int)Betting.BettingDie:
+                            break;
+                        case (int)Betting.BettingBbing:
+                            break;
+                        case (int)Betting.BettingDouble:
+                            break;
+                        case (int)Betting.BettingQueter:
+                            break;
+                        case (int)Betting.BettingHalf:
+                            break;
+                    }
+                }
+            }
+        }
+
         public int MyMoney
         {
             get
@@ -39,6 +77,19 @@ namespace GameUser
                 myMoney = value;
             }
         }
+
+        public int MyCard
+        {
+            get
+            {
+                return card;
+            }
+            set
+            {
+                card = value;
+            }
+        }
+
 
         public UCIndianPoker()
         {
@@ -66,6 +117,8 @@ namespace GameUser
         private void Button_Bbing_Click(object sender, RoutedEventArgs e)
         {
             SetButtonsDisable();
+            HandleBettingMoney(Betting.BettingBbing, SendBetting);
+
             IndianPokerGamePacket gamePacket = new IndianPokerGamePacket();
             gamePacket.betting = (int)Betting.BettingBbing;
 
@@ -107,6 +160,60 @@ namespace GameUser
             gamePacket.betting = (int)Betting.BettingHalf;
 
             SendGamePacketMessage(gamePacket);
+        }
+
+        public void HandleBettingMoney(Betting betting, string strAction)
+        {
+            if(strAction == SendBetting)
+            {
+                switch (betting)
+                {
+                    case Betting.BettingCall:
+                        
+                        break;
+                    case Betting.BettingDie:
+                        break;
+                    case Betting.BettingBbing:
+                        myMoney = myMoney - 1;
+                        totalBettingMoney = totalBettingMoney + 1;
+                        break;
+                    case Betting.BettingDouble:
+                        break;
+                    case Betting.BettingCheck:
+                        break;
+                    case Betting.BettingQueter:
+                        break;
+                    case Betting.BettingHalf:
+                        break;
+                }
+            }
+            else //ReceiveBetting 상대방에게 베팅받았을 때 처리.
+            {
+                switch (betting)
+                {
+                    case Betting.BettingCall:
+                        break;
+                    case Betting.BettingDie:
+                        break;
+                    case Betting.BettingBbing:
+                        myMoney = myMoney - 1;
+                        totalBettingMoney = totalBettingMoney + 1;
+                        break;
+                    case Betting.BettingDouble:
+                        break;
+                    case Betting.BettingCheck:
+                        break;
+                    case Betting.BettingQueter:
+                        break;
+                    case Betting.BettingHalf:
+                        break;
+                }
+            }
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                Label_MyMoney.Content = myMoney.ToString();
+                Label_BetTotalMoney.Content = totalBettingMoney.ToString();
+            }));
         }
 
         public void SetButtonsEnable()
