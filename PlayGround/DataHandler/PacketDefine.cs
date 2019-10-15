@@ -33,10 +33,9 @@ namespace DataHandler
 
     public enum Betting
     {
-        //다이 삥 따당 체크 쿼터 하프
+        //다이 따당 체크 쿼터 하프
         BettingCall = 0,
         BettingDie,
-        BettingBbing,
         BettingDouble,
         BettingCheck,
         BettingQueter,
