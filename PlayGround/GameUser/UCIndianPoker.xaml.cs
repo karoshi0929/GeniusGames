@@ -26,69 +26,15 @@ namespace GameUser
 
         public bool isGameStart = false;
 
-        private int card = 0;
+        private int myCard = 0;
         private int myMoney = 0;
-        private int bettingMoney = 0;
+
+        private int otherPlayerBettingMoney = 0;
+        private int otherPlayerMoney = 0;
         private int totalBettingMoney = 0;
 
         public string SendBetting = "Send";
         public string ReceiveBetting = "Receive";
-        public int TotalBettingMoney //상대방이 베팅한 것에 대한 처리
-        {
-            get
-            {
-                return totalBettingMoney;
-            }
-            set
-            {
-                if (!isGameStart)
-                {
-                    totalBettingMoney = value;
-                }
-                else
-                {
-                    switch (bettingMoney)
-                    {
-                        case (int)Betting.BettingCall:
-                            break;
-                        case (int)Betting.BettingDie:
-                            break;
-                        case (int)Betting.BettingBbing:
-                            break;
-                        case (int)Betting.BettingDouble:
-                            break;
-                        case (int)Betting.BettingQueter:
-                            break;
-                        case (int)Betting.BettingHalf:
-                            break;
-                    }
-                }
-            }
-        }
-
-        public int MyMoney
-        {
-            get
-            {
-                return myMoney;
-            }
-            set
-            {
-                myMoney = value;
-            }
-        }
-
-        public int MyCard
-        {
-            get
-            {
-                return card;
-            }
-            set
-            {
-                card = value;
-            }
-        }
 
 
         public UCIndianPoker()
@@ -110,17 +56,6 @@ namespace GameUser
             SetButtonsDisable();
             IndianPokerGamePacket gamePacket = new IndianPokerGamePacket();
             gamePacket.betting = (int)Betting.BettingDie;
-
-            SendGamePacketMessage(gamePacket);
-        }
-
-        private void Button_Bbing_Click(object sender, RoutedEventArgs e)
-        {
-            SetButtonsDisable();
-            HandleBettingMoney(Betting.BettingBbing, SendBetting);
-
-            IndianPokerGamePacket gamePacket = new IndianPokerGamePacket();
-            gamePacket.betting = (int)Betting.BettingBbing;
 
             SendGamePacketMessage(gamePacket);
         }
@@ -158,6 +93,7 @@ namespace GameUser
 
             IndianPokerGamePacket gamePacket = new IndianPokerGamePacket();
             gamePacket.betting = (int)Betting.BettingHalf;
+            HandleBettingMoney(Betting.BettingHalf, SendBetting);
 
             SendGamePacketMessage(gamePacket);
         }
@@ -169,13 +105,8 @@ namespace GameUser
                 switch (betting)
                 {
                     case Betting.BettingCall:
-                        
                         break;
                     case Betting.BettingDie:
-                        break;
-                    case Betting.BettingBbing:
-                        myMoney = myMoney - 1;
-                        totalBettingMoney = totalBettingMoney + 1;
                         break;
                     case Betting.BettingDouble:
                         break;
@@ -184,6 +115,8 @@ namespace GameUser
                     case Betting.BettingQueter:
                         break;
                     case Betting.BettingHalf:
+                        //(총베팅금액 + 상대방의 베팅금액) + (총베팅금액 + 상대방의 베팅금액) / 2
+                        totalBettingMoney = (totalBettingMoney + otherPlayerBettingMoney) / 2;
                         break;
                 }
             }
@@ -195,10 +128,6 @@ namespace GameUser
                         break;
                     case Betting.BettingDie:
                         break;
-                    case Betting.BettingBbing:
-                        myMoney = myMoney - 1;
-                        totalBettingMoney = totalBettingMoney + 1;
-                        break;
                     case Betting.BettingDouble:
                         break;
                     case Betting.BettingCheck:
@@ -206,6 +135,7 @@ namespace GameUser
                     case Betting.BettingQueter:
                         break;
                     case Betting.BettingHalf:
+                        totalBettingMoney = totalBettingMoney + 1;
                         break;
                 }
             }
@@ -216,11 +146,39 @@ namespace GameUser
             }));
         }
 
+        public void SetGameStart(HandleGamePacket gamePacketParam)
+        {
+            myMoney = gamePacketParam.MyMoney;
+            totalBettingMoney = gamePacketParam.TotalBettingMoney;
+
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                Button_MyCard.Content = gamePacketParam.MyCard.ToString();
+                Button_OtherPlayerCard.Content = gamePacketParam.OtherPlayerCard.ToString();
+
+                Label_MyMoney.Content = gamePacketParam.MyMoney.ToString();
+                Label_OtherPlayerMoney.Content = gamePacketParam.OtherPlayerMoney.ToString();
+
+                Label_BetTotalMoney.Content = gamePacketParam.TotalBettingMoney.ToString();
+                isGameStart = true;
+                if (gamePacketParam.playerTurn == 1)
+                {
+                    TextBox_UserLog.AppendText("게임이 시작되었습니다. 선턴입니다. 베팅 하세여 \n");
+                    Button_Call.IsEnabled = false;
+                }
+                else
+                {
+                    TextBox_UserLog.AppendText("게임이 시작되었습니다. 후턴입니다. \n");
+                    SetButtonsDisable();
+                }
+            }));
+        }
+            
+
         public void SetButtonsEnable()
         {
             Button_Call.IsEnabled = true;
             Button_Die.IsEnabled = true;
-            Button_Bbing.IsEnabled = true;
             Button_Double.IsEnabled = true;
             Button_Check.IsEnabled = true;
             Button_Queter.IsEnabled = true;
@@ -230,7 +188,6 @@ namespace GameUser
         {
             Button_Call.IsEnabled = false;
             Button_Die.IsEnabled = false;
-            Button_Bbing.IsEnabled = false;
             Button_Double.IsEnabled = false;
             Button_Check.IsEnabled = false;
             Button_Queter.IsEnabled = false;

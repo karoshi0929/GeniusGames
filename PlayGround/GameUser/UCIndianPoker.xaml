@@ -62,7 +62,6 @@
                 <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Height="80" VerticalAlignment="Center" >
                     <Button x:Name="Button_Call" Content="콜" Margin="10,0,0,0" Width="50" Height="30" Click="Button_Call_Click"/>
                     <Button x:Name="Button_Die" Content="다이" Margin="10,0,0,0" Width="50" Height="30" Click="Button_Die_Click"/>
-                    <Button x:Name="Button_Bbing" Content="삥" Margin="10,0,0,0" Width="50" Height="30" Click="Button_Bbing_Click"/>
                     <Button x:Name="Button_Double" Content="따당" Margin="10,0,0,0" Width="50" Height="30" Click="Button_Double_Click"/>
                 </StackPanel>
 
