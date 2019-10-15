@@ -51,12 +51,14 @@ namespace MainServer
             HandleGamePacket player1GamePacket = new HandleGamePacket();
             HandleGamePacket player2GamePacket = new HandleGamePacket();
 
+            totalBettingMoney = 10;
+
             player1GamePacket.startGame = true;
             player1GamePacket.MyCard = (short)random.Next(CARDMINNUM, CARDMAXNUM);
             player1Card = player1GamePacket.MyCard;
             player1GamePacket.playerTurn = 1;
             player1GamePacket.TotalBettingMoney = totalBettingMoney;
-            player1GamePacket.MyMoney = 99;
+            player1GamePacket.MyMoney = 995;
             
 
             player2GamePacket.startGame = true;
@@ -64,14 +66,12 @@ namespace MainServer
             player2Card = player2GamePacket.MyCard;
             player2GamePacket.playerTurn = 2;
             player2GamePacket.TotalBettingMoney = totalBettingMoney;
-            player2GamePacket.MyMoney = 99;
+            player2GamePacket.MyMoney = 995;
 
             player1GamePacket.OtherPlayerCard = player2GamePacket.MyCard;
             player2GamePacket.OtherPlayerCard = player1GamePacket.MyCard;
             player1GamePacket.OtherPlayerMoney = player2GamePacket.MyMoney;
             player2GamePacket.OtherPlayerMoney = player1GamePacket.MyMoney;
-
-            totalBettingMoney = 2;
 
             SendGameStartMessage(Header.Game, player1GamePacket, player1.owner);
             SendGameStartMessage(Header.Game, player2GamePacket, player2.owner);
