@@ -98,10 +98,11 @@ namespace DataHandler
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 12)]
         public string clientID;
 
-        public int betting;
+        public int Betting;
+        public int BettingMoney;
         public int OtherPlayerMoney;
         public short playerTurn;
-
+        public int MyMoney;
         //public short Mycard;
         //public short OtherPlayerCard;
     }
