@@ -30,12 +30,12 @@ namespace GameUser
         private int myMoney = 0;
 
         private int otherPlayerBettingMoney = 0;
-        private int otherPlayerMoney = 0;
+        //private int otherPlayerMoney = 0;
         private int totalBettingMoney = 0;
+        
 
-        public string SendBetting = "Send";
-        public string ReceiveBetting = "Receive";
-
+        //첫번째 턴일때는 쿼터,하프는 총베팅액기준으로 계산
+        private bool isFirstTurn = false;
 
         public UCIndianPoker()
         {
@@ -46,7 +46,7 @@ namespace GameUser
         {
             SetButtonsDisable();
             IndianPokerGamePacket gamePacket = new IndianPokerGamePacket();
-            gamePacket.betting = (int)Betting.BettingCall;
+            gamePacket.Betting = (int)Betting.BettingCall;
 
             SendGamePacketMessage(gamePacket);
         }
@@ -55,7 +55,7 @@ namespace GameUser
         {
             SetButtonsDisable();
             IndianPokerGamePacket gamePacket = new IndianPokerGamePacket();
-            gamePacket.betting = (int)Betting.BettingDie;
+            gamePacket.Betting = (int)Betting.BettingDie;
 
             SendGamePacketMessage(gamePacket);
         }
@@ -64,7 +64,7 @@ namespace GameUser
         {
             SetButtonsDisable();
             IndianPokerGamePacket gamePacket = new IndianPokerGamePacket();
-            gamePacket.betting = (int)Betting.BettingDouble;
+            gamePacket.Betting = (int)Betting.BettingDouble;
 
             SendGamePacketMessage(gamePacket);
         }
@@ -73,7 +73,7 @@ namespace GameUser
         {
             SetButtonsDisable();
             IndianPokerGamePacket gamePacket = new IndianPokerGamePacket();
-            gamePacket.betting = (int)Betting.BettingCheck;
+            gamePacket.Betting = (int)Betting.BettingCheck;
 
             SendGamePacketMessage(gamePacket);
         }
@@ -82,7 +82,7 @@ namespace GameUser
         {
             SetButtonsDisable();
             IndianPokerGamePacket gamePacket = new IndianPokerGamePacket();
-            gamePacket.betting = (int)Betting.BettingQueter;
+            gamePacket.Betting = (int)Betting.BettingQueter;
 
             SendGamePacketMessage(gamePacket);
         }
@@ -90,58 +90,104 @@ namespace GameUser
         private void Button_Half_Click(object sender, RoutedEventArgs e)
         {
             SetButtonsDisable();
+            SendBetting(Betting.BettingHalf);
+            //IndianPokerGamePacket gamePacket = new IndianPokerGamePacket();
+            //gamePacket.Betting = (int)Betting.BettingHalf;
 
-            IndianPokerGamePacket gamePacket = new IndianPokerGamePacket();
-            gamePacket.betting = (int)Betting.BettingHalf;
-            HandleBettingMoney(Betting.BettingHalf, SendBetting);
+            //gamePacket.MyMoney = myMoney;
+            //gamePacket.BettingMoney = bettingMoney;
 
-            SendGamePacketMessage(gamePacket);
+            //SendGamePacketMessage(gamePacket);
         }
 
-        public void HandleBettingMoney(Betting betting, string strAction)
+        public void SendBetting(Betting betting)
         {
-            if(strAction == SendBetting)
+            IndianPokerGamePacket gamePacket = new IndianPokerGamePacket();
+
+            int bettingMoney = 0;
+
+            switch (betting)
             {
-                switch (betting)
-                {
-                    case Betting.BettingCall:
-                        break;
-                    case Betting.BettingDie:
-                        break;
-                    case Betting.BettingDouble:
-                        break;
-                    case Betting.BettingCheck:
-                        break;
-                    case Betting.BettingQueter:
-                        break;
-                    case Betting.BettingHalf:
-                        //(총베팅금액 + 상대방의 베팅금액) + (총베팅금액 + 상대방의 베팅금액) / 2
-                        totalBettingMoney = (totalBettingMoney + otherPlayerBettingMoney) / 2;
-                        break;
-                }
+                case Betting.BettingCall:
+                    break;
+                case Betting.BettingDie:
+                    break;
+                case Betting.BettingDouble:
+                    break;
+                case Betting.BettingCheck:
+                    if (isFirstTurn)
+                    {
+                        //첫번째 베팅일땐 체크버튼 활성화
+                    }
+                    else
+                    {
+                        //첫번째 베팅일땐 체크버튼 비활성화
+                    }
+                    break;
+                case Betting.BettingQueter:
+                    if (isFirstTurn)
+                    {
+                        //첫번째 베팅일땐 총금액의 1/4
+                    }
+                    else
+                    {
+
+                    }
+                    break;
+                case Betting.BettingHalf:
+                    if (isFirstTurn)
+                    {
+                        isFirstTurn = false;
+
+                        bettingMoney = totalBettingMoney / 2;
+                        myMoney = myMoney - bettingMoney;
+                        totalBettingMoney = totalBettingMoney + bettingMoney;
+                    }
+                    else
+                    {
+                        //총베팅금액 + 상대방의 베팅금액 / 2
+                        bettingMoney = (totalBettingMoney + otherPlayerBettingMoney) + ((totalBettingMoney + otherPlayerBettingMoney) / 2);
+                        myMoney = myMoney - bettingMoney;
+                        totalBettingMoney = totalBettingMoney + bettingMoney;
+
+                    }
+                    break;
             }
-            else //ReceiveBetting 상대방에게 베팅받았을 때 처리.
-            {
-                switch (betting)
-                {
-                    case Betting.BettingCall:
-                        break;
-                    case Betting.BettingDie:
-                        break;
-                    case Betting.BettingDouble:
-                        break;
-                    case Betting.BettingCheck:
-                        break;
-                    case Betting.BettingQueter:
-                        break;
-                    case Betting.BettingHalf:
-                        totalBettingMoney = totalBettingMoney + 1;
-                        break;
-                }
-            }
+
+            gamePacket.Betting = (short)betting;
+            gamePacket.BettingMoney = bettingMoney;
+            gamePacket.MyMoney = myMoney;
+            SendGamePacketMessage(gamePacket);
+
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 Label_MyMoney.Content = myMoney.ToString();
+                Label_BetTotalMoney.Content = totalBettingMoney.ToString();
+            }));
+        }
+
+        public void ReceiveBetting(Betting betting, IndianPokerGamePacket gamePacketParam)
+        {
+            switch (betting)
+            {
+                case Betting.BettingCall:
+                    break;
+                case Betting.BettingDie:
+                    break;
+                case Betting.BettingDouble:
+                    break;
+                case Betting.BettingCheck:
+                    break;
+                case Betting.BettingQueter:
+                    break;
+                case Betting.BettingHalf:
+                    otherPlayerBettingMoney = gamePacketParam.BettingMoney;
+                    totalBettingMoney = totalBettingMoney + gamePacketParam.BettingMoney;
+                    break;
+            }
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                Label_OtherPlayerMoney.Content = gamePacketParam.OtherPlayerMoney.ToString();
                 Label_BetTotalMoney.Content = totalBettingMoney.ToString();
             }));
         }
@@ -165,6 +211,7 @@ namespace GameUser
                 {
                     TextBox_UserLog.AppendText("게임이 시작되었습니다. 선턴입니다. 베팅 하세여 \n");
                     Button_Call.IsEnabled = false;
+                    isFirstTurn = true;
                 }
                 else
                 {
