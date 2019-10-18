@@ -100,13 +100,14 @@ namespace MainServer
             //SendGameStartMessage(Header.Game, player2GamePacket, player2.owner);
         }
 
-        public void RequestBetting(GamePlayer player,int bettingParam)
+        public void RequestBetting(GamePlayer player, IndianPokerGamePacket gamePacketParam)
         {
             IndianPokerGamePacket pokerGamePacket = new IndianPokerGamePacket();
             
-            pokerGamePacket.betting = bettingParam;
-            
-            if(player.PlayerIndex == 1)
+            pokerGamePacket.Betting = gamePacketParam.Betting;
+            pokerGamePacket.BettingMoney = gamePacketParam.BettingMoney;
+            pokerGamePacket.OtherPlayerMoney = gamePacketParam.MyMoney;
+            if (player.PlayerIndex == 1)
             {
                 //totalBettingMoney += pokerGamePacket.betting;
                 SendPokerGameMessage(Header.GameMotion, pokerGamePacket, player2.owner);

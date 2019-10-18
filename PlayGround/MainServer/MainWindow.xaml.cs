@@ -224,10 +224,11 @@ namespace MainServer
         private void Instance_IndianPokerGamePacketEvent(DataHandler.EventManager.IndianPokerGamePacketReceivedArgs e)
         {
             ClientInfo clientInfo = clientManagement.ClientInfoDic[e.Data.clientID];
-            int betting = e.Data.betting;
-            clientInfo.gameRoom.RequestBetting(clientInfo.gamePlayer, betting);
+            //int betting = e.Data.Betting;
 
-            PrintText("[" + clientInfo.ClientID + "] " + "로 부터 " + e.Data.betting.ToString() + "베팅 받았습니다.");
+            clientInfo.gameRoom.RequestBetting(clientInfo.gamePlayer, e.Data);
+
+            PrintText("[" + clientInfo.ClientID + "] " + "로 부터 " + e.Data.Betting.ToString() + "베팅 받았습니다.");
         }
 
         private void PrintText(string message)
