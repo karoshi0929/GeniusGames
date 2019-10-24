@@ -101,8 +101,9 @@ namespace DataHandler
         public int Betting;
         public int BettingMoney;
         public int OtherPlayerMoney;
-        public short playerTurn;
         public int MyMoney;
+        public short playerTurn;
+        public short VictoryUser;
         //public short Mycard;
         //public short OtherPlayerCard;
     }
