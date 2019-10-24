@@ -116,19 +116,27 @@ namespace MainServer
             {
                 SendPokerGameMessage(Header.GameMotion, pokerGamePacket, player1.owner);
             }
-
-            //currentTurnPlayer = player.PlayerIndex;
-
-            //if (currentTurnPlayer == player1.PlayerIndex)
-            //{
-
-            //}
-            //else if (currentTurnPlayer == player2.PlayerIndex)
-            //{
-
-            //}
-
             
+
+            if(gamePacketParam.Betting == (short)Betting.BettingCall)
+            {
+                if(player1Card > player2Card)
+                {
+                    //두 플레이어 에게 결과 송신
+                }
+                else
+                {
+                    //두 플레이어 에게 결과 송신
+                }
+            }
+            else if(gamePacketParam.Betting == (short)Betting.BettingDie)
+            {
+
+            }
+            else
+            {
+
+            }
         }
     }
 

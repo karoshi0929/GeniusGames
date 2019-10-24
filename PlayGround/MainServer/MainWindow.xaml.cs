@@ -224,7 +224,6 @@ namespace MainServer
         private void Instance_IndianPokerGamePacketEvent(DataHandler.EventManager.IndianPokerGamePacketReceivedArgs e)
         {
             ClientInfo clientInfo = clientManagement.ClientInfoDic[e.Data.clientID];
-            //int betting = e.Data.Betting;
 
             clientInfo.gameRoom.RequestBetting(clientInfo.gamePlayer, e.Data);
 
