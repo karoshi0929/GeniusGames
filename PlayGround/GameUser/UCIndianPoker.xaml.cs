@@ -111,6 +111,7 @@ namespace GameUser
                     }
                     else
                     {
+                        //따당 수정해야함
                         bettingMoney = otherPlayerBettingMoney * 2;
                         myMoney = myMoney - bettingMoney;
                         totalBettingMoney = (totalBettingMoney + otherPlayerBettingMoney) + (otherPlayerBettingMoney * 2);
