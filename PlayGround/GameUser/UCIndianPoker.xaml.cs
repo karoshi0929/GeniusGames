@@ -111,7 +111,6 @@ namespace GameUser
                     }
                     else
                     {
-                        //따당 수정해야함
                         bettingMoney = otherPlayerBettingMoney * 2;
                         myMoney = myMoney - bettingMoney;
                         totalBettingMoney = (totalBettingMoney + otherPlayerBettingMoney) + (otherPlayerBettingMoney * 2);
@@ -196,6 +195,7 @@ namespace GameUser
             //        break;
             //}
 
+            //따당베팅받았을 때 총베팅금액이 플레이어1,2가 다름
             otherPlayerBettingMoney = gamePacketParam.BettingMoney;
             totalBettingMoney = totalBettingMoney + gamePacketParam.BettingMoney;
 
