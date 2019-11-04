@@ -217,7 +217,15 @@ namespace MainServer
                 //SendGameStartMessage(Header.Game, player2GamePacket, player2.owner);
                 #endregion
             }
+            else if (clientInfo.IsPlayGame == true && e.Data.loadingComplete == true)
+            {
+                clientInfo.gamePlayer.isReadyForGame = true;
 
+                if (clientInfo.gameRoom.player1.isReadyForGame && clientInfo.gameRoom.player2.isReadyForGame)
+                {
+                    clientInfo.gameRoom.GameStart();
+                }
+            }
             PrintText(e.Data.clientID);
         }
 

@@ -58,7 +58,7 @@ namespace MainServer
             player1Card = player1GamePacket.MyCard;
             player1GamePacket.playerTurn = 1;
             player1GamePacket.TotalBettingMoney = totalBettingMoney;
-            player1GamePacket.MyMoney = 995;
+            player1GamePacket.MyMoney = player1.PlayerMoney;
             
 
             player2GamePacket.startGame = true;
@@ -66,7 +66,7 @@ namespace MainServer
             player2Card = player2GamePacket.MyCard;
             player2GamePacket.playerTurn = 2;
             player2GamePacket.TotalBettingMoney = totalBettingMoney;
-            player2GamePacket.MyMoney = 995;
+            player2GamePacket.MyMoney = player2.PlayerMoney;
 
             player1GamePacket.OtherPlayerCard = player2GamePacket.MyCard;
             player2GamePacket.OtherPlayerCard = player1GamePacket.MyCard;
@@ -75,29 +75,6 @@ namespace MainServer
 
             SendGameStartMessage(Header.Game, player1GamePacket, player1.owner);
             SendGameStartMessage(Header.Game, player2GamePacket, player2.owner);
-
-
-            //if(player1GamePacket.card < player2GamePacket.card)
-            //{
-            //    player1GamePacket.playerTurn = 1;
-            //    player2GamePacket.playerTurn = 2;
-            //}
-
-            //else if (player1GamePacket.card > player2GamePacket.card)
-            //{
-            //    player1GamePacket.playerTurn = 2;
-            //    player2GamePacket.playerTurn = 1;
-            //}
-
-            ////두 카드가 같을 경우 다시 셔플
-            //else 
-            //{
-            //    player1GamePacket.card = (short)random.Next(CARDMINNUM, CARDMAXNUM);
-            //    player2GamePacket.card = (short)random.Next(CARDMINNUM, CARDMAXNUM);
-            //}
-
-            //SendGameStartMessage(Header.Game, player1GamePacket, player1.owner);
-            //SendGameStartMessage(Header.Game, player2GamePacket, player2.owner);
         }
 
         public void RequestBetting(GamePlayer player, IndianPokerGamePacket gamePacketParam)
@@ -107,36 +84,46 @@ namespace MainServer
             pokerGamePacket.Betting = gamePacketParam.Betting;
             pokerGamePacket.BettingMoney = gamePacketParam.BettingMoney;
             pokerGamePacket.OtherPlayerMoney = gamePacketParam.MyMoney;
-            if (player.PlayerIndex == 1)
-            {
-                //totalBettingMoney += pokerGamePacket.betting;
-                SendPokerGameMessage(Header.GameMotion, pokerGamePacket, player2.owner);
-            }
-            else
-            {
-                SendPokerGameMessage(Header.GameMotion, pokerGamePacket, player1.owner);
-            }
-            
 
             if(gamePacketParam.Betting == (short)Betting.BettingCall)
             {
                 if(player1Card > player2Card)
                 {
-                    //두 플레이어 에게 결과 송신
+                    gamePacketParam.VictoryUser = player1.PlayerIndex;
                 }
                 else
                 {
-                    //두 플레이어 에게 결과 송신
+                    gamePacketParam.VictoryUser = player2.PlayerIndex;
                 }
+                SendPokerGameMessage(Header.GameMotion, pokerGamePacket, player1.owner);
+                SendPokerGameMessage(Header.GameMotion, pokerGamePacket, player2.owner);
             }
             else if(gamePacketParam.Betting == (short)Betting.BettingDie)
             {
-
+                if(player.PlayerIndex == 1)
+                {
+                    gamePacketParam.VictoryUser = 2;
+                }
+                else
+                {
+                    gamePacketParam.VictoryUser = 1;
+                }
+                SendPokerGameMessage(Header.GameMotion, pokerGamePacket, player1.owner);
+                SendPokerGameMessage(Header.GameMotion, pokerGamePacket, player2.owner);
             }
             else
             {
-
+                if (player.PlayerIndex == 1)
+                {
+                    //totalBettingMoney += pokerGamePacket.betting;
+                    SendPokerGameMessage(Header.GameMotion, pokerGamePacket, player2.owner);
+                }
+                else
+                {
+                    SendPokerGameMessage(Header.GameMotion, pokerGamePacket, player1.owner);
+                }
             }
+
         }
     }
 

@@ -113,9 +113,9 @@ namespace MainServer
         //GameStart()함수에서 Send할때 사용하기때문에 public이지만, private로 지정해야함. 
         public ClientInfo owner;
         public bool isReadyForGame = false;
+        private int playerInRoomNumber;
+        private short playerIndex;
 
-        int playerInRoomNumber;
-        short playerIndex;
         public short PlayerIndex
         {
             get
@@ -128,17 +128,19 @@ namespace MainServer
             }
         }
 
-        //게임에 입장한 플레이어에게 필요한 요소
-        public int money = 0;
-        public int card = 0;
+        public int PlayerMoney
+        {
+            get;
+            set;
+        }
 
-        public GamePlayer(ClientInfo user, short playerNumber, int gameRoomNumber)
+
+        public GamePlayer(ClientInfo user, short playerNumber, int gameRoomNumber, int playerMoney = 0)
         {
             this.playerInRoomNumber = gameRoomNumber;
             this.owner = user;
             this.PlayerIndex = playerNumber;
-            this.money = 100;
-            this.card = 0;
+            this.PlayerMoney = 955;
         }
     }
 }
