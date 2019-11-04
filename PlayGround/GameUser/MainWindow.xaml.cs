@@ -39,13 +39,12 @@ namespace GameUser
             this.SelectGameScreen.mazebtn_event += SelectedGameScreen_SelectGame;
 
             IndianPokerScreen.SendGamePacketMessage += new UCIndianPoker.DelegateSendGameBettingMessage(SendGameMessage);
+            IndianPokerScreen.SendNewGameMessage += new UCIndianPoker.DelegateSendNewGameStartMessage(StartNewGameMessage);
 
             DataHandler.EventManager.Instance.MatchingPacketEvent += Instance_MatchingPacketEvent;
             DataHandler.EventManager.Instance.HandleGamePacketEvent += Instance_HandleGamePacketEvent;
             DataHandler.EventManager.Instance.IndianPokerGamePacketEvent += Instance_IndianPokerGamePacketEvent;
         }
-
-        
 
         private void SetVisible(Screen selectedscreen)
         {
@@ -168,10 +167,9 @@ namespace GameUser
 
         private void Instance_IndianPokerGamePacketEvent(DataHandler.EventManager.IndianPokerGamePacketReceivedArgs e)
         {
-            IndianPokerScreen.ReceiveBetting((Betting)e.Data.Betting, e.Data);
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                switch(e.Data.Betting)
+                switch (e.Data.Betting)
                 {
                     case (int)Betting.BettingCall:
                         IndianPokerScreen.TextBox_UserLog.AppendText("상대방이 콜 베팅했습니다. \n");
@@ -196,12 +194,20 @@ namespace GameUser
                 //IndianPokerScreen.TotalBettingMoney = e.Data.betting;
                 IndianPokerScreen.SetButtonsEnable();
             }));
+
+            IndianPokerScreen.ReceiveBetting((Betting)e.Data.Betting, e.Data);
         }
 
         private void SendGameMessage(IndianPokerGamePacket gamePacketParam)
         {
             gamePacketParam.clientID = this.ClientID;
             indianPokerClient.SendMessage(Header.GameMotion, gamePacketParam, indianPokerClient.ao.WorkingSocket);
+        }
+        
+        private void StartNewGameMessage(HandleGamePacket handleGamePacketParam)
+        {
+            handleGamePacketParam.clientID = this.ClientID;
+            indianPokerClient.SendMessage(Header.Game, handleGamePacketParam, indianPokerClient.ao.WorkingSocket);
         }
     }
 }

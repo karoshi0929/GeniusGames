@@ -25,6 +25,9 @@ namespace GameUser
         public delegate void DelegateSendGameBettingMessage(IndianPokerGamePacket gamePacket);
         public DelegateSendGameBettingMessage SendGamePacketMessage;
 
+        public delegate void DelegateSendNewGameStartMessage(HandleGamePacket handleGamePacket);
+        public DelegateSendNewGameStartMessage SendNewGameMessage;
+
         public bool isGameStart = false;
 
         private int myCard = 0;
@@ -37,8 +40,7 @@ namespace GameUser
         //첫번째 턴일때는 하프는 총베팅액기준으로 계산
         private bool isFirstTurn = false;
 
-        Thread SendGameStartThread = null;
-
+        #region ButtonEvent
         public UCIndianPoker()
         {
             InitializeComponent();
@@ -86,6 +88,7 @@ namespace GameUser
 
             //SendGamePacketMessage(gamePacket);
         }
+        #endregion
 
         public void SendBetting(Betting betting)
         {
@@ -96,10 +99,10 @@ namespace GameUser
             switch (betting)
             {
                 case Betting.BettingCall:
+                    //게임 끝, 새로운 게임 시작
                     bettingMoney = otherPlayerBettingMoney;
                     myMoney = myMoney - bettingMoney;
                     totalBettingMoney = totalBettingMoney + bettingMoney;
-                    //게임 끝, 새로운 게임 시작
                     break;
                 case Betting.BettingDie:
                     //게임 끝, 새로운 게임 시작
@@ -195,7 +198,6 @@ namespace GameUser
             //        break;
             //}
 
-            //따당베팅받았을 때 총베팅금액이 플레이어1,2가 다름
             otherPlayerBettingMoney = gamePacketParam.BettingMoney;
             totalBettingMoney = totalBettingMoney + gamePacketParam.BettingMoney;
 
@@ -204,6 +206,15 @@ namespace GameUser
                 Label_OtherPlayerMoney.Content = gamePacketParam.OtherPlayerMoney.ToString();
                 Label_BetTotalMoney.Content = totalBettingMoney.ToString();
             }));
+
+            if(gamePacketParam.Betting == (short)Betting.BettingCall)
+            {
+
+            }
+            else if(gamePacketParam.Betting == (short)Betting.BettingDie)
+            {
+                myMoney = myMoney + totalBettingMoney;
+            }
         }
 
         public void SetGameStart(HandleGamePacket gamePacketParam)
@@ -234,7 +245,6 @@ namespace GameUser
                 }
             }));
         }
-            
 
         public void SetButtonsEnable()
         {
