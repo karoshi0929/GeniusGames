@@ -30,12 +30,14 @@ namespace GameUser
 
         public bool isGameStart = false;
 
-        private int myCard = 0;
+        private short myCard = 0;
+        private short otherPlayerCard = 0;
         private int myMoney = 0;
-
         private int otherPlayerBettingMoney = 0;
-        //private int otherPlayerMoney = 0;
+        private int otherPlayerMoney = 0;
         private int totalBettingMoney = 0;
+
+        Thread newGameStart = null;
 
         //첫번째 턴일때는 하프는 총베팅액기준으로 계산
         private bool isFirstTurn = false;
@@ -108,7 +110,7 @@ namespace GameUser
                     //게임 끝, 새로운 게임 시작
                     break;
                 case Betting.BettingDouble:
-                    if(isFirstTurn)
+                    if (isFirstTurn)
                     {
                         isFirstTurn = false;
                     }
@@ -116,7 +118,7 @@ namespace GameUser
                     {
                         bettingMoney = otherPlayerBettingMoney * 2;
                         myMoney = myMoney - bettingMoney;
-                        totalBettingMoney = (totalBettingMoney + otherPlayerBettingMoney) + (otherPlayerBettingMoney * 2);
+                        totalBettingMoney = totalBettingMoney + (otherPlayerBettingMoney * 2);
                     }
                     break;
                 case Betting.BettingCheck:
@@ -198,40 +200,78 @@ namespace GameUser
             //        break;
             //}
 
-            otherPlayerBettingMoney = gamePacketParam.BettingMoney;
-            totalBettingMoney = totalBettingMoney + gamePacketParam.BettingMoney;
+            this.otherPlayerMoney = gamePacketParam.MyMoney;
+            this.otherPlayerBettingMoney = gamePacketParam.BettingMoney;
+            this.totalBettingMoney = totalBettingMoney + gamePacketParam.BettingMoney;
+
 
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                Label_OtherPlayerMoney.Content = gamePacketParam.OtherPlayerMoney.ToString();
+                Label_OtherPlayerMoney.Content = this.otherPlayerMoney.ToString();
                 Label_BetTotalMoney.Content = totalBettingMoney.ToString();
             }));
 
-            if(gamePacketParam.Betting == (short)Betting.BettingCall)
+            if (gamePacketParam.Betting == (short)Betting.BettingCall)
             {
+                if (gamePacketParam.VictoryUser != 0)
+                {
 
+                }
             }
-            else if(gamePacketParam.Betting == (short)Betting.BettingDie)
+            else if (gamePacketParam.Betting == (short)Betting.BettingDie)
             {
-                myMoney = myMoney + totalBettingMoney;
+                //if (gamePacketParam.VictoryUser != 0)
+                //{
+                    myMoney = myMoney + totalBettingMoney;
+
+                    Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        TextBox_UserLog.AppendText("게임에서 이겼습니다. \n");
+                        Label_MyMoney.Content = myMoney.ToString();
+                    }));
+                //}
+                newGameStart = new Thread(new ThreadStart(SendNewGameThread));
+                newGameStart.Start();
             }
+        }
+
+        private void SendNewGameThread()
+        {
+            Thread.Sleep(5000);
+            HandleGamePacket tempHandleGamePacket = new HandleGamePacket();
+
+            tempHandleGamePacket.loadingComplete = true;
+            SendNewGameMessage(tempHandleGamePacket);
         }
 
         public void SetGameStart(HandleGamePacket gamePacketParam)
         {
-            myMoney = gamePacketParam.MyMoney;
-            totalBettingMoney = gamePacketParam.TotalBettingMoney;
+            if(newGameStart != null)
+            {
+                newGameStart.Join();
+                newGameStart = null;
+            }
+            
+
+            this.myCard = gamePacketParam.MyCard;
+            this.otherPlayerCard = gamePacketParam.OtherPlayerCard;
+            this.myMoney = gamePacketParam.MyMoney;
+            //this.otherPlayerBettingMoney = 0;
+            this.otherPlayerMoney = gamePacketParam.OtherPlayerMoney;
+            this.totalBettingMoney = gamePacketParam.TotalBettingMoney;
 
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                Button_MyCard.Content = gamePacketParam.MyCard.ToString();
-                Button_OtherPlayerCard.Content = gamePacketParam.OtherPlayerCard.ToString();
+                Button_MyCard.Content = this.myCard.ToString();
+                Button_OtherPlayerCard.Content = this.otherPlayerCard.ToString();
 
-                Label_MyMoney.Content = gamePacketParam.MyMoney.ToString();
-                Label_OtherPlayerMoney.Content = gamePacketParam.OtherPlayerMoney.ToString();
+                Label_MyMoney.Content = this.myMoney.ToString();
+                Label_OtherPlayerMoney.Content = this.otherPlayerMoney.ToString();
 
-                Label_BetTotalMoney.Content = gamePacketParam.TotalBettingMoney.ToString();
-                isGameStart = true;
+                Label_BetTotalMoney.Content = this.totalBettingMoney.ToString();
+
+                this.isGameStart = true;
+
                 if (gamePacketParam.playerTurn == 1)
                 {
                     TextBox_UserLog.AppendText("게임이 시작되었습니다. 선턴입니다. 베팅 하세여 \n");
