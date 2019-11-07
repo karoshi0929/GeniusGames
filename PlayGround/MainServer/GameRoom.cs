@@ -59,7 +59,6 @@ namespace MainServer
             player1GamePacket.playerTurn = 1;
             player1GamePacket.TotalBettingMoney = totalBettingMoney;
             player1GamePacket.MyMoney = player1.PlayerMoney;
-            
 
             player2GamePacket.startGame = true;
             player2GamePacket.MyCard = (short)random.Next(CARDMINNUM, CARDMAXNUM);
@@ -79,13 +78,25 @@ namespace MainServer
 
         public void RequestBetting(GamePlayer player, IndianPokerGamePacket gamePacketParam)
         {
-            IndianPokerGamePacket pokerGamePacket = new IndianPokerGamePacket();
-            
-            pokerGamePacket.Betting = gamePacketParam.Betting;
-            pokerGamePacket.BettingMoney = gamePacketParam.BettingMoney;
-            pokerGamePacket.OtherPlayerMoney = gamePacketParam.MyMoney;
+            /////////////////////////////////////////////////////////////////////
+            if(player.PlayerIndex == 1)
+            {
+                player1.PlayerMoney = player.PlayerMoney;
+            }
+            else
+            {
+                player2.PlayerMoney = player.PlayerMoney;
+            }
+            /////////////////////////////////////////////////////////////////////
 
-            if(gamePacketParam.Betting == (short)Betting.BettingCall)
+            IndianPokerGamePacket pokerGamePacket = gamePacketParam;
+            this.totalBettingMoney = this.totalBettingMoney + pokerGamePacket.BettingMoney;
+
+            //pokerGamePacket.Betting = gamePacketParam.Betting;
+            //pokerGamePacket.BettingMoney = gamePacketParam.BettingMoney;
+            //pokerGamePacket.OtherPlayerMoney = gamePacketParam.MyMoney;
+
+            if (gamePacketParam.Betting == (short)Betting.BettingCall)
             {
                 if(player1Card > player2Card)
                 {
@@ -98,24 +109,26 @@ namespace MainServer
                 SendPokerGameMessage(Header.GameMotion, pokerGamePacket, player1.owner);
                 SendPokerGameMessage(Header.GameMotion, pokerGamePacket, player2.owner);
             }
+
             else if(gamePacketParam.Betting == (short)Betting.BettingDie)
             {
                 if(player.PlayerIndex == 1)
                 {
-                    gamePacketParam.VictoryUser = 2;
+                    pokerGamePacket.VictoryUser = player2.PlayerIndex;
+                    SendPokerGameMessage(Header.GameMotion, pokerGamePacket, player2.owner);
                 }
                 else
                 {
-                    gamePacketParam.VictoryUser = 1;
+                    pokerGamePacket.VictoryUser = player1.PlayerIndex;
+                    SendPokerGameMessage(Header.GameMotion, pokerGamePacket, player1.owner);
                 }
-                SendPokerGameMessage(Header.GameMotion, pokerGamePacket, player1.owner);
-                SendPokerGameMessage(Header.GameMotion, pokerGamePacket, player2.owner);
+                //gamePacketParam.VictoryUser = 0;
             }
+
             else
             {
                 if (player.PlayerIndex == 1)
                 {
-                    //totalBettingMoney += pokerGamePacket.betting;
                     SendPokerGameMessage(Header.GameMotion, pokerGamePacket, player2.owner);
                 }
                 else
