@@ -277,6 +277,8 @@ namespace GameUser
             }));
         }
 
+
+        //선턴은 하프,체크만 가능
         public void SetButtonsEnable()
         {
             Button_Call.IsEnabled = true;
@@ -286,6 +288,8 @@ namespace GameUser
             Button_Queter.IsEnabled = true;
             Button_Half.IsEnabled = true;
         }
+        
+        //후턴부터는 체크제외 가능
         public void SetButtonsDisable()
         {
             Button_Call.IsEnabled = false;
