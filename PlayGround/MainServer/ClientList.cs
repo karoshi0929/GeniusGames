@@ -140,7 +140,7 @@ namespace MainServer
             this.playerInRoomNumber = gameRoomNumber;
             this.owner = user;
             this.PlayerIndex = playerNumber;
-            this.PlayerMoney = 995;
+            this.PlayerMoney = 1000;
         }
     }
 }

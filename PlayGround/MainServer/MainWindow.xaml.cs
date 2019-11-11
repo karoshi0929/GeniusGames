@@ -164,6 +164,7 @@ namespace MainServer
 
             if (clientInfo.IsPlayGame == false && e.Data.loadingComplete == true)
             {
+                //게임이 완전히 끝나면 false로 바꿔주어야 함.
                 clientInfo.IsPlayGame = true;
 
                 //방법 1.
@@ -232,10 +233,9 @@ namespace MainServer
         private void Instance_IndianPokerGamePacketEvent(DataHandler.EventManager.IndianPokerGamePacketReceivedArgs e)
         {
             ClientInfo clientInfo = clientManagement.ClientInfoDic[e.Data.clientID];
-
             clientInfo.gameRoom.RequestBetting(clientInfo.gamePlayer, e.Data);
 
-            PrintText("[" + clientInfo.ClientID + "] " + "로 부터 " + e.Data.Betting.ToString() + "베팅 받았습니다.");
+            //PrintText("[" + clientInfo.ClientID + "] " + "로 부터 " + e.Data.Betting.ToString() + "베팅 받았습니다.");
         }
 
         private void PrintText(string message)

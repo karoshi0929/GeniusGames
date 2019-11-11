@@ -29,6 +29,7 @@ namespace MainServer
 
         public int gameRoomNumber = 0;
         public bool playGame = false;
+        private short victoryUser = 0;
 
         public GamePlayer player1;
         public GamePlayer player2;
@@ -46,6 +47,9 @@ namespace MainServer
 
         public void GameStart()
         {
+            player1.isReadyForGame = false;
+            player2.isReadyForGame = false;
+
             Random random = new Random();
             
             HandleGamePacket player1GamePacket = new HandleGamePacket();
@@ -56,16 +60,30 @@ namespace MainServer
             player1GamePacket.startGame = true;
             player1GamePacket.MyCard = (short)random.Next(CARDMINNUM, CARDMAXNUM);
             player1Card = player1GamePacket.MyCard;
-            player1GamePacket.playerTurn = 1;
+
+            if(victoryUser == 0)
+                player1GamePacket.playerTurn = player1.PlayerIndex;
+            else if(victoryUser == 1)
+                player1GamePacket.playerTurn = 1;
+            else
+                player1GamePacket.playerTurn = 2;
+
             player1GamePacket.TotalBettingMoney = totalBettingMoney;
-            player1GamePacket.MyMoney = player1.PlayerMoney;
+            player1GamePacket.MyMoney = player1.PlayerMoney - 5;
 
             player2GamePacket.startGame = true;
             player2GamePacket.MyCard = (short)random.Next(CARDMINNUM, CARDMAXNUM);
             player2Card = player2GamePacket.MyCard;
-            player2GamePacket.playerTurn = 2;
+
+            if (victoryUser == 0)
+                player2GamePacket.playerTurn = player2.PlayerIndex;
+            else if (victoryUser == 2)
+                player2GamePacket.playerTurn = 1;
+            else
+                player2GamePacket.playerTurn = 2;
+
             player2GamePacket.TotalBettingMoney = totalBettingMoney;
-            player2GamePacket.MyMoney = player2.PlayerMoney;
+            player2GamePacket.MyMoney = player2.PlayerMoney - 5;
 
             player1GamePacket.OtherPlayerCard = player2GamePacket.MyCard;
             player2GamePacket.OtherPlayerCard = player1GamePacket.MyCard;
@@ -81,20 +99,16 @@ namespace MainServer
             /////////////////////////////////////////////////////////////////////
             if(player.PlayerIndex == 1)
             {
-                player1.PlayerMoney = player.PlayerMoney;
+                player1.PlayerMoney = gamePacketParam.MyMoney;
             }
             else
             {
-                player2.PlayerMoney = player.PlayerMoney;
+                player2.PlayerMoney = gamePacketParam.MyMoney;
             }
             /////////////////////////////////////////////////////////////////////
 
             IndianPokerGamePacket pokerGamePacket = gamePacketParam;
             this.totalBettingMoney = this.totalBettingMoney + pokerGamePacket.BettingMoney;
-
-            //pokerGamePacket.Betting = gamePacketParam.Betting;
-            //pokerGamePacket.BettingMoney = gamePacketParam.BettingMoney;
-            //pokerGamePacket.OtherPlayerMoney = gamePacketParam.MyMoney;
 
             if (gamePacketParam.Betting == (short)Betting.BettingCall)
             {
@@ -114,15 +128,16 @@ namespace MainServer
             {
                 if(player.PlayerIndex == 1)
                 {
-                    pokerGamePacket.VictoryUser = player2.PlayerIndex;
+                    player2.PlayerMoney = player2.PlayerMoney + this.totalBettingMoney;
+                    victoryUser = 2;
                     SendPokerGameMessage(Header.GameMotion, pokerGamePacket, player2.owner);
                 }
                 else
                 {
-                    pokerGamePacket.VictoryUser = player1.PlayerIndex;
+                    player1.PlayerMoney = player1.PlayerMoney + this.totalBettingMoney;
+                    victoryUser = 1;
                     SendPokerGameMessage(Header.GameMotion, pokerGamePacket, player1.owner);
                 }
-                //gamePacketParam.VictoryUser = 0;
             }
 
             else
