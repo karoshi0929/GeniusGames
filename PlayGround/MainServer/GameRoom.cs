@@ -58,11 +58,12 @@ namespace MainServer
             totalBettingMoney = 10;
 
             player1GamePacket.startGame = true;
+            player1GamePacket.MyIndex = player1.PlayerIndex;
             player1GamePacket.MyCard = (short)random.Next(CARDMINNUM, CARDMAXNUM);
             player1Card = player1GamePacket.MyCard;
 
             if(victoryUser == 0)
-                player1GamePacket.playerTurn = player1.PlayerIndex;
+                player1GamePacket.playerTurn = 1;
             else if(victoryUser == 1)
                 player1GamePacket.playerTurn = 1;
             else
@@ -72,11 +73,12 @@ namespace MainServer
             player1GamePacket.MyMoney = player1.PlayerMoney - 5;
 
             player2GamePacket.startGame = true;
+            player2GamePacket.MyIndex = player2.PlayerIndex;
             player2GamePacket.MyCard = (short)random.Next(CARDMINNUM, CARDMAXNUM);
             player2Card = player2GamePacket.MyCard;
 
             if (victoryUser == 0)
-                player2GamePacket.playerTurn = player2.PlayerIndex;
+                player2GamePacket.playerTurn = 2;
             else if (victoryUser == 2)
                 player2GamePacket.playerTurn = 1;
             else
@@ -107,48 +109,131 @@ namespace MainServer
             }
             /////////////////////////////////////////////////////////////////////
 
-            IndianPokerGamePacket pokerGamePacket = gamePacketParam;
-            this.totalBettingMoney = this.totalBettingMoney + pokerGamePacket.BettingMoney;
+            //IndianPokerGamePacket pokerGamePacket = gamePacketParam;
+
+            this.totalBettingMoney = this.totalBettingMoney + gamePacketParam.BettingMoney;
 
             if (gamePacketParam.Betting == (short)Betting.BettingCall)
             {
-                if(player1Card > player2Card)
+                IndianPokerGamePacket SendToPlayer1 = new IndianPokerGamePacket();
+                IndianPokerGamePacket SendToPlayer2 = new IndianPokerGamePacket();
+
+                if (player.PlayerIndex == 1)
                 {
-                    gamePacketParam.VictoryUser = player1.PlayerIndex;
+                    if(player1Card > player2Card)
+                    {
+                        player1.PlayerMoney = player1.PlayerMoney + this.totalBettingMoney;
+                        victoryUser = 1;
+
+                        SendToPlayer2 = gamePacketParam;
+                        SendToPlayer2.VictoryUser = victoryUser;
+
+                        SendToPlayer1.MyMoney = player2.PlayerMoney; //이부분 수정 필요
+                        SendToPlayer1.OtherPlayerMoney = player2.PlayerMoney;
+                        SendToPlayer1.VictoryUser = victoryUser;
+                        SendToPlayer1.Betting = gamePacketParam.Betting;
+                        SendToPlayer1.BettingMoney = 0;
+                    }
+                    else if(player1Card < player2Card)
+                    {
+                        player2.PlayerMoney = player2.PlayerMoney + this.totalBettingMoney;
+                        victoryUser = 2;
+
+                        SendToPlayer2 = gamePacketParam;
+                        SendToPlayer2.VictoryUser = victoryUser;
+
+                        SendToPlayer1.MyMoney = player2.PlayerMoney; //이부분 수정 필요
+                        SendToPlayer1.OtherPlayerMoney = player2.PlayerMoney;
+                        SendToPlayer1.VictoryUser = victoryUser;
+                        SendToPlayer1.Betting = gamePacketParam.Betting;
+                        SendToPlayer1.BettingMoney = 0;
+                    }
                 }
+
                 else
                 {
-                    gamePacketParam.VictoryUser = player2.PlayerIndex;
+                    if (player1Card > player2Card)
+                    {
+                        SendToPlayer1 = gamePacketParam;
+                        player1.PlayerMoney = player1.PlayerMoney + this.totalBettingMoney;
+                        victoryUser = 1;
+                        SendToPlayer1.VictoryUser = victoryUser;
+
+                        SendToPlayer2.MyMoney = player1.PlayerMoney; //이부분 수정 필요
+                        SendToPlayer2.OtherPlayerMoney = player1.PlayerMoney;
+                        SendToPlayer2.VictoryUser = victoryUser;
+                        SendToPlayer2.Betting = gamePacketParam.Betting;
+                        SendToPlayer2.BettingMoney = 0;
+                    }
+                    else if (player1Card < player2Card)
+                    {
+                        SendToPlayer2 = gamePacketParam;
+                        player2.PlayerMoney = player2.PlayerMoney + this.totalBettingMoney;
+                        victoryUser = 2;
+                        SendToPlayer2.VictoryUser = victoryUser;
+
+                        SendToPlayer1.MyMoney = player2.PlayerMoney; //이부분 수정 필요
+                        SendToPlayer1.OtherPlayerMoney = player2.PlayerMoney;
+                        SendToPlayer1.VictoryUser = victoryUser;
+                        SendToPlayer1.Betting = gamePacketParam.Betting;
+                        SendToPlayer1.BettingMoney = 0;
+                    }
                 }
-                SendPokerGameMessage(Header.GameMotion, pokerGamePacket, player1.owner);
-                SendPokerGameMessage(Header.GameMotion, pokerGamePacket, player2.owner);
+
+                SendPokerGameMessage(Header.GameMotion, SendToPlayer1, player1.owner);
+                SendPokerGameMessage(Header.GameMotion, SendToPlayer2, player2.owner);
             }
 
             else if(gamePacketParam.Betting == (short)Betting.BettingDie)
             {
-                if(player.PlayerIndex == 1)
+                IndianPokerGamePacket SendToPlayer1 = new IndianPokerGamePacket();
+                IndianPokerGamePacket SendToPlayer2 = new IndianPokerGamePacket();
+
+                if (player.PlayerIndex == 1)
                 {
+                    SendToPlayer2 = gamePacketParam;
                     player2.PlayerMoney = player2.PlayerMoney + this.totalBettingMoney;
                     victoryUser = 2;
-                    SendPokerGameMessage(Header.GameMotion, pokerGamePacket, player2.owner);
+                    SendToPlayer2.VictoryUser = victoryUser;
+
+                    SendToPlayer1.MyMoney = player2.PlayerMoney; //이부분 수정 필요
+                    //SendToPlayer1.OtherPlayerMoney = player2.PlayerMoney;
+                    SendToPlayer1.VictoryUser = victoryUser;
+                    SendToPlayer1.Betting = gamePacketParam.Betting;
+                    SendToPlayer1.BettingMoney = 0;
                 }
                 else
                 {
+                    SendToPlayer1 = gamePacketParam;
                     player1.PlayerMoney = player1.PlayerMoney + this.totalBettingMoney;
                     victoryUser = 1;
-                    SendPokerGameMessage(Header.GameMotion, pokerGamePacket, player1.owner);
+                    SendToPlayer1.VictoryUser = victoryUser;
+
+                    SendToPlayer2.MyMoney = player1.PlayerMoney; //이부분 수정 필요
+                    //SendToPlayer2.OtherPlayerMoney = player1.PlayerMoney;
+                    SendToPlayer2.VictoryUser = victoryUser;
+                    SendToPlayer2.Betting = gamePacketParam.Betting;
+                    SendToPlayer2.BettingMoney = 0;
                 }
+
+                //pokerGamePacket.VictoryUser = victoryUser;
+                SendPokerGameMessage(Header.GameMotion, SendToPlayer1, player1.owner);
+                SendPokerGameMessage(Header.GameMotion, SendToPlayer2, player2.owner);
             }
 
             else
             {
                 if (player.PlayerIndex == 1)
                 {
-                    SendPokerGameMessage(Header.GameMotion, pokerGamePacket, player2.owner);
+                    IndianPokerGamePacket SendToPlayer2 = gamePacketParam;
+                    SendToPlayer2.playerTurn = 2;
+                    SendPokerGameMessage(Header.GameMotion, SendToPlayer2, player2.owner);
                 }
                 else
                 {
-                    SendPokerGameMessage(Header.GameMotion, pokerGamePacket, player1.owner);
+                    IndianPokerGamePacket SendToPlayer1 = gamePacketParam;
+                    SendToPlayer1.playerTurn = 1;
+                    SendPokerGameMessage(Header.GameMotion, SendToPlayer1, player1.owner);
                 }
             }
 
