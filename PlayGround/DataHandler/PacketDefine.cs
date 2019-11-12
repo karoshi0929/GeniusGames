@@ -85,6 +85,7 @@ namespace DataHandler
 
         //게임시작
         public bool startGame;
+        public short MyIndex;
         public short MyCard;
         public short OtherPlayerCard;
         public short playerTurn;
@@ -104,8 +105,8 @@ namespace DataHandler
 
         public int MyMoney;
         public short VictoryUser;
+        public short playerTurn;
 
-        //public short playerTurn;
         //public short Mycard;
         //public short OtherPlayerCard;
     }
