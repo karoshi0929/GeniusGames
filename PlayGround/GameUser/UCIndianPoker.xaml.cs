@@ -32,6 +32,7 @@ namespace GameUser
 
         private short myCard = 0;
         private short otherPlayerCard = 0;
+        private short myIndex = 0;
         private short myTurn = 0;
         private int myMoney = 0;
         private int otherPlayerBettingMoney = 0;
@@ -106,18 +107,18 @@ namespace GameUser
                     //게임 끝, 새로운 게임 시작
                     bettingMoney = otherPlayerBettingMoney;
                     myMoney = myMoney - bettingMoney;
-                    totalBettingMoney = totalBettingMoney + bettingMoney;
+                    //totalBettingMoney = totalBettingMoney + bettingMoney; //여기가 좀 이해가 안감 검토.
                     break;
                 case Betting.BettingDie:
                     //게임 끝, 새로운 게임 시작
-                    Dispatcher.BeginInvoke(new Action(() =>
-                    {
-                        TextBox_UserLog.AppendText("게임에서 졌습니다. \n");
-                        TextBox_UserLog.AppendText("새로운 게임을 시작하겠습니다. 준비하세요.\n");
-                    }));
+                    //Dispatcher.BeginInvoke(new Action(() =>
+                    //{
+                    //    TextBox_UserLog.AppendText("게임에서 졌습니다. \n");
+                    //    TextBox_UserLog.AppendText("새로운 게임을 시작하겠습니다. 준비하세요.\n");
+                    //}));
 
-                    newGameStart = new Thread(new ThreadStart(SendNewGameThread));
-                    newGameStart.Start();
+                    //newGameStart = new Thread(new ThreadStart(SendNewGameThread));
+                    //newGameStart.Start();
                     break;
                 case Betting.BettingDouble:
                     if (isFirstTurn)
@@ -188,6 +189,9 @@ namespace GameUser
 
         public void ReceiveBetting(Betting betting, IndianPokerGamePacket gamePacketParam)
         {
+            if(gamePacketParam.playerTurn == myIndex)
+                PrintBetting(betting);
+
             this.otherPlayerMoney = gamePacketParam.MyMoney;
             this.otherPlayerBettingMoney = gamePacketParam.BettingMoney;
             this.totalBettingMoney = totalBettingMoney + gamePacketParam.BettingMoney;
@@ -200,23 +204,61 @@ namespace GameUser
 
             if (gamePacketParam.Betting == (short)Betting.BettingCall)
             {
-                if (gamePacketParam.VictoryUser != 0)
+                if (gamePacketParam.VictoryUser == myIndex)
                 {
+                    myMoney = myMoney + totalBettingMoney;
 
+                    Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        TextBox_UserLog.AppendText("게임에서 이겼습니다. \n");
+                        TextBox_UserLog.AppendText("새로운 게임을 시작하겠습니다. 준비하세요.\n");
+                        Label_MyMoney.Content = myMoney.ToString();
+                    }));
+                    newGameStart = new Thread(new ThreadStart(SendNewGameThread));
+                    newGameStart.Start();
+                }
+                else
+                {
+                    Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        TextBox_UserLog.AppendText("게임에서 졌습니다. \n");
+                        TextBox_UserLog.AppendText("새로운 게임을 시작하겠습니다. 준비하세요.\n");
+                    }));
+
+                    newGameStart = new Thread(new ThreadStart(SendNewGameThread));
+                    newGameStart.Start();
                 }
             }
+
             else if (gamePacketParam.Betting == (short)Betting.BettingDie)
             {
                 myMoney = myMoney + totalBettingMoney;
 
-                Dispatcher.BeginInvoke(new Action(() =>
+                if(gamePacketParam.VictoryUser == myIndex)
                 {
-                    TextBox_UserLog.AppendText("게임에서 이겼습니다. \n");
-                    TextBox_UserLog.AppendText("새로운 게임을 시작하겠습니다. 준비하세요.\n");
-                    Label_MyMoney.Content = myMoney.ToString();
-                }));
+                    Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        TextBox_UserLog.AppendText("상대방이 베팅을 포기하여 게임에서 이겼습니다. \n");
+                        TextBox_UserLog.AppendText("새로운 게임을 시작하겠습니다. 준비하세요.\n");
+                        Label_MyMoney.Content = myMoney.ToString();
+                    }));
+                }
+                else if(gamePacketParam.VictoryUser != myIndex)
+                {
+                    Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        TextBox_UserLog.AppendText("게임에서 졌습니다. \n");
+                        TextBox_UserLog.AppendText("새로운 게임을 시작하겠습니다. 준비하세요.\n");
+                    }));
+                }
+                
                 newGameStart = new Thread(new ThreadStart(SendNewGameThread));
                 newGameStart.Start();
+            }
+
+            else
+            {
+                
             }
         }
 
@@ -246,6 +288,7 @@ namespace GameUser
             //    this.myTurn = gamePacketParam.playerTurn;
             //}
 
+            this.myIndex = gamePacketParam.MyIndex;
             this.myTurn = gamePacketParam.playerTurn;
             this.myCard = gamePacketParam.MyCard;
             this.otherPlayerCard = gamePacketParam.OtherPlayerCard;
@@ -267,6 +310,7 @@ namespace GameUser
                 {
                     TextBox_UserLog.AppendText("게임이 시작되었습니다. 선턴입니다. 베팅 하세여 \n");
                     Button_Call.IsEnabled = false;
+                    SetButtonsEnable();
                     isFirstTurn = true;
                 }
                 else
@@ -277,6 +321,60 @@ namespace GameUser
             }));
         }
 
+        private void PrintBetting(Betting bettingParam)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                switch (bettingParam)
+                {
+                    case Betting.BettingCall:
+                        TextBox_UserLog.AppendText("상대방이 콜 베팅했습니다. \n");
+                        break;
+                    case Betting.BettingCheck:
+                        TextBox_UserLog.AppendText("상대방이 체크 베팅했습니다. \n");
+                        break;
+                    case Betting.BettingDie:
+                        TextBox_UserLog.AppendText("상대방이 다이 베팅했습니다. \n");
+                        break;
+                    case Betting.BettingDouble:
+                        TextBox_UserLog.AppendText("상대방이 따당 베팅했습니다. \n");
+                        break;
+                    case Betting.BettingQueter:
+                        TextBox_UserLog.AppendText("상대방이 쿼터 베팅했습니다. \n");
+                        break;
+                    case Betting.BettingHalf:
+                        TextBox_UserLog.AppendText("상대방이 하프 베팅했습니다. \n");
+                        break;
+                }
+                //IndianPokerScreen.TotalBettingMoney = e.Data.betting;
+                SetButtonsEnable();
+            }));
+        }
+
+        private void PrintGameResult(bool isWin)
+        {
+            if (isWin)
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    TextBox_UserLog.AppendText("게임에서 이겼습니다. \n");
+                    TextBox_UserLog.AppendText("새로운 게임을 시작하겠습니다. 준비하세요.\n");
+                    Label_MyMoney.Content = myMoney.ToString();
+                }));
+            }
+            else
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    TextBox_UserLog.AppendText("게임에서 졌습니다. \n");
+                    TextBox_UserLog.AppendText("새로운 게임을 시작하겠습니다. 준비하세요.\n");
+                    Label_MyMoney.Content = myMoney.ToString();
+                }));
+            }
+
+            newGameStart = new Thread(new ThreadStart(SendNewGameThread));
+            newGameStart.Start();
+        }
 
         //선턴은 하프,체크만 가능
         public void SetButtonsEnable()

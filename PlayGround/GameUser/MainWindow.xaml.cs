@@ -167,34 +167,6 @@ namespace GameUser
 
         private void Instance_IndianPokerGamePacketEvent(DataHandler.EventManager.IndianPokerGamePacketReceivedArgs e)
         {
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                switch (e.Data.Betting)
-                {
-                    case (int)Betting.BettingCall:
-                        IndianPokerScreen.TextBox_UserLog.AppendText("상대방이 콜 베팅했습니다. \n");
-                        break;
-                    case (int)Betting.BettingCheck:
-                        IndianPokerScreen.TextBox_UserLog.AppendText("상대방이 체크 베팅했습니다. \n");
-                        break;
-                    case (int)Betting.BettingDie:
-                        IndianPokerScreen.TextBox_UserLog.AppendText("상대방이 다이 베팅했습니다. \n");
-                        break;
-                    case (int)Betting.BettingDouble:
-                        IndianPokerScreen.TextBox_UserLog.AppendText("상대방이 따당 베팅했습니다. \n");
-                        break;
-                    case (int)Betting.BettingQueter:
-                        IndianPokerScreen.TextBox_UserLog.AppendText("상대방이 쿼터 베팅했습니다. \n");
-                        break;
-                    case (int)Betting.BettingHalf:
-                        IndianPokerScreen.TextBox_UserLog.AppendText("상대방이 하프 베팅했습니다. \n");
-                        break;
-                }
-
-                //IndianPokerScreen.TotalBettingMoney = e.Data.betting;
-                IndianPokerScreen.SetButtonsEnable();
-            }));
-
             IndianPokerScreen.ReceiveBetting((Betting)e.Data.Betting, e.Data);
         }
 
