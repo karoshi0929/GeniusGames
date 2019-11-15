@@ -128,11 +128,9 @@ namespace MainServer
                         SendToPlayer2 = gamePacketParam;
                         SendToPlayer2.VictoryUser = victoryUser;
 
-                        SendToPlayer1.MyMoney = player2.PlayerMoney; //이부분 수정 필요
-                        SendToPlayer1.OtherPlayerMoney = player2.PlayerMoney;
+                        SendToPlayer1.MyMoney = player2.PlayerMoney;
                         SendToPlayer1.VictoryUser = victoryUser;
-                        SendToPlayer1.Betting = gamePacketParam.Betting;
-                        SendToPlayer1.BettingMoney = 0;
+                        SendToPlayer1.BettingMoney = gamePacketParam.BettingMoney;
                     }
                     else if(player1Card < player2Card)
                     {
@@ -142,11 +140,9 @@ namespace MainServer
                         SendToPlayer2 = gamePacketParam;
                         SendToPlayer2.VictoryUser = victoryUser;
 
-                        SendToPlayer1.MyMoney = player2.PlayerMoney; //이부분 수정 필요
-                        SendToPlayer1.OtherPlayerMoney = player2.PlayerMoney;
+                        SendToPlayer1.MyMoney = player2.PlayerMoney;
                         SendToPlayer1.VictoryUser = victoryUser;
-                        SendToPlayer1.Betting = gamePacketParam.Betting;
-                        SendToPlayer1.BettingMoney = 0;
+                        SendToPlayer1.BettingMoney = gamePacketParam.BettingMoney;
                     }
                 }
 
@@ -154,29 +150,27 @@ namespace MainServer
                 {
                     if (player1Card > player2Card)
                     {
-                        SendToPlayer1 = gamePacketParam;
                         player1.PlayerMoney = player1.PlayerMoney + this.totalBettingMoney;
                         victoryUser = 1;
+
+                        SendToPlayer1 = gamePacketParam;
                         SendToPlayer1.VictoryUser = victoryUser;
 
-                        SendToPlayer2.MyMoney = player1.PlayerMoney; //이부분 수정 필요
-                        SendToPlayer2.OtherPlayerMoney = player1.PlayerMoney;
+                        SendToPlayer2.MyMoney = player1.PlayerMoney;
                         SendToPlayer2.VictoryUser = victoryUser;
-                        SendToPlayer2.Betting = gamePacketParam.Betting;
-                        SendToPlayer2.BettingMoney = 0;
+                        SendToPlayer2.BettingMoney = gamePacketParam.BettingMoney;
                     }
                     else if (player1Card < player2Card)
                     {
-                        SendToPlayer2 = gamePacketParam;
                         player2.PlayerMoney = player2.PlayerMoney + this.totalBettingMoney;
                         victoryUser = 2;
-                        SendToPlayer2.VictoryUser = victoryUser;
 
-                        SendToPlayer1.MyMoney = player2.PlayerMoney; //이부분 수정 필요
-                        SendToPlayer1.OtherPlayerMoney = player2.PlayerMoney;
+                        SendToPlayer1 = gamePacketParam;
                         SendToPlayer1.VictoryUser = victoryUser;
-                        SendToPlayer1.Betting = gamePacketParam.Betting;
-                        SendToPlayer1.BettingMoney = 0;
+
+                        SendToPlayer2.MyMoney = player2.PlayerMoney;
+                        SendToPlayer2.VictoryUser = victoryUser;
+                        SendToPlayer2.BettingMoney = gamePacketParam.BettingMoney;
                     }
                 }
 
