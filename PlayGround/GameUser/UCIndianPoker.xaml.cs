@@ -210,24 +210,24 @@ namespace GameUser
 
                     Dispatcher.BeginInvoke(new Action(() =>
                     {
+                        Button_MyCard.Content = this.myCard.ToString();
                         TextBox_UserLog.AppendText("게임에서 이겼습니다. \n");
                         TextBox_UserLog.AppendText("새로운 게임을 시작하겠습니다. 준비하세요.\n");
                         Label_MyMoney.Content = myMoney.ToString();
                     }));
-                    newGameStart = new Thread(new ThreadStart(SendNewGameThread));
-                    newGameStart.Start();
+                    
                 }
                 else
                 {
                     Dispatcher.BeginInvoke(new Action(() =>
                     {
+                        Button_MyCard.Content = this.myCard.ToString();
                         TextBox_UserLog.AppendText("게임에서 졌습니다. \n");
                         TextBox_UserLog.AppendText("새로운 게임을 시작하겠습니다. 준비하세요.\n");
                     }));
-
-                    newGameStart = new Thread(new ThreadStart(SendNewGameThread));
-                    newGameStart.Start();
                 }
+                newGameStart = new Thread(new ThreadStart(SendNewGameThread));
+                newGameStart.Start();
             }
 
             else if (gamePacketParam.Betting == (short)Betting.BettingDie)
@@ -298,7 +298,7 @@ namespace GameUser
 
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                Button_MyCard.Content = this.myCard.ToString();
+                //Button_MyCard.Content = this.myCard.ToString();
                 Button_OtherPlayerCard.Content = this.otherPlayerCard.ToString();
 
                 Label_MyMoney.Content = this.myMoney.ToString();
@@ -318,6 +318,7 @@ namespace GameUser
                     TextBox_UserLog.AppendText("게임이 시작되었습니다. 후턴입니다. \n");
                     SetButtonsDisable();
                 }
+                Button_MyCard.Content = "뒷면";
             }));
         }
 
