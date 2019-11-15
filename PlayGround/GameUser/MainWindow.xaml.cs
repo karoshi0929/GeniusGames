@@ -87,7 +87,6 @@ namespace GameUser
 
         private void LoginScreen_Loginbtn_event(string message)
         {
-
             this.ClientID = this.LoginScreen.IDboxString;
             this.indianPokerClient = new IndianPokerClient("127.0.0.1", 10000, this.ClientID);
 
