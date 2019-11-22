@@ -14,21 +14,21 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DataHandler;
 using System.Threading;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace GameUser
 {
     /// <summary>
     /// UCIndianPoker.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class UCIndianPoker : UserControl
+    public partial class UCIndianPoker : UserControl, INotifyPropertyChanged
     {
         public delegate void DelegateSendGameBettingMessage(IndianPokerGamePacket gamePacket);
         public DelegateSendGameBettingMessage SendGamePacketMessage;
 
         public delegate void DelegateSendNewGameStartMessage(HandleGamePacket handleGamePacket);
         public DelegateSendNewGameStartMessage SendNewGameMessage;
-
-        public bool isPlayGame = false;
 
         private short myCard = 0;
         private short otherPlayerCard = 0;
@@ -38,17 +38,42 @@ namespace GameUser
         private int otherPlayerBettingMoney = 0;
         private int otherPlayerMoney = 0;
         private int totalBettingMoney = 0;
-        
 
         Thread newGameStart = null;
 
         //첫번째 턴일때는 하프는 총베팅액기준으로 계산
         private bool isFirstTurn = false;
 
+        private bool isPlayGame;
+        public bool IsPlayGame
+        {
+            get
+            {
+                return isPlayGame;
+            }
+            set
+            {
+                isPlayGame = !value;
+                OnPropertyChanged("IsPlayGame");
+            }
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(name));
+            }
+        }
+
+
+
         #region ButtonEvent
         public UCIndianPoker()
         {
             InitializeComponent();
+            this.DataContext = this;
         }
 
         private void Button_Call_Click(object sender, RoutedEventArgs e)
@@ -264,29 +289,26 @@ namespace GameUser
 
         private void SendNewGameThread()
         {
-            Thread.Sleep(5000);
-            HandleGamePacket tempHandleGamePacket = new HandleGamePacket();
+            IsPlayGame = true;
 
+            Thread.Sleep(5000);
+
+            HandleGamePacket tempHandleGamePacket = new HandleGamePacket();
             tempHandleGamePacket.loadingComplete = true;
             SendNewGameMessage(tempHandleGamePacket);
+
+            
         }
 
         public void SetGameStart(HandleGamePacket gamePacketParam)
         {
+            IsPlayGame = true; //나가기 버튼 비활성화
+
             if (newGameStart != null)
             {
                 newGameStart.Join();
                 newGameStart = null;
             }
-
-            //if (this.isPlayGame == false)
-            //{
-            //    this.isPlayGame = true;
-            //}
-            //else
-            //{
-            //    this.myTurn = gamePacketParam.playerTurn;
-            //}
 
             this.myIndex = gamePacketParam.MyIndex;
             this.myTurn = gamePacketParam.playerTurn;
@@ -377,6 +399,11 @@ namespace GameUser
             newGameStart.Start();
         }
 
+        private void Button_ExitGameRoom_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         //선턴은 하프,체크만 가능
         public void SetButtonsEnable()
         {
@@ -398,5 +425,7 @@ namespace GameUser
             Button_Queter.IsEnabled = false;
             Button_Half.IsEnabled = false;
         }
+
+        
     }
 }
