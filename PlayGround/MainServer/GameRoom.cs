@@ -232,6 +232,25 @@ namespace MainServer
             }
 
         }
+
+        public void EndGame(bool isStartGame)
+        {
+            player1.owner.IsPlayGame = isStartGame;
+            player2.owner.IsPlayGame = isStartGame;
+
+            HandleGamePacket player1GamePacket = new HandleGamePacket();
+            HandleGamePacket player2GamePacket = new HandleGamePacket();
+
+            player1GamePacket.startGame = isStartGame;
+            player2GamePacket.startGame = isStartGame;
+
+            SendGameStartMessage(Header.Game, player1GamePacket, player1.owner);
+            SendGameStartMessage(Header.Game, player2GamePacket, player2.owner);
+
+            //객체를 지우면 해당 객체안에 정의 되있는 객체도 메모리가 해제 되는가?
+            GameRoomManager gameroomManager = new GameRoomManager();
+            gameroomManager.DestroyGameRoom(gameRoomNumber, this);
+        }
     }
 
     public class GameRoomManager
