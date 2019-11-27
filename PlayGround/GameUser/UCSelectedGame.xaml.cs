@@ -35,12 +35,22 @@ namespace GameUser
 
         private void indian_Click(object sender, RoutedEventArgs e)
         {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                Label_PrintMessage.Content = "상대방을 찾는 중입니다...";
+                Button_StartMatching.IsEnabled = false;
+            }));
             indianbtn_event("Set Indian Poker Screen");
         }
 
         private void maze_Click(object sender, RoutedEventArgs e)
         {
             mazebtn_event("Set Maze of Memory Screen");
+        }
+
+        private void Button_ExitGame_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

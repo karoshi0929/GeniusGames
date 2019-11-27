@@ -34,8 +34,10 @@ namespace GameUser
         public MainWindow()
         {
             InitializeComponent();
+
             this.LoginScreen.Loginbtn_event += LoginScreen_Loginbtn_event;
             this.SelectGameScreen.indianbtn_event += SelectedGameScreen_SelectGame;
+            this.IndianPokerScreen.CloseButtonEvent += IndianPokerScreen_CloseButtonEvent;
             this.SelectGameScreen.mazebtn_event += SelectedGameScreen_SelectGame;
 
             IndianPokerScreen.SendGamePacketMessage += new UCIndianPoker.DelegateSendGameBettingMessage(SendGameMessage);
@@ -46,6 +48,8 @@ namespace GameUser
             DataHandler.EventManager.Instance.IndianPokerGamePacketEvent += Instance_IndianPokerGamePacketEvent;
         }
 
+        
+
         private void SetVisible(Screen selectedscreen)
         {
             switch (selectedscreen)
@@ -53,9 +57,12 @@ namespace GameUser
                 case Screen.Login:
                     break;
                 case Screen.SelectedGame:
-                    this.LoginScreen.Visibility = Visibility.Collapsed;
-                    this.SelectGameScreen.Visibility = Visibility.Visible;
-                    this.IndianPokerScreen.Visibility = Visibility.Collapsed;
+                    Dispatcher.Invoke(new Action(() =>
+                    {
+                        this.LoginScreen.Visibility = Visibility.Collapsed;
+                        this.SelectGameScreen.Visibility = Visibility.Visible;
+                        this.IndianPokerScreen.Visibility = Visibility.Collapsed;
+                    }));
                     break;
 
                 case Screen.IndianPoker:
@@ -121,6 +128,12 @@ namespace GameUser
                     break;
             }
         }
+
+        private void IndianPokerScreen_CloseButtonEvent(string message)
+        {
+            this.SetVisible(Screen.SelectedGame);
+        }
+
         //서버에 매칭 요청 메시지 송신
         private void SetScreen()
         {
@@ -161,7 +174,10 @@ namespace GameUser
 
         private void Instance_HandleGamePacketEvent(DataHandler.EventManager.HandleGamePacketReceivedArgs e)
         {
-            IndianPokerScreen.SetGameStart(e.Data);
+            if (e.Data.startGame)
+                IndianPokerScreen.SetGameStart(e.Data);
+            else
+                IndianPokerScreen.ReturnGameSelection();
         }
 
         private void Instance_IndianPokerGamePacketEvent(DataHandler.EventManager.IndianPokerGamePacketReceivedArgs e)

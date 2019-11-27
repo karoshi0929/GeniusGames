@@ -24,7 +24,7 @@
                 <Button x:Name="Button_MyCard" Content="뒷면" Height="370"/>
                 <Label Content="나의 남은 금액"/>
                 <Label x:Name="Label_MyMoney" Content="0"/>
-                <Label Content="하프"/>
+                <Label x:Name="Label_PrintMyBetting" Content="{Binding StrMyBetting}"/>
             </StackPanel>
 
             <StackPanel Grid.Column="1">
@@ -40,7 +40,7 @@
                 <Button x:Name="Button_OtherPlayerCard" Content="0" Height="370"/>
                 <Label Content="상대방의 남은 금액"/>
                 <Label x:Name="Label_OtherPlayerMoney" Content="0"/>
-                <Label Content="하프"/>
+                <Label x:Name="Label_PrintOtherPlayerBetting" Content="{Binding StrOtherPlayerBetting}"/>
             </StackPanel>
         </Grid>
 
