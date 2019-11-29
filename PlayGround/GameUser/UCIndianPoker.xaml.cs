@@ -239,6 +239,7 @@ namespace GameUser
 
             StrOtherPlayerBetting = string.Empty;
 
+            gamePacket.playerTurn = myTurn;
             gamePacket.Betting = (short)betting;
             gamePacket.BettingMoney = bettingMoney;
             gamePacket.MyMoney = myMoney;
@@ -253,7 +254,7 @@ namespace GameUser
 
         public void ReceiveBetting(Betting betting, IndianPokerGamePacket gamePacketParam)
         {
-            if(gamePacketParam.playerTurn == myIndex)
+            if(gamePacketParam.playerTurn == myTurn)
                 PrintBetting(betting);
 
             this.otherPlayerMoney = gamePacketParam.MyMoney;
@@ -418,8 +419,10 @@ namespace GameUser
                         StrOtherPlayerBetting = "하프";
                         break;
                 }
-                //IndianPokerScreen.TotalBettingMoney = e.Data.betting;
-                SetButtonsEnable(false);
+
+                if(bettingParam == Betting.BettingCheck || bettingParam == Betting.BettingDouble ||
+                   bettingParam == Betting.BettingQueter || bettingParam == Betting.BettingHalf)
+                    SetButtonsEnable(false);
             }));
         }
 
