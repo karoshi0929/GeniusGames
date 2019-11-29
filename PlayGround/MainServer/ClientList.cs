@@ -115,6 +115,7 @@ namespace MainServer
         public bool isReadyForGame = false;
         private int playerInRoomNumber;
         private short playerIndex;
+        private short playerTurn;
 
         public short PlayerIndex
         {
@@ -134,13 +135,26 @@ namespace MainServer
             set;
         }
 
+        public short PlayerTurn
+        {
+            get
+            {
+                return playerTurn;
+            }
+            set
+            {
+                playerTurn = value;
+            }
+        }
 
-        public GamePlayer(ClientInfo user, short playerNumber, int gameRoomNumber, int playerMoney = 0)
+
+        public GamePlayer(ClientInfo user, short playerNumber, int gameRoomNumber, short currentTurn)
         {
             this.playerInRoomNumber = gameRoomNumber;
             this.owner = user;
             this.PlayerIndex = playerNumber;
             this.PlayerMoney = 1000;
+            this.playerTurn = currentTurn;
         }
     }
 }
