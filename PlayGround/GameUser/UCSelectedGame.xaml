@@ -7,8 +7,14 @@
              mc:Ignorable="d" 
              d:DesignHeight="350" d:DesignWidth="525">
     <Grid>
-        <Grid>
-            <Button x:Name="indian" Width="120" Height="50" Content="Matching Start" Click="indian_Click"/>
-        </Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Label x:Name="Label_PrintMessage" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button x:Name="Button_StartMatching" Width="120" Height="50" Content="매칭 시작" Click="indian_Click"/>
+            <Button x:Name="Button_ExitGame" Width="120" Height="50" Content="게임 종료" Margin="10,0,0,0" Click="Button_ExitGame_Click"/>
+        </StackPanel>
     </Grid>
 </UserControl>

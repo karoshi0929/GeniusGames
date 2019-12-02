@@ -19,7 +19,7 @@ namespace MainServer
         const short CARDMINNUM = 0;
         const short CARDMAXNUM = 20;
 
-        private int currentTurnPlayer;
+        private short currentTurnPlayer;
         private int totalBettingMoney = 0;
 
         private short[] card = new short[]{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
@@ -38,8 +38,8 @@ namespace MainServer
         {
             this.gameRoomNumber = RoomNumber;
 
-            player1 = new GamePlayer(user1, 1, RoomNumber);
-            player2 = new GamePlayer(user2, 2, RoomNumber);
+            player1 = new GamePlayer(user1, 1, RoomNumber, 1);
+            player2 = new GamePlayer(user2, 2, RoomNumber, 2);
 
             user1.EnterClientGameRoom(player1, this);
             user2.EnterClientGameRoom(player2, this);
@@ -63,12 +63,13 @@ namespace MainServer
             player1Card = player1GamePacket.MyCard;
 
             if(victoryUser == 0)
-                player1GamePacket.playerTurn = 1;
+                player1.PlayerTurn = 1;
             else if(victoryUser == 1)
-                player1GamePacket.playerTurn = 1;
+                player1.PlayerTurn = 1;
             else
-                player1GamePacket.playerTurn = 2;
+                player1.PlayerTurn = 2;
 
+            player1GamePacket.playerTurn = player1.PlayerTurn;
             player1GamePacket.TotalBettingMoney = totalBettingMoney;
             player1GamePacket.MyMoney = player1.PlayerMoney - 5;
 
@@ -78,11 +79,12 @@ namespace MainServer
             player2Card = player2GamePacket.MyCard;
 
             if (victoryUser == 0)
-                player2GamePacket.playerTurn = 2;
+                player2.PlayerTurn = 2;
             else if (victoryUser == 2)
-                player2GamePacket.playerTurn = 1;
+                player2.PlayerTurn = 1;
             else
-                player2GamePacket.playerTurn = 2;
+                player2.PlayerTurn = 2;
+            player2GamePacket.playerTurn = player2.PlayerTurn;
 
             player2GamePacket.TotalBettingMoney = totalBettingMoney;
             player2GamePacket.MyMoney = player2.PlayerMoney - 5;
@@ -127,6 +129,7 @@ namespace MainServer
 
                         SendToPlayer2 = gamePacketParam;
                         SendToPlayer2.VictoryUser = victoryUser;
+                        SendToPlayer2.playerTurn = player2.PlayerTurn;
 
                         SendToPlayer1.MyMoney = player2.PlayerMoney;
                         SendToPlayer1.VictoryUser = victoryUser;
@@ -139,6 +142,7 @@ namespace MainServer
 
                         SendToPlayer2 = gamePacketParam;
                         SendToPlayer2.VictoryUser = victoryUser;
+                        SendToPlayer2.playerTurn = player2.PlayerTurn;
 
                         SendToPlayer1.MyMoney = player2.PlayerMoney;
                         SendToPlayer1.VictoryUser = victoryUser;
@@ -155,6 +159,7 @@ namespace MainServer
 
                         SendToPlayer1 = gamePacketParam;
                         SendToPlayer1.VictoryUser = victoryUser;
+                        SendToPlayer1.playerTurn = player1.PlayerTurn;
 
                         SendToPlayer2.MyMoney = player1.PlayerMoney;
                         SendToPlayer2.VictoryUser = victoryUser;
@@ -167,6 +172,7 @@ namespace MainServer
 
                         SendToPlayer1 = gamePacketParam;
                         SendToPlayer1.VictoryUser = victoryUser;
+                        SendToPlayer1.playerTurn = player1.PlayerTurn;
 
                         SendToPlayer2.MyMoney = player2.PlayerMoney;
                         SendToPlayer2.VictoryUser = victoryUser;
@@ -189,9 +195,9 @@ namespace MainServer
                     player2.PlayerMoney = player2.PlayerMoney + this.totalBettingMoney;
                     victoryUser = 2;
                     SendToPlayer2.VictoryUser = victoryUser;
+                    SendToPlayer2.playerTurn = player2.PlayerTurn;
 
                     SendToPlayer1.MyMoney = player2.PlayerMoney; //이부분 수정 필요
-                    //SendToPlayer1.OtherPlayerMoney = player2.PlayerMoney;
                     SendToPlayer1.VictoryUser = victoryUser;
                     SendToPlayer1.Betting = gamePacketParam.Betting;
                     SendToPlayer1.BettingMoney = 0;
@@ -202,9 +208,9 @@ namespace MainServer
                     player1.PlayerMoney = player1.PlayerMoney + this.totalBettingMoney;
                     victoryUser = 1;
                     SendToPlayer1.VictoryUser = victoryUser;
+                    SendToPlayer1.playerTurn = player1.PlayerTurn;
 
                     SendToPlayer2.MyMoney = player1.PlayerMoney; //이부분 수정 필요
-                    //SendToPlayer2.OtherPlayerMoney = player1.PlayerMoney;
                     SendToPlayer2.VictoryUser = victoryUser;
                     SendToPlayer2.Betting = gamePacketParam.Betting;
                     SendToPlayer2.BettingMoney = 0;
@@ -217,20 +223,39 @@ namespace MainServer
 
             else
             {
-                if (player.PlayerIndex == 1)
-                {
-                    IndianPokerGamePacket SendToPlayer2 = gamePacketParam;
-                    SendToPlayer2.playerTurn = 2;
-                    SendPokerGameMessage(Header.GameMotion, SendToPlayer2, player2.owner);
-                }
+                IndianPokerGamePacket SendToPlayer = gamePacketParam;
+                SendToPlayer.playerIndex = player.PlayerIndex;
+
+                if (player.PlayerTurn == 1)
+                    SendToPlayer.playerTurn = 2;
                 else
-                {
-                    IndianPokerGamePacket SendToPlayer1 = gamePacketParam;
-                    SendToPlayer1.playerTurn = 1;
-                    SendPokerGameMessage(Header.GameMotion, SendToPlayer1, player1.owner);
-                }
+                    SendToPlayer.playerTurn = 1;
+
+                if (player.PlayerIndex == 1)
+                    SendPokerGameMessage(Header.GameMotion, SendToPlayer, player2.owner);
+                else
+                    SendPokerGameMessage(Header.GameMotion, SendToPlayer, player1.owner);
             }
 
+        }
+
+        public void EndGame(bool isStartGame)
+        {
+            player1.owner.IsPlayGame = isStartGame;
+            player2.owner.IsPlayGame = isStartGame;
+
+            HandleGamePacket player1GamePacket = new HandleGamePacket();
+            HandleGamePacket player2GamePacket = new HandleGamePacket();
+
+            player1GamePacket.startGame = isStartGame;
+            player2GamePacket.startGame = isStartGame;
+
+            SendGameStartMessage(Header.Game, player1GamePacket, player1.owner);
+            SendGameStartMessage(Header.Game, player2GamePacket, player2.owner);
+
+            //객체를 지우면 해당 객체안에 정의 되있는 객체도 메모리가 해제 되는가?
+            GameRoomManager gameroomManager = new GameRoomManager();
+            gameroomManager.DestroyGameRoom(gameRoomNumber, this);
         }
     }
 

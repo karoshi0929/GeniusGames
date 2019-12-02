@@ -159,9 +159,10 @@ namespace MainServer
         }
         private void Instance_HandleGamePacketEvent(DataHandler.EventManager.HandleGamePacketReceivedArgs e)
         {
-            //1. 로딩이 완료된 
+            
             ClientInfo clientInfo = clientManagement.ClientInfoDic[e.Data.clientID];
 
+            // (1) 두 클라이언트가 로딩이 완료되면 게임 시작
             if (clientInfo.IsPlayGame == false && e.Data.loadingComplete == true)
             {
                 //게임이 완전히 끝나면 false로 바꿔주어야 함.
@@ -218,6 +219,7 @@ namespace MainServer
                 //SendGameStartMessage(Header.Game, player2GamePacket, player2.owner);
                 #endregion
             }
+            // (2) 승/패 결과진행 후에 새로운 게임 시작
             else if (clientInfo.IsPlayGame == true && e.Data.loadingComplete == true)
             {
                 clientInfo.gamePlayer.isReadyForGame = true;
@@ -227,15 +229,20 @@ namespace MainServer
                     clientInfo.gameRoom.GameStart();
                 }
             }
-            PrintText(e.Data.clientID);
+
+            // (3) 한명의 클라이언트가 게임방에서 나올 시, 방파괴 및 게임 종료
+            else if(clientInfo.IsPlayGame == true && e.Data.startGame == false)
+            {
+                clientInfo.gameRoom.EndGame(e.Data.startGame);
+            }
+
+            //PrintText(e.Data.clientID);
         }
 
         private void Instance_IndianPokerGamePacketEvent(DataHandler.EventManager.IndianPokerGamePacketReceivedArgs e)
         {
             ClientInfo clientInfo = clientManagement.ClientInfoDic[e.Data.clientID];
             clientInfo.gameRoom.RequestBetting(clientInfo.gamePlayer, e.Data);
-
-            //PrintText("[" + clientInfo.ClientID + "] " + "로 부터 " + e.Data.Betting.ToString() + "베팅 받았습니다.");
         }
 
         private void PrintText(string message)
