@@ -289,7 +289,7 @@ namespace GameUser
 
         private void SendNewGameThread()
         {
-            IsPlayGame = true;
+            IsPlayGame = false;
 
             Thread.Sleep(5000);
 
