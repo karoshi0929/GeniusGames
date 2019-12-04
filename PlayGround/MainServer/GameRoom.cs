@@ -239,19 +239,22 @@ namespace MainServer
 
         }
 
-        public void EndGame(bool isStartGame)
+        public void EndGame(GamePlayer gamePlayer, HandleGamePacket hanelGamePacketPram)
         {
-            player1.owner.IsPlayGame = isStartGame;
-            player2.owner.IsPlayGame = isStartGame;
-
-            HandleGamePacket player1GamePacket = new HandleGamePacket();
-            HandleGamePacket player2GamePacket = new HandleGamePacket();
-
-            player1GamePacket.startGame = isStartGame;
-            player2GamePacket.startGame = isStartGame;
-
-            SendGameStartMessage(Header.Game, player1GamePacket, player1.owner);
-            SendGameStartMessage(Header.Game, player2GamePacket, player2.owner);
+            if(gamePlayer.PlayerIndex == 1)
+            {
+                HandleGamePacket player2GamePacket = new HandleGamePacket();
+                player2GamePacket.startGame = hanelGamePacketPram.startGame;
+                SendGameStartMessage(Header.Game, player2GamePacket, player2.owner);
+            }
+            else
+            {
+                HandleGamePacket player1GamePacket = new HandleGamePacket();
+                player1GamePacket.startGame = hanelGamePacketPram.startGame;
+                SendGameStartMessage(Header.Game, player1GamePacket, player1.owner);
+            }
+            player1.owner.IsPlayGame = hanelGamePacketPram.startGame;
+            player2.owner.IsPlayGame = hanelGamePacketPram.startGame;
 
             //객체를 지우면 해당 객체안에 정의 되있는 객체도 메모리가 해제 되는가?
             GameRoomManager gameroomManager = new GameRoomManager();

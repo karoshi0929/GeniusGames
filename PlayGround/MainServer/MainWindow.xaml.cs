@@ -159,7 +159,6 @@ namespace MainServer
         }
         private void Instance_HandleGamePacketEvent(DataHandler.EventManager.HandleGamePacketReceivedArgs e)
         {
-            
             ClientInfo clientInfo = clientManagement.ClientInfoDic[e.Data.clientID];
 
             // (1) 두 클라이언트가 로딩이 완료되면 게임 시작
@@ -233,7 +232,7 @@ namespace MainServer
             // (3) 한명의 클라이언트가 게임방에서 나올 시, 방파괴 및 게임 종료
             else if(clientInfo.IsPlayGame == true && e.Data.startGame == false)
             {
-                clientInfo.gameRoom.EndGame(e.Data.startGame);
+                clientInfo.gameRoom.EndGame(clientInfo.gamePlayer, e.Data);
             }
 
             //PrintText(e.Data.clientID);
