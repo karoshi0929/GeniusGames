@@ -177,7 +177,12 @@ namespace GameUser
             if (e.Data.startGame)
                 IndianPokerScreen.SetGameStart(e.Data);
             else
-                IndianPokerScreen.ReturnGameSelection();
+            {
+                this.SetVisible(Screen.SelectedGame);
+                MessageBox.Show("상대방이 게임에서 나갔습니다.");
+            }
+                
+            //IndianPokerScreen.ReturnGameSelection();
         }
 
         private void Instance_IndianPokerGamePacketEvent(DataHandler.EventManager.IndianPokerGamePacketReceivedArgs e)
