@@ -43,6 +43,7 @@ namespace GameUser
         private int otherPlayerMoney = 0;
         private int totalBettingMoney = 0;
 
+        public bool IsExitGame = false;
         //첫번째 턴일때는 하프는 총베팅액기준으로 계산
         private bool isFirstTurn = false;
         private bool isPlayGame;
@@ -97,7 +98,52 @@ namespace GameUser
             }
         }
 
+        public void SetGameStart(HandleGamePacket gamePacketParam)
+        {
+            StrMyBetting = "";
+            StrOtherPlayerBetting = "";
 
+            IsExitGame = false; //나가기 버튼 이벤트 발생 후, 다른 매칭상대와 게임을 시작 할경우 초기화
+            IsPlayGame = true; //나가기 버튼 비활성화
+
+            if (newGameStart != null)
+            {
+                newGameStart.Join();
+                newGameStart = null;
+            }
+
+            this.myIndex = gamePacketParam.MyIndex;
+            this.myTurn = gamePacketParam.playerTurn;
+            this.myCard = gamePacketParam.MyCard;
+            this.otherPlayerCard = gamePacketParam.OtherPlayerCard;
+            this.myMoney = gamePacketParam.MyMoney;
+            this.otherPlayerMoney = gamePacketParam.OtherPlayerMoney;
+            this.totalBettingMoney = gamePacketParam.TotalBettingMoney;
+
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                //Button_MyCard.Content = this.myCard.ToString();
+                Button_OtherPlayerCard.Content = this.otherPlayerCard.ToString();
+
+                Label_MyMoney.Content = this.myMoney.ToString();
+                Label_OtherPlayerMoney.Content = this.otherPlayerMoney.ToString();
+
+                Label_BetTotalMoney.Content = this.totalBettingMoney.ToString();
+
+                if (myTurn == 1)
+                {
+                    TextBox_UserLog.AppendText("게임이 시작되었습니다. 선턴입니다. 베팅 하세여 \n");
+                    isFirstTurn = true;
+                    SetButtonsEnable(isFirstTurn);
+                }
+                else
+                {
+                    TextBox_UserLog.AppendText("게임이 시작되었습니다. 후턴입니다. \n");
+                    SetButtonsDisable();
+                }
+                Button_MyCard.Content = "뒷면";
+            }));
+        }
 
         #region ButtonEvent
         public UCIndianPoker()
@@ -162,21 +208,11 @@ namespace GameUser
                     //게임 끝, 새로운 게임 시작
                     bettingMoney = otherPlayerBettingMoney;
                     myMoney = myMoney - bettingMoney;
-                    //totalBettingMoney = totalBettingMoney + bettingMoney; //여기가 좀 이해가 안감 검토.
-
+                    totalBettingMoney = totalBettingMoney + bettingMoney;
                     StrMyBetting = "콜";
                     break;
                 case Betting.BettingDie:
                     StrMyBetting = "다이";
-                    //게임 끝, 새로운 게임 시작
-                    //Dispatcher.BeginInvoke(new Action(() =>
-                    //{
-                    //    TextBox_UserLog.AppendText("게임에서 졌습니다. \n");
-                    //    TextBox_UserLog.AppendText("새로운 게임을 시작하겠습니다. 준비하세요.\n");
-                    //}));
-
-                    //newGameStart = new Thread(new ThreadStart(SendNewGameThread));
-                    //newGameStart.Start();
                     break;
                 case Betting.BettingDouble:
                     if (isFirstTurn)
@@ -230,7 +266,12 @@ namespace GameUser
                     {
                         //총베팅금액 + 상대방의 베팅금액 / 2
                         bettingMoney = otherPlayerBettingMoney + ((totalBettingMoney + otherPlayerBettingMoney) / 2);
-                        myMoney = myMoney - bettingMoney;
+
+                        if (myMoney - bettingMoney < 0)
+                            BetOver();
+                        else
+                            myMoney = myMoney - bettingMoney;
+
                         totalBettingMoney = (totalBettingMoney + otherPlayerBettingMoney) + ((totalBettingMoney + otherPlayerBettingMoney) / 2);
                     }
                     StrMyBetting = "하프";
@@ -275,22 +316,20 @@ namespace GameUser
 
                     Dispatcher.BeginInvoke(new Action(() =>
                     {
-                        Button_MyCard.Content = this.myCard.ToString();
                         TextBox_UserLog.AppendText("게임에서 이겼습니다. \n");
                         TextBox_UserLog.AppendText("새로운 게임을 시작하겠습니다. 준비하세요.\n");
-                        Label_MyMoney.Content = myMoney.ToString();
+                        //Label_MyMoney.Content = myMoney.ToString();
                     }));
                 }
                 else
                 {
                     Dispatcher.BeginInvoke(new Action(() =>
                     {
-                        Button_MyCard.Content = this.myCard.ToString();
                         TextBox_UserLog.AppendText("게임에서 졌습니다. \n");
                         TextBox_UserLog.AppendText("새로운 게임을 시작하겠습니다. 준비하세요.\n");
                     }));
                 }
-                
+                Button_MyCard.Content = this.myCard.ToString();
                 newGameStart = new Thread(new ThreadStart(SendNewGameThread));
                 newGameStart.Start();
             }
@@ -328,64 +367,21 @@ namespace GameUser
 
         private void SendNewGameThread()
         {
-            IsPlayGame = false;
+            this.IsPlayGame = false;
 
             Thread.Sleep(5000);
 
-            HandleGamePacket tempHandleGamePacket = new HandleGamePacket();
-            tempHandleGamePacket.loadingComplete = true;
-            SendNewGameMessage(tempHandleGamePacket);
-        }
-
-        public void SetGameStart(HandleGamePacket gamePacketParam)
-        {
-            StrMyBetting = "";
-            StrOtherPlayerBetting = "";
-
-            IsPlayGame = true; //나가기 버튼 비활성화
-
-            if (newGameStart != null)
+            if(!IsExitGame)
             {
-                newGameStart.Join();
-                newGameStart = null;
+                HandleGamePacket tempHandleGamePacket = new HandleGamePacket();
+                tempHandleGamePacket.loadingComplete = true;
+                SendNewGameMessage(tempHandleGamePacket);
             }
-
-            this.myIndex = gamePacketParam.MyIndex;
-            this.myTurn = gamePacketParam.playerTurn;
-            this.myCard = gamePacketParam.MyCard;
-            this.otherPlayerCard = gamePacketParam.OtherPlayerCard;
-            this.myMoney = gamePacketParam.MyMoney;
-            this.otherPlayerMoney = gamePacketParam.OtherPlayerMoney;
-            this.totalBettingMoney = gamePacketParam.TotalBettingMoney;
-
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                //Button_MyCard.Content = this.myCard.ToString();
-                Button_OtherPlayerCard.Content = this.otherPlayerCard.ToString();
-
-                Label_MyMoney.Content = this.myMoney.ToString();
-                Label_OtherPlayerMoney.Content = this.otherPlayerMoney.ToString();
-
-                Label_BetTotalMoney.Content = this.totalBettingMoney.ToString();
-
-                if (myTurn == 1)
-                {
-                    TextBox_UserLog.AppendText("게임이 시작되었습니다. 선턴입니다. 베팅 하세여 \n");
-                    isFirstTurn = true;
-                    SetButtonsEnable(isFirstTurn);
-                }
-                else
-                {
-                    TextBox_UserLog.AppendText("게임이 시작되었습니다. 후턴입니다. \n");
-                    SetButtonsDisable();
-                }
-                Button_MyCard.Content = "뒷면";
-            }));
         }
 
-        public void ReturnGameSelection()
+        private void BetOver()
         {
-
+            StrMyBetting = "콜";
         }
 
         private void PrintBetting(Betting bettingParam)
@@ -426,38 +422,13 @@ namespace GameUser
             }));
         }
 
-        private void PrintGameResult(bool isWin)
-        {
-            if (isWin)
-            {
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    TextBox_UserLog.AppendText("게임에서 이겼습니다. \n");
-                    TextBox_UserLog.AppendText("새로운 게임을 시작하겠습니다. 준비하세요.\n");
-                    Label_MyMoney.Content = myMoney.ToString();
-                }));
-            }
-            else
-            {
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    TextBox_UserLog.AppendText("게임에서 졌습니다. \n");
-                    TextBox_UserLog.AppendText("새로운 게임을 시작하겠습니다. 준비하세요.\n");
-                    Label_MyMoney.Content = myMoney.ToString();
-                }));
-            }
-
-            newGameStart = new Thread(new ThreadStart(SendNewGameThread));
-            newGameStart.Start();
-        }
-
         private void Button_ExitGameRoom_Click(object sender, RoutedEventArgs e)
         {
             HandleGamePacket handleGamePacket = new HandleGamePacket();
             handleGamePacket.startGame = false;
 
             SendNewGameMessage(handleGamePacket);
-
+            IsExitGame = true;
             CloseButtonEvent("SetSelectScreen");
         }
 

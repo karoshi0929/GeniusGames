@@ -48,8 +48,6 @@ namespace GameUser
             DataHandler.EventManager.Instance.IndianPokerGamePacketEvent += Instance_IndianPokerGamePacketEvent;
         }
 
-        
-
         private void SetVisible(Screen selectedscreen)
         {
             switch (selectedscreen)
@@ -62,6 +60,9 @@ namespace GameUser
                         this.LoginScreen.Visibility = Visibility.Collapsed;
                         this.SelectGameScreen.Visibility = Visibility.Visible;
                         this.IndianPokerScreen.Visibility = Visibility.Collapsed;
+
+                        this.SelectGameScreen.Label_PrintMessage.Content = string.Empty;
+                        this.SelectGameScreen.Button_StartMatching.IsEnabled = true;
                     }));
                     break;
 
@@ -95,7 +96,8 @@ namespace GameUser
         private void LoginScreen_Loginbtn_event(string message)
         {
             this.ClientID = this.LoginScreen.IDboxString;
-            this.indianPokerClient = new IndianPokerClient("127.0.0.1", 10000, this.ClientID);
+            //this.indianPokerClient = new IndianPokerClient("127.0.0.1", 10000, this.ClientID);
+            this.indianPokerClient = new IndianPokerClient("192.168.2.42", 10000, this.ClientID);
 
             if (this.indianPokerClient.ConnectedServer())
             {
@@ -146,8 +148,6 @@ namespace GameUser
                 matchingPacket.Ack = 0x01;
 
                 indianPokerClient.SendMessage(Header.Matching, matchingPacket, indianPokerClient.ao.WorkingSocket);
-
-                //기다리는 화면 표시
             }
         }
 
@@ -178,10 +178,10 @@ namespace GameUser
                 IndianPokerScreen.SetGameStart(e.Data);
             else
             {
+                this.IndianPokerScreen.IsExitGame = true;
                 this.SetVisible(Screen.SelectedGame);
                 MessageBox.Show("상대방이 게임에서 나갔습니다.");
             }
-                
             //IndianPokerScreen.ReturnGameSelection();
         }
 
