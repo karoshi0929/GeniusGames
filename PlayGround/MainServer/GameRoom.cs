@@ -133,7 +133,6 @@ namespace MainServer
 
                         SendToPlayer1.MyMoney = player2.PlayerMoney;
                         SendToPlayer1.VictoryUser = victoryUser;
-                        SendToPlayer1.BettingMoney = gamePacketParam.BettingMoney;
                     }
                     else if(player1Card < player2Card)
                     {
@@ -146,7 +145,6 @@ namespace MainServer
 
                         SendToPlayer1.MyMoney = player2.PlayerMoney;
                         SendToPlayer1.VictoryUser = victoryUser;
-                        SendToPlayer1.BettingMoney = gamePacketParam.BettingMoney;
                     }
                 }
 
@@ -163,7 +161,6 @@ namespace MainServer
 
                         SendToPlayer2.MyMoney = player1.PlayerMoney;
                         SendToPlayer2.VictoryUser = victoryUser;
-                        SendToPlayer2.BettingMoney = gamePacketParam.BettingMoney;
                     }
                     else if (player1Card < player2Card)
                     {
@@ -176,7 +173,6 @@ namespace MainServer
 
                         SendToPlayer2.MyMoney = player2.PlayerMoney;
                         SendToPlayer2.VictoryUser = victoryUser;
-                        SendToPlayer2.BettingMoney = gamePacketParam.BettingMoney;
                     }
                 }
 
@@ -216,7 +212,6 @@ namespace MainServer
                     SendToPlayer2.BettingMoney = 0;
                 }
 
-                //pokerGamePacket.VictoryUser = victoryUser;
                 SendPokerGameMessage(Header.GameMotion, SendToPlayer1, player1.owner);
                 SendPokerGameMessage(Header.GameMotion, SendToPlayer2, player2.owner);
             }

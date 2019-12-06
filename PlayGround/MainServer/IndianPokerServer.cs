@@ -29,8 +29,8 @@ namespace MainServer
             try
             {
                 ServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10000);
-                //IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("192.168.2.42"), 10000);
+                //IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10000);
+                IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("192.168.2.42"), 10000);
                 ServerSocket.Bind(endPoint);
                 ServerSocket.Listen(10);
                 ServerSocket.BeginAccept(new AsyncCallback(AcceptConnection), ServerSocket);
