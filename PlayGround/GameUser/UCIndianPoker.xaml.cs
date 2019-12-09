@@ -186,95 +186,121 @@ namespace GameUser
         {
             SetButtonsDisable();
             SendBetting(Betting.BettingHalf);
-            //IndianPokerGamePacket gamePacket = new IndianPokerGamePacket();
-            //gamePacket.Betting = (int)Betting.BettingHalf;
-
-            //gamePacket.MyMoney = myMoney;
-            //gamePacket.BettingMoney = bettingMoney;
-
-            //SendGamePacketMessage(gamePacket);
         }
         #endregion
 
-        public void SendBetting(Betting betting)
+        public void SendBetting(Betting bettingParam)
         {
             IndianPokerGamePacket gamePacket = new IndianPokerGamePacket();
 
             int bettingMoney = 0;
+            short betting = (short)bettingParam;
 
-            switch (betting)
+            switch (bettingParam)
             {
                 case Betting.BettingCall:
                     //게임 끝, 새로운 게임 시작
                     bettingMoney = otherPlayerBettingMoney;
-                    myMoney = myMoney - bettingMoney;
-                    totalBettingMoney = totalBettingMoney + bettingMoney;
-                    StrMyBetting = "콜";
-                    break;
-                case Betting.BettingDie:
-                    StrMyBetting = "다이";
-                    break;
-                case Betting.BettingDouble:
-                    if (isFirstTurn)
+
+                    if(this.myMoney - bettingMoney < 0)
                     {
-                        isFirstTurn = false;
+                        bettingMoney = this.myMoney;
+                        this.myMoney = 0;
+                        this.totalBettingMoney = this.totalBettingMoney + bettingMoney;
                     }
                     else
                     {
-                        bettingMoney = otherPlayerBettingMoney * 2;
-                        myMoney = myMoney - bettingMoney;
-                        totalBettingMoney = totalBettingMoney + (otherPlayerBettingMoney * 2);
+                        this.myMoney = myMoney - bettingMoney;
+                        this.totalBettingMoney = totalBettingMoney + bettingMoney;
                     }
-                    StrMyBetting = "따당";
+                    this.StrMyBetting = "콜";
                     break;
+
+                case Betting.BettingDie:
+                    this.StrMyBetting = "다이";
+                    break;
+
+                case Betting.BettingDouble:
+                    bettingMoney = otherPlayerBettingMoney * 2;
+
+                    if (this.myMoney - bettingMoney < 0)
+                    {
+                        bettingMoney = this.myMoney;
+                        this.myMoney = 0;
+                        this.totalBettingMoney = this.totalBettingMoney + bettingMoney;
+                        betting = (short)Betting.BettingCall;
+                        this.StrMyBetting = "콜";
+                    }
+                    else
+                    {
+                        this.myMoney = this.myMoney - bettingMoney;
+                        this.totalBettingMoney = this.totalBettingMoney + (this.otherPlayerBettingMoney * 2);
+                        this.StrMyBetting = "따당";
+                    }
+                    break;
+
                 case Betting.BettingCheck:
-                    if (isFirstTurn)
+                    if (this.isFirstTurn)
                     {
                         //첫번째 베팅일땐 체크버튼 활성화
-                        isFirstTurn = false;
+                        this.isFirstTurn = false;
                     }
                     else
                     {
                         //첫번째 베팅일땐 체크버튼 비활성화
                     }
-                    StrMyBetting = "체크";
+                    this.StrMyBetting = "체크";
                     break;
+
                 case Betting.BettingQueter:
-                    if (isFirstTurn)
+                    bettingMoney = otherPlayerBettingMoney + ((totalBettingMoney + otherPlayerBettingMoney) / 4);
+
+                    if(this.myMoney - bettingMoney < 0)
                     {
-                        //첫번째 베팅일땐 쿼터버튼 비활성화.
+                        bettingMoney = this.myMoney;
+                        this.myMoney = 0;
+                        this.totalBettingMoney = this.totalBettingMoney + bettingMoney;
+                        betting = (short)Betting.BettingCall;
+                        this.StrMyBetting = "콜";
                     }
-                    else //총금액의 1/4
+                    else
                     {
-                        bettingMoney = otherPlayerBettingMoney + ((totalBettingMoney + otherPlayerBettingMoney) / 4);
-                        myMoney = myMoney - bettingMoney;
-                        totalBettingMoney = (totalBettingMoney + otherPlayerBettingMoney) + ((totalBettingMoney + otherPlayerBettingMoney) / 4);
+                        this.myMoney = this.myMoney - bettingMoney;
+                        this.StrMyBetting = "쿼터";
                     }
-                    StrMyBetting = "쿼터";
+                    this.totalBettingMoney = (this.totalBettingMoney + this.otherPlayerBettingMoney) + ((this.totalBettingMoney + this.otherPlayerBettingMoney) / 4);
                     break;
+
                 case Betting.BettingHalf:
                     //첫베팅은 무조건 하프만 됨.
-                    if (isFirstTurn)
+                    if (this.isFirstTurn)
                     {
-                        isFirstTurn = false;
+                        this.isFirstTurn = false;
 
                         bettingMoney = totalBettingMoney / 2;
-                        myMoney = myMoney - bettingMoney;
-                        totalBettingMoney = totalBettingMoney + bettingMoney;
+                        this.myMoney = this.myMoney - bettingMoney;
+                        this.totalBettingMoney = this.totalBettingMoney + bettingMoney;
                     }
                     else
                     {
                         //총베팅금액 + 상대방의 베팅금액 / 2
                         bettingMoney = otherPlayerBettingMoney + ((totalBettingMoney + otherPlayerBettingMoney) / 2);
 
-                        if (myMoney - bettingMoney < 0)
-                            BetOver();
+                        if (this.myMoney - bettingMoney < 0)
+                        {
+                            bettingMoney = this.myMoney;
+                            this.myMoney = 0;
+                            this.totalBettingMoney = this.totalBettingMoney + bettingMoney;
+                            betting = (short)Betting.BettingCall;
+                            this.StrMyBetting = "콜";
+                        }
                         else
-                            myMoney = myMoney - bettingMoney;
-
-                        totalBettingMoney = (totalBettingMoney + otherPlayerBettingMoney) + ((totalBettingMoney + otherPlayerBettingMoney) / 2);
+                        {
+                            this.myMoney = this.myMoney - bettingMoney;
+                            this.StrMyBetting = "하프";
+                        }
+                        this.totalBettingMoney = (this.totalBettingMoney + this.otherPlayerBettingMoney) + ((this.totalBettingMoney + this.otherPlayerBettingMoney) / 2);
                     }
-                    StrMyBetting = "하프";
                     break;
             }
 
@@ -318,7 +344,7 @@ namespace GameUser
                     {
                         TextBox_UserLog.AppendText("게임에서 이겼습니다. \n");
                         TextBox_UserLog.AppendText("새로운 게임을 시작하겠습니다. 준비하세요.\n");
-                        //Label_MyMoney.Content = myMoney.ToString();
+                        Button_MyCard.Content = this.myCard.ToString();
                     }));
                 }
                 else
@@ -327,9 +353,9 @@ namespace GameUser
                     {
                         TextBox_UserLog.AppendText("게임에서 졌습니다. \n");
                         TextBox_UserLog.AppendText("새로운 게임을 시작하겠습니다. 준비하세요.\n");
+                        Button_MyCard.Content = this.myCard.ToString();
                     }));
                 }
-                Button_MyCard.Content = this.myCard.ToString();
                 newGameStart = new Thread(new ThreadStart(SendNewGameThread));
                 newGameStart.Start();
             }
@@ -368,20 +394,17 @@ namespace GameUser
         private void SendNewGameThread()
         {
             this.IsPlayGame = false;
-
             Thread.Sleep(5000);
 
-            if(!IsExitGame)
+            if (myMoney <= 0)
+                Button_ExitGameRoom_Click(null, null);
+
+            if (!IsExitGame)
             {
                 HandleGamePacket tempHandleGamePacket = new HandleGamePacket();
                 tempHandleGamePacket.loadingComplete = true;
                 SendNewGameMessage(tempHandleGamePacket);
             }
-        }
-
-        private void BetOver()
-        {
-            StrMyBetting = "콜";
         }
 
         private void PrintBetting(Betting bettingParam)
