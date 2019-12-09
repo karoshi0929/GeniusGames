@@ -218,6 +218,7 @@ namespace MainServer
                 //SendGameStartMessage(Header.Game, player2GamePacket, player2.owner);
                 #endregion
             }
+
             // (2) 승/패 결과진행 후에 새로운 게임 시작
             else if (clientInfo.IsPlayGame == true && e.Data.loadingComplete == true)
             {
