@@ -49,7 +49,7 @@ namespace MainServer
             
             ServerSocket.BeginAccept(new AsyncCallback(AcceptConnection), ServerSocket);
 
-            printText("클라이언트" + ClientSocket.RemoteEndPoint.ToString() + "입장하였습니다.");
+            //printText("클라이언트" + ClientSocket.RemoteEndPoint.ToString() + "입장하였습니다.");
 
             AsyncObject ao = new AsyncObject(1024);
             ao.WorkingSocket = ClientSocket;
@@ -73,22 +73,29 @@ namespace MainServer
             AsyncObject client = new AsyncObject(1024);
             lock (recvLock)
             {
-                client = (AsyncObject)iar.AsyncState;
-                int recv = client.WorkingSocket.EndReceive(iar);
-
-                if (recv > 0)
+                try
                 {
-                    //메세지를 받았을 경우
-                    PacketParser.PacketParsing(client.Buffer, client.WorkingSocket);
+                    client = (AsyncObject)iar.AsyncState;
+                    int recv = client.WorkingSocket.EndReceive(iar);
 
-                    client.ClearBuffer();
-                    client.WorkingSocket.BeginReceive(client.Buffer, 0, client.Buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveMessage), client);
+                    if (recv > 0)
+                    {
+                        //메세지를 받았을 경우
+                        PacketParser.PacketParsing(client.Buffer, client.WorkingSocket);
+
+                        client.ClearBuffer();
+                        client.WorkingSocket.BeginReceive(client.Buffer, 0, client.Buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveMessage), client);
+                    }
+                    else
+                    {
+                        //메세지를 못받았을 경우
+                        client.WorkingSocket.Close();
+                        return;
+                    }
                 }
-                else
+                catch(Exception e)
                 {
-                    //메세지를 못받았을 경우
-                    client.WorkingSocket.Close();
-                    return;
+                    Console.WriteLine(e);
                 }
             }
         }

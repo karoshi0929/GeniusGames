@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DataHandler;
+using System.Collections.ObjectModel;
 
 namespace MainServer
 {
@@ -24,6 +25,8 @@ namespace MainServer
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        List<ClientInfo> clientInfoListView { get; set; }
+
         IndianPokerServer indianPokerServer;
         ClientManagement clientManagement;
         GameRoomManager gameRoomManager;
@@ -70,6 +73,8 @@ namespace MainServer
             clientManagement = new ClientManagement();
             gameRoomManager = new GameRoomManager();
 
+            clientInfoListView = new List<ClientInfo>();
+
             //클라이언트로부터 Login Message를 받았을 때
             DataHandler.EventManager.Instance.LoginPacketEvent += Instance_LoginPacketEvent;
             //클라이언트로부터 GameMatching요청 Message를 받았을 때
@@ -80,13 +85,31 @@ namespace MainServer
             DataHandler.EventManager.Instance.IndianPokerGamePacketEvent += Instance_IndianPokerGamePacketEvent;
         }
 
+        private void MainServerWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            indianPokerServer.OpenIndianPokerServer();
+        }
+
         private void Instance_LoginPacketEvent(DataHandler.EventManager.LoginPacketReceivedArgs e)
         {
-            //클라이언트 정보 저장
-            ClientInfo clientInfo = new ClientInfo(e.Data, e.ClientSocket);
-            if(clientManagement.AddClient(clientInfo))
+            if(e.Data.isLogin == true)
             {
+                //클라이언트 정보 저장
+                ClientInfo clientInfo = new ClientInfo(e.Data, e.ClientSocket);
+                clientManagement.AddClient(clientInfo);
+                clientInfoListView.Add(clientInfo);
 
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    ListView_ClientListView.ItemsSource = clientInfoListView;
+                }));
+                
+                PrintText("클라이언트" + clientInfo.ClientSocket.RemoteEndPoint.ToString() + " -> ID : " + clientInfo.ClientID + "로그인 했습니다.");
+            }
+            else
+            {
+                clientManagement.RemoveClient(e.Data.clientID);
+                PrintText("클라이언트" + " -> ID : " + e.Data.clientID + "로그아웃 했습니다.");
             }
         }
 
@@ -220,7 +243,7 @@ namespace MainServer
             }
 
             // (2) 승/패 결과진행 후에 새로운 게임 시작
-            else if (clientInfo.IsPlayGame == true && e.Data.loadingComplete == true)
+            else if (clientInfo.IsPlayGame == true && e.Data.loadingComplete == true && e.Data.loadingComplete == true)
             {
                 clientInfo.gamePlayer.isReadyForGame = true;
 
@@ -235,8 +258,6 @@ namespace MainServer
             {
                 clientInfo.gameRoom.EndGame(clientInfo.gamePlayer, e.Data);
             }
-
-            //PrintText(e.Data.clientID);
         }
 
         private void Instance_IndianPokerGamePacketEvent(DataHandler.EventManager.IndianPokerGamePacketReceivedArgs e)
@@ -265,5 +286,7 @@ namespace MainServer
         {
             indianPokerServer.OpenIndianPokerServer();
         }
+
+        
     }
 }

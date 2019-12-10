@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using DataHandler;
+using System.Collections.ObjectModel;
 
 namespace MainServer
 {
@@ -22,12 +23,11 @@ namespace MainServer
             return true;
         }
 
-        public bool AddClient(LoginPacket loginPacket, Socket ClientSocket)
+        public void RemoveClient(string clientID)
         {
-            ClientInfo clientInfo = new ClientInfo(loginPacket, ClientSocket);
-
-            ClientInfoDic.Add(clientInfo.ClientID, clientInfo);
-            return true;
+            ClientInfoDic[clientID].ClientSocket.Disconnect(true);
+            ClientInfoDic[clientID].ClientSocket.Close();
+            ClientInfoDic.Remove(clientID);
         }
     }
 
@@ -101,10 +101,10 @@ namespace MainServer
             //IsPlayGame = loginPacket.
         }
 
-        public void EnterClientGameRoom(GamePlayer player,GameRoom CureentGameRoom)
+        public void EnterClientGameRoom(GamePlayer player,GameRoom CurrentGameRoom)
         {
             this.gamePlayer = player;
-            this.gameRoom = CureentGameRoom;
+            this.gameRoom = CurrentGameRoom;
         }
     }
 
@@ -147,10 +147,16 @@ namespace MainServer
             }
         }
 
+        public int PlayerInRoomNumber
+        {
+            get { return playerInRoomNumber; }
+            set { playerInRoomNumber = value; }
+        }
+
 
         public GamePlayer(ClientInfo user, short playerNumber, int gameRoomNumber, short currentTurn)
         {
-            this.playerInRoomNumber = gameRoomNumber;
+            this.PlayerInRoomNumber = gameRoomNumber;
             this.owner = user;
             this.PlayerIndex = playerNumber;
             this.PlayerMoney = 1000;

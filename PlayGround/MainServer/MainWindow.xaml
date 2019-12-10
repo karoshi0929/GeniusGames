@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MainServer"
         mc:Ignorable="d"
-        x:Name="MainServerWindow" Title="MainWindow" Height="350" Width="525">
+        x:Name="MainServerWindow" Title="MainWindow" Height="500" Width="700" Loaded="MainServerWindow_Loaded">
     <Window.Resources>
         
     </Window.Resources>
@@ -16,7 +16,26 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         
-        <Button x:Name="ButtonStartServer" Content="서버 시작" Grid.Column="0" Click="ButtonStartServer_Click"/>
+        <!--<Button x:Name="ButtonStartServer" Content="서버 시작" Grid.Column="0" Click="ButtonStartServer_Click"/>-->
+        <!--<DataGrid x:Name="DataGrid_ClientListView" ItemsSource="{Binding clientInfoListView}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="IP주소" Width="Auto"/>
+                <DataGridTextColumn Header="유저 ID" Width="Auto" Binding="{Binding clientID}"/>
+                <DataGridTextColumn Header="게임방 번호" Width="Auto"/>
+                <DataGridTextColumn Header="상태" Width="Auto"/>
+            </DataGrid.Columns>
+        </DataGrid>-->
+        
+        <ListView x:Name="ListView_ClientListView" ItemsSource="{Binding clientInfoListView}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="IP주소" Width="Auto" DisplayMemberBinding="{Binding ClientSocket.RemoteEndPoint.ToString()}"/>
+                    <GridViewColumn Header="유저 ID" Width="Auto" DisplayMemberBinding="{Binding Path=ClientID}"/>
+                    <GridViewColumn Header="게임방 번호" Width="Auto" DisplayMemberBinding="{Binding gamePlayer.PlayerInRoomNumber}"/>
+                    <GridViewColumn Header="상태" Width="Auto"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
         <TextBox x:Name="TextBoxDisplayLog" Grid.Column="1" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
             Text="{Binding LogMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
     </Grid>
