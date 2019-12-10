@@ -25,7 +25,7 @@ namespace MainServer
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        List<ClientInfo> clientInfoListView { get; set; }
+        List<ClientInfo> clientInfoListView =  new List<ClientInfo>();
 
         IndianPokerServer indianPokerServer;
         ClientManagement clientManagement;
@@ -73,7 +73,8 @@ namespace MainServer
             clientManagement = new ClientManagement();
             gameRoomManager = new GameRoomManager();
 
-            clientInfoListView = new List<ClientInfo>();
+            //clientInfoListView = new List<ClientInfo>();
+            ListView_ClientListView.ItemsSource = clientInfoListView;
 
             //클라이언트로부터 Login Message를 받았을 때
             DataHandler.EventManager.Instance.LoginPacketEvent += Instance_LoginPacketEvent;
@@ -101,7 +102,8 @@ namespace MainServer
 
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    ListView_ClientListView.ItemsSource = clientInfoListView;
+                    ListView_ClientListView.Items.Refresh();
+                   // ListView_ClientListView.ItemsSource = clientInfoListView;
                 }));
                 
                 PrintText("클라이언트" + clientInfo.ClientSocket.RemoteEndPoint.ToString() + " -> ID : " + clientInfo.ClientID + "로그인 했습니다.");

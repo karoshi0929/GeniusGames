@@ -26,7 +26,7 @@
             </DataGrid.Columns>
         </DataGrid>-->
         
-        <ListView x:Name="ListView_ClientListView" ItemsSource="{Binding clientInfoListView}">
+        <ListView x:Name="ListView_ClientListView">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="IP주소" Width="Auto" DisplayMemberBinding="{Binding ClientSocket.RemoteEndPoint.ToString()}"/>
