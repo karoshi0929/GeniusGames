@@ -29,8 +29,8 @@ namespace GameUser
 
         private bool isMatching = false;
         private bool isPlaying = false;
-
         private string ClientID;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -39,6 +39,7 @@ namespace GameUser
             this.SelectGameScreen.indianbtn_event += SelectedGameScreen_SelectGame;
             this.IndianPokerScreen.CloseButtonEvent += IndianPokerScreen_CloseButtonEvent;
             this.SelectGameScreen.mazebtn_event += SelectedGameScreen_SelectGame;
+            this.SelectGameScreen.CloseGameEvent += SelectGameScreen_CloseGameEvent;
 
             IndianPokerScreen.SendGamePacketMessage += new UCIndianPoker.DelegateSendGameBettingMessage(SendGameMessage);
             IndianPokerScreen.SendNewGameMessage += new UCIndianPoker.DelegateSendNewGameStartMessage(StartNewGameMessage);
@@ -200,6 +201,15 @@ namespace GameUser
         {
             handleGamePacketParam.clientID = this.ClientID;
             indianPokerClient.SendMessage(Header.Game, handleGamePacketParam, indianPokerClient.ao.WorkingSocket);
+        }
+
+        private void SelectGameScreen_CloseGameEvent()
+        {
+            LoginPacket loginPacket = new LoginPacket();
+            loginPacket.clientID = this.ClientID;
+            loginPacket.isLogin = false;
+            indianPokerClient.SendMessage(Header.Login, loginPacket, indianPokerClient.ao.WorkingSocket);
+            this.Close();
         }
     }
 }

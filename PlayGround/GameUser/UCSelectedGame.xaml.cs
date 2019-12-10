@@ -21,13 +21,14 @@ namespace GameUser
     
     public delegate void indianbtn(string message);
     public delegate void mazebtn(string message);
+    public delegate void CloseGame();
 
     public partial class UCSelectedGame : UserControl
     {
-
         public event indianbtn indianbtn_event;
         public event mazebtn mazebtn_event;
-
+        public event CloseGame CloseGameEvent;
+        
         public UCSelectedGame()
         {
             InitializeComponent();
@@ -50,9 +51,7 @@ namespace GameUser
 
         private void Button_ExitGame_Click(object sender, RoutedEventArgs e)
         {
-
+            CloseGameEvent();
         }
-
-        
     }
 }

@@ -399,10 +399,11 @@ namespace GameUser
             if (myMoney <= 0)
                 Button_ExitGameRoom_Click(null, null);
 
-            if (!IsExitGame)
+            if (IsExitGame == false)
             {
                 HandleGamePacket tempHandleGamePacket = new HandleGamePacket();
                 tempHandleGamePacket.loadingComplete = true;
+                tempHandleGamePacket.startGame = true;
                 SendNewGameMessage(tempHandleGamePacket);
             }
         }
