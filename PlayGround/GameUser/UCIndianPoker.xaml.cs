@@ -386,26 +386,7 @@ namespace GameUser
             }
 
             else
-            {
                 StrMyBetting = string.Empty;
-            }
-        }
-
-        private void SendNewGameThread()
-        {
-            this.IsPlayGame = false;
-            Thread.Sleep(5000);
-
-            if (myMoney <= 0)
-                Button_ExitGameRoom_Click(null, null);
-
-            if (IsExitGame == false)
-            {
-                HandleGamePacket tempHandleGamePacket = new HandleGamePacket();
-                tempHandleGamePacket.loadingComplete = true;
-                tempHandleGamePacket.startGame = true;
-                SendNewGameMessage(tempHandleGamePacket);
-            }
         }
 
         private void PrintBetting(Betting bettingParam)
@@ -440,18 +421,32 @@ namespace GameUser
                         break;
                 }
 
-                if(bettingParam == Betting.BettingCheck || bettingParam == Betting.BettingDouble ||
+                if (bettingParam == Betting.BettingCheck || bettingParam == Betting.BettingDouble ||
                    bettingParam == Betting.BettingQueter || bettingParam == Betting.BettingHalf)
                     SetButtonsEnable(false);
             }));
+        }
+
+        private void SendNewGameThread()
+        {
+            this.IsPlayGame = false;
+            Thread.Sleep(5000);
+
+            if (myMoney <= 0)
+                Button_ExitGameRoom_Click(null, null);
+
+            HandleGamePacket tempHandleGamePacket = new HandleGamePacket();
+            tempHandleGamePacket.loadingComplete = true;
+            tempHandleGamePacket.startGame = true;
+            SendNewGameMessage(tempHandleGamePacket);
         }
 
         private void Button_ExitGameRoom_Click(object sender, RoutedEventArgs e)
         {
             HandleGamePacket handleGamePacket = new HandleGamePacket();
             handleGamePacket.startGame = false;
-
             SendNewGameMessage(handleGamePacket);
+
             IsExitGame = true;
             CloseButtonEvent("SetSelectScreen");
         }

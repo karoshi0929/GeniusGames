@@ -44,10 +44,13 @@ namespace GameUser
             IndianPokerScreen.SendGamePacketMessage += new UCIndianPoker.DelegateSendGameBettingMessage(SendGameMessage);
             IndianPokerScreen.SendNewGameMessage += new UCIndianPoker.DelegateSendNewGameStartMessage(StartNewGameMessage);
 
+            DataHandler.EventManager.Instance.LoginPacketEvent += Instance_LoginPacketEvent;
             DataHandler.EventManager.Instance.MatchingPacketEvent += Instance_MatchingPacketEvent;
             DataHandler.EventManager.Instance.HandleGamePacketEvent += Instance_HandleGamePacketEvent;
             DataHandler.EventManager.Instance.IndianPokerGamePacketEvent += Instance_IndianPokerGamePacketEvent;
         }
+
+        
 
         private void SetVisible(Screen selectedscreen)
         {
@@ -150,6 +153,11 @@ namespace GameUser
 
                 indianPokerClient.SendMessage(Header.Matching, matchingPacket, indianPokerClient.ao.WorkingSocket);
             }
+        }
+
+        private void Instance_LoginPacketEvent(DataHandler.EventManager.LoginPacketReceivedArgs e)
+        {
+            
         }
 
         //서버에서 매칭 메시지 수신 시 게임 화면 표시
