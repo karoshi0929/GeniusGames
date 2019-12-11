@@ -29,10 +29,10 @@
         <ListView x:Name="ListView_ClientListView">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="IP주소" Width="Auto" DisplayMemberBinding="{Binding ClientSocket.RemoteEndPoint.ToString()}"/>
-                    <GridViewColumn Header="유저 ID" Width="Auto" DisplayMemberBinding="{Binding Path=ClientID}"/>
-                    <GridViewColumn Header="게임방 번호" Width="Auto" DisplayMemberBinding="{Binding gamePlayer.PlayerInRoomNumber}"/>
-                    <GridViewColumn Header="상태" Width="Auto"/>
+                    <GridViewColumn Header="IP주소" Width="Auto" DisplayMemberBinding="{Binding ClientAddress}"/>
+                    <GridViewColumn Header="유저 ID" Width="Auto" DisplayMemberBinding="{Binding ClientID}"/>
+                    <GridViewColumn Header="게임방 번호" Width="Auto" DisplayMemberBinding="{Binding GameRoomNumber}"/>
+                    <GridViewColumn Header="상태" Width="Auto" DisplayMemberBinding="{Binding IsPlayGame}"/>
                 </GridView>
             </ListView.View>
         </ListView>

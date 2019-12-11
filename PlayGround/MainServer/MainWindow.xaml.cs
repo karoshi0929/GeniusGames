@@ -103,7 +103,6 @@ namespace MainServer
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
                     ListView_ClientListView.Items.Refresh();
-                   // ListView_ClientListView.ItemsSource = clientInfoListView;
                 }));
                 
                 PrintText("클라이언트" + clientInfo.ClientSocket.RemoteEndPoint.ToString() + " -> ID : " + clientInfo.ClientID + "로그인 했습니다.");
@@ -114,7 +113,6 @@ namespace MainServer
                 PrintText("클라이언트" + " -> ID : " + e.Data.clientID + "로그아웃 했습니다.");
             }
         }
-
         private void Instance_MatchingPacketEvent(DataHandler.EventManager.MatchingPacketReceivedArgs e)
         {
             //0. 클라이언트 정보 가지고 오기 Param = 클라이언트 아이디
@@ -180,78 +178,89 @@ namespace MainServer
                 //4. 매칭패킷 저장 객체 초기화
                 SendUser1MatchingPacket = new MatchingPacket();
                 SendUser2MatchingPacket = new MatchingPacket();
+
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    ListView_ClientListView.Items.Refresh();
+                }));
             }
         }
         private void Instance_HandleGamePacketEvent(DataHandler.EventManager.HandleGamePacketReceivedArgs e)
         {
             ClientInfo clientInfo = clientManagement.ClientInfoDic[e.Data.clientID];
-
-            // (1) 두 클라이언트가 로딩이 완료되면 게임 시작
-            if (clientInfo.IsPlayGame == false && e.Data.loadingComplete == true)
+            
+            if(e.Data.loadingComplete == true)
             {
-                //게임이 완전히 끝나면 false로 바꿔주어야 함.
-                clientInfo.IsPlayGame = true;
+                if (clientInfo.gameRoom == null)
+                    return;
 
-                //방법 1.
-                clientInfo.gamePlayer.isReadyForGame = true;
-
-                if (clientInfo.gameRoom.player1.isReadyForGame && clientInfo.gameRoom.player2.isReadyForGame)
+                // (1) 두 클라이언트가 로딩이 완료되면 게임 시작
+                if (clientInfo.IsPlayGame == false)
                 {
-                    clientInfo.gameRoom.SendGameStartMessage += new GameRoom.DelegateSendGameStartMessage(SendGameStartMessage);
-                    clientInfo.gameRoom.SendPokerGameMessage += new GameRoom.DelegateSendPokerMessage(SendPokerGameMessage);
-                    clientInfo.gameRoom.GameStart();
+                    //게임이 완전히 끝나면 false로 바꿔주어야 함.
+                    clientInfo.IsPlayGame = true;
+
+                    //방법 1.
+                    clientInfo.gamePlayer.isReadyForGame = true;
+
+                    if (clientInfo.gameRoom.player1.isReadyForGame && clientInfo.gameRoom.player2.isReadyForGame)
+                    {
+                        clientInfo.gameRoom.SendGameStartMessage += new GameRoom.DelegateSendGameStartMessage(SendGameStartMessage);
+                        clientInfo.gameRoom.SendPokerGameMessage += new GameRoom.DelegateSendPokerMessage(SendPokerGameMessage);
+                        clientInfo.gameRoom.GameStart();
+                    }
+
+                    //방법 2. 
+                    #region
+                    //결과는 같으나 의미하는 코드가 무엇이 더 정확한지 생각해봐야함. 
+                    //int playerIndex = clientInfo.gamePlayer.PlyaerIndex;
+                    //switch (playerIndex)
+                    //{
+                    //    case 1:
+                    //      gameRoomManager.GameRoomDic[clientInfo.gameRoom.gameRoomNumber].player1.isReadyForGame = true;
+                    //      clientInfo.gameRoom.player1.isReadyForGame = true;
+                    //    break;
+                    //    case 2:
+                    //      gameRoomManager.GameRoomDic[clientInfo.gameRoom.gameRoomNumber].player2.isReadyForGame = true;
+                    //      clientInfo.gameRoom.player2.isReadyForGame = true;
+                    //    break;
+                    //}
+
+                    //if (gameRoomManager.GameRoomDic[clientInfo.gameRoom.gameRoomNumber].player1.isReadyForGame &&
+                    //    gameRoomManager.GameRoomDic[clientInfo.gameRoom.gameRoomNumber].player2.isReadyForGame)
+                    //{
+                    //    gameRoomManager.GameRoomDic[clientInfo.gameRoom.gameRoomNumber].SendGameStartMessage += new GameRoom.DelegateSendGameStartMessage(SendGameStartMessage);
+                    //    gameRoomManager.GameRoomDic[clientInfo.gameRoom.gameRoomNumber].GameStart();
+                    //}
+                    #endregion
+
+                    //방법 1-2 / 2-2.
+                    #region
+                    //Random random = new Random();
+
+                    //IndianPokerGamePacket player1GamePacket = new IndianPokerGamePacket();
+                    //player1GamePacket.startGame = true;
+                    //player1GamePacket.playerTurn = player1.PlyaerIndex;
+                    //player1GamePacket.card = (short)random.Next(CARDMINNUM, CARDMAXNUM);
+                    //SendGameStartMessage(Header.Game, player1GamePacket, player1.owner);
+
+                    //IndianPokerGamePacket player2GamePacket = new IndianPokerGamePacket();
+                    //player2GamePacket.startGame = true;
+                    //player2GamePacket.playerTurn = player1.PlyaerIndex;
+                    //player2GamePacket.card = (short)random.Next(CARDMINNUM, CARDMAXNUM);
+                    //SendGameStartMessage(Header.Game, player2GamePacket, player2.owner);
+                    #endregion
                 }
 
-                //방법 2. 
-                #region
-                //결과는 같으나 의미하는 코드가 무엇이 더 정확한지 생각해봐야함. 
-                //int playerIndex = clientInfo.gamePlayer.PlyaerIndex;
-                //switch (playerIndex)
-                //{
-                //    case 1:
-                //      gameRoomManager.GameRoomDic[clientInfo.gameRoom.gameRoomNumber].player1.isReadyForGame = true;
-                //      clientInfo.gameRoom.player1.isReadyForGame = true;
-                //    break;
-                //    case 2:
-                //      gameRoomManager.GameRoomDic[clientInfo.gameRoom.gameRoomNumber].player2.isReadyForGame = true;
-                //      clientInfo.gameRoom.player2.isReadyForGame = true;
-                //    break;
-                //}
-
-                //if (gameRoomManager.GameRoomDic[clientInfo.gameRoom.gameRoomNumber].player1.isReadyForGame &&
-                //    gameRoomManager.GameRoomDic[clientInfo.gameRoom.gameRoomNumber].player2.isReadyForGame)
-                //{
-                //    gameRoomManager.GameRoomDic[clientInfo.gameRoom.gameRoomNumber].SendGameStartMessage += new GameRoom.DelegateSendGameStartMessage(SendGameStartMessage);
-                //    gameRoomManager.GameRoomDic[clientInfo.gameRoom.gameRoomNumber].GameStart();
-                //}
-                #endregion
-
-                //방법 1-2 / 2-2.
-                #region
-                //Random random = new Random();
-
-                //IndianPokerGamePacket player1GamePacket = new IndianPokerGamePacket();
-                //player1GamePacket.startGame = true;
-                //player1GamePacket.playerTurn = player1.PlyaerIndex;
-                //player1GamePacket.card = (short)random.Next(CARDMINNUM, CARDMAXNUM);
-                //SendGameStartMessage(Header.Game, player1GamePacket, player1.owner);
-
-                //IndianPokerGamePacket player2GamePacket = new IndianPokerGamePacket();
-                //player2GamePacket.startGame = true;
-                //player2GamePacket.playerTurn = player1.PlyaerIndex;
-                //player2GamePacket.card = (short)random.Next(CARDMINNUM, CARDMAXNUM);
-                //SendGameStartMessage(Header.Game, player2GamePacket, player2.owner);
-                #endregion
-            }
-
-            // (2) 승/패 결과진행 후에 새로운 게임 시작
-            else if (clientInfo.IsPlayGame == true && e.Data.loadingComplete == true && e.Data.loadingComplete == true)
-            {
-                clientInfo.gamePlayer.isReadyForGame = true;
-
-                if (clientInfo.gameRoom.player1.isReadyForGame && clientInfo.gameRoom.player2.isReadyForGame)
+                // (2) 승/패 결과진행 후에 새로운 게임 시작
+                else
                 {
-                    clientInfo.gameRoom.GameStart();
+                    clientInfo.gamePlayer.isReadyForGame = true;
+
+                    if (clientInfo.gameRoom.player1.isReadyForGame && clientInfo.gameRoom.player2.isReadyForGame)
+                    {
+                        clientInfo.gameRoom.GameStart();
+                    }
                 }
             }
 
@@ -259,14 +268,20 @@ namespace MainServer
             else if(clientInfo.IsPlayGame == true && e.Data.startGame == false)
             {
                 clientInfo.gameRoom.EndGame(clientInfo.gamePlayer, e.Data);
+
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    ListView_ClientListView.Items.Refresh();
+                }));
             }
         }
-
         private void Instance_IndianPokerGamePacketEvent(DataHandler.EventManager.IndianPokerGamePacketReceivedArgs e)
         {
             ClientInfo clientInfo = clientManagement.ClientInfoDic[e.Data.clientID];
             clientInfo.gameRoom.RequestBetting(clientInfo.gamePlayer, e.Data);
         }
+
+
 
         private void PrintText(string message)
         {

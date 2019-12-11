@@ -16,8 +16,8 @@ namespace MainServer
         public delegate void DelegateSendPokerMessage(Header header, IndianPokerGamePacket pokerPacket, ClientInfo clientSocket);
         public DelegateSendPokerMessage SendPokerGameMessage;
 
-        const short CARDMINNUM = 0;
-        const short CARDMAXNUM = 20;
+        const short CARDMINNUM = 1;
+        const short CARDMAXNUM = 10;
 
         private short currentTurnPlayer;
         private int totalBettingMoney = 0;
@@ -248,10 +248,10 @@ namespace MainServer
                 player1GamePacket.startGame = hanelGamePacketPram.startGame;
                 SendGameStartMessage(Header.Game, player1GamePacket, player1.owner);
             }
-            player1.owner.IsPlayGame = hanelGamePacketPram.startGame;
-            player2.owner.IsPlayGame = hanelGamePacketPram.startGame;
 
-            //객체를 지우면 해당 객체안에 정의 되있는 객체도 메모리가 해제 되는가?
+            player1.owner.ExitGameRoom();
+            player2.owner.ExitGameRoom();
+
             GameRoomManager gameroomManager = new GameRoomManager();
             gameroomManager.DestroyGameRoom(gameRoomNumber, this);
         }
@@ -259,15 +259,8 @@ namespace MainServer
 
     public class GameRoomManager
     {
-        int gameRoomIndex = 0;
+        int gameRoomIndex = 1;
         public Dictionary<int, GameRoom> GameRoomDic = new Dictionary<int, GameRoom>();
-        //public List<GameRoom> gameRoomList = new List<GameRoom>();
-
-        //public GameRoomManager(ClientInfo Player1, ClientInfo Player2)
-        //{
-        //    gameRoom = new GameRoom(Player1, Player2);
-        //    gameRoomList.Add(gameRoom);
-        //}
 
         public GameRoomManager()
         {

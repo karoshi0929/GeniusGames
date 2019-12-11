@@ -23,6 +23,11 @@ namespace MainServer
             return true;
         }
 
+        public bool CheckClientInfo()
+        {
+            return true;
+        }
+
         public void RemoveClient(string clientID)
         {
             ClientInfoDic[clientID].ClientSocket.Disconnect(true);
@@ -45,42 +50,19 @@ namespace MainServer
 
         public bool isReadyForGame;
 
-        public Socket ClientSocket
+        /* ****************************************************************************** */
+        /// <summary>
+        /// 유저 상태표시 속성(유저IP주소)
+        /// </summary>
+        public string ClientAddress
         {
-            get
-            {
-                return clientSocket;
-            }
-            set
-            {
-                clientSocket = value;
-            }
+            get;
+            set;
         }
 
-        public string ClientID
-        {
-            get
-            {
-                return clientID;
-            }
-            set
-            {
-                clientID = value;
-            }
-        }
-        
-        public bool IsLogin
-        {
-            get
-            {
-                return isLogin;
-            }
-            set
-            {
-                isLogin = value;
-            }
-        }
-
+        /// <summary>
+        /// 유저 상태표시 속성(유저의 상태)
+        /// </summary>
         public bool IsPlayGame
         {
             get
@@ -93,18 +75,88 @@ namespace MainServer
             }
         }
 
+        /// <summary>
+        /// 유저 상태표시 속성(현재 유저의 게임방번호)
+        /// </summary>
+        public int GameRoomNumber
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// 유저 상태표시 속성(유저의 아이디)
+        /// </summary>
+        public string ClientID
+        {
+            get
+            {
+                return clientID;
+            }
+            set
+            {
+                clientID = value;
+            }
+        }
+        /* ****************************************************************************** */
+
+        /// <summary>
+        /// 유저 소켓
+        /// </summary>
+        public Socket ClientSocket
+        {
+            get
+            {
+                return clientSocket;
+            }
+            set
+            {
+                clientSocket = value;
+            }
+        }
+        
+        /// <summary>
+        /// 로그인 상태
+        /// </summary>
+        public bool IsLogin
+        {
+            get
+            {
+                return isLogin;
+            }
+            set
+            {
+                isLogin = value;
+            }
+        }
+
+        
+
         public ClientInfo(LoginPacket loginPacket,Socket Client)
         {
             ClientSocket = Client;
             ClientID = loginPacket.clientID;
             IsLogin = loginPacket.isLogin;
             //IsPlayGame = loginPacket.
+
+            ClientAddress = Client.RemoteEndPoint.ToString();
+            IsPlayGame = false;
         }
 
         public void EnterClientGameRoom(GamePlayer player,GameRoom CurrentGameRoom)
         {
             this.gamePlayer = player;
             this.gameRoom = CurrentGameRoom;
+
+            GameRoomNumber = CurrentGameRoom.gameRoomNumber;
+        }
+
+        public void ExitGameRoom()
+        {
+            this.gamePlayer = null;
+            this.gameRoom = null;
+            this.GameRoomNumber = 0;
+            this.IsPlayGame = false;
         }
     }
 
