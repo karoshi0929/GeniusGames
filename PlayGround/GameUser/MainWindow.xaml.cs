@@ -65,8 +65,7 @@ namespace GameUser
                         this.SelectGameScreen.Visibility = Visibility.Visible;
                         this.IndianPokerScreen.Visibility = Visibility.Collapsed;
 
-                        this.SelectGameScreen.Label_PrintMessage.Content = string.Empty;
-                        this.SelectGameScreen.Button_StartMatching.IsEnabled = true;
+                        SetInitialization();
                     }));
                     break;
 
@@ -100,17 +99,20 @@ namespace GameUser
         private void LoginScreen_Loginbtn_event(string message)
         {
             this.ClientID = this.LoginScreen.IDboxString;
+            if (this.ClientID.Length > 12)
+            {
+                MessageBox.Show("한글 6자 영문 12자 이상은 아이디로 사용하 실 수 없습니다.");
+                return;
+            }
+
             //this.indianPokerClient = new IndianPokerClient("127.0.0.1", 10000, this.ClientID);
             this.indianPokerClient = new IndianPokerClient("192.168.2.42", 10000, this.ClientID);
 
             if (this.indianPokerClient.ConnectedServer())
             {
-                this.SetVisible(Screen.SelectedGame);
-
                 LoginPacket loginPacket = new LoginPacket();
                 loginPacket.clientID = this.ClientID;
                 loginPacket.isLogin = true;
-                loginPacket.Ack = 0x01;
 
                 indianPokerClient.SendMessage(Header.Login, loginPacket, indianPokerClient.ao.WorkingSocket);
             }
@@ -157,7 +159,10 @@ namespace GameUser
 
         private void Instance_LoginPacketEvent(DataHandler.EventManager.LoginPacketReceivedArgs e)
         {
-            
+            if(e.Data.isDuplication)
+                MessageBox.Show("중복된 ID 입니다.");
+            else
+                this.SetVisible(Screen.SelectedGame);
         }
 
         //서버에서 매칭 메시지 수신 시 게임 화면 표시
@@ -218,6 +223,27 @@ namespace GameUser
             loginPacket.isLogin = false;
             indianPokerClient.SendMessage(Header.Login, loginPacket, indianPokerClient.ao.WorkingSocket);
             this.Close();
+        }
+
+        private void SetInitialization()
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                this.SelectGameScreen.Label_PrintMessage.Content = string.Empty; //로딩 메세지 초기화
+                this.SelectGameScreen.Button_StartMatching.IsEnabled = true; //매칭 버튼 활성화
+
+                this.IndianPokerScreen.Label_BetTotalMoney.Content = string.Empty;
+                this.IndianPokerScreen.Label_MyMoney.Content = string.Empty;
+                this.IndianPokerScreen.Label_OtherPlayerMoney.Content = string.Empty;
+                this.IndianPokerScreen.Label_PrintMyBetting.Content = string.Empty;
+                this.IndianPokerScreen.Label_PrintOtherPlayerBetting.Content = string.Empty;
+
+                this.IndianPokerScreen.Button_MyCard.Content = string.Empty;
+                this.IndianPokerScreen.Button_OtherPlayerCard.Content = string.Empty;
+
+                this.IndianPokerScreen.SetButtonsDisable();
+            }));
+            
         }
     }
 }

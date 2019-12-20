@@ -19,9 +19,9 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0">
-                <!--<Image  x:Name="MyCard" HorizontalAlignment="Left"  Margin="40,50,0,0" VerticalAlignment="Top" Width="90" Height="150"/>-->
                 <Label  x:Name="Card1" Content="나의 카드"  HorizontalAlignment="Center" VerticalAlignment="Center" Width="70" Height="40"/>
-                <Button x:Name="Button_MyCard" Content="뒷면" Height="370"/>
+                <Button x:Name="Button_MyCard" Content="뒷면" Height="370" Width="250"/>
+                <!--<Image  x:Name="MyCard" Height="370"/>-->
                 <Label Content="나의 남은 금액"/>
                 <Label x:Name="Label_MyMoney" Content="0"/>
                 <Label x:Name="Label_PrintMyBetting" Content="{Binding StrMyBetting}"/>
