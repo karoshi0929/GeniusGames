@@ -45,23 +45,27 @@ namespace DataHandler
     /***************************** 클라에게서 받은 패킷 ********************************/
     public struct LoginPacket
     {
-        //유저 아이디
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 12)]
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
         public string clientID;
 
-        //로그인 여부 true = 1 ,false = 0
+        /// <summary>
+        /// 로그인 여부
+        /// </summary>
         public bool isLogin;
 
-        //메세지 수신 체크
-        public byte Ack;
+        /// <summary>
+        /// 유저 아이디 중복 검사
+        /// </summary>
+        public bool isDuplication;
     }
 
     public struct MatchingPacket
     {
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 12)]
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
         public string clientID;
 
-        //시작할 게임 종류 아이디
+        
+        ///시작할 게임 종류 아이디
         public byte GameID;
 
         //매칭 시작 및 매칭 취소 메세지
@@ -71,20 +75,27 @@ namespace DataHandler
         //메세지 수신을 받았는지 못받았는지 체크 true = 1, false 0
         public byte Ack;
 
-        //매칭이 성사 되었다면 서버에서 true 송신
+        /// <summary>
+        /// 매칭이 성사 되면 서버에서 true 송신
+        /// </summary>
         public bool matchingComplete;
     }
 
     public struct HandleGamePacket
     {
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 12)]
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
         public string clientID;
 
-        //로딩 완료
+        /// <summary>
+        /// 로딩완료 변수
+        /// </summary>
         public bool loadingComplete;
 
-        //게임시작
+        /// <summary>
+        /// 현재 게임중 상태
+        /// </summary>
         public bool startGame;
+
         public short MyIndex;
         public short MyCard;
         public short OtherPlayerCard;
@@ -96,7 +107,7 @@ namespace DataHandler
 
     public struct IndianPokerGamePacket
     {
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 12)]
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
         public string clientID;
 
         public int Betting;
