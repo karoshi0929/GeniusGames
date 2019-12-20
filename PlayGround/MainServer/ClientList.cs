@@ -23,9 +23,10 @@ namespace MainServer
             return true;
         }
 
-        public bool CheckClientInfo()
+        public bool CheckClientInfo(ClientInfo clientInfo)
         {
-            return true;
+            bool checkID = ClientInfoDic.ContainsKey(clientInfo.ClientID);
+            return checkID;
         }
 
         public void RemoveClient(string clientID)

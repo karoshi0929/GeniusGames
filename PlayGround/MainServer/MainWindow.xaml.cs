@@ -93,19 +93,33 @@ namespace MainServer
 
         private void Instance_LoginPacketEvent(DataHandler.EventManager.LoginPacketReceivedArgs e)
         {
-            if(e.Data.isLogin == true)
+            LoginPacket loginPacket = new LoginPacket();
+
+            if (e.Data.isLogin == true)
             {
                 //클라이언트 정보 저장
                 ClientInfo clientInfo = new ClientInfo(e.Data, e.ClientSocket);
-                clientManagement.AddClient(clientInfo);
-                clientInfoListView.Add(clientInfo);
 
-                Dispatcher.BeginInvoke(new Action(() =>
+                bool checkInfo = clientManagement.CheckClientInfo(clientInfo);
+
+                if(!checkInfo)
                 {
-                    ListView_ClientListView.Items.Refresh();
-                }));
-                
-                PrintText("클라이언트" + clientInfo.ClientSocket.RemoteEndPoint.ToString() + " -> ID : " + clientInfo.ClientID + "로그인 했습니다.");
+                    clientManagement.AddClient(clientInfo);
+                    clientInfoListView.Add(clientInfo);
+
+                    Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        ListView_ClientListView.Items.Refresh();
+                    }));
+
+                    loginPacket.isDuplication = false;
+                    PrintText("클라이언트" + clientInfo.ClientSocket.RemoteEndPoint.ToString() + " -> ID : " + clientInfo.ClientID + "로그인 했습니다.");
+                }
+                else
+                {
+                    loginPacket.isDuplication = true;
+                }
+                indianPokerServer.SendMessage(Header.Login, loginPacket, clientInfo.ClientSocket);
             }
             else
             {
