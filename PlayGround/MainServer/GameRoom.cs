@@ -19,17 +19,18 @@ namespace MainServer
         const short CARDMINNUM = 1;
         const short CARDMAXNUM = 10;
 
+        private short victoryUser = 0;
         private short currentTurnPlayer;
         private int totalBettingMoney = 0;
 
-        private short[] card = new short[]{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-                                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-        short player1Card = 0;
-        short player2Card = 0;
+        private int[] card = new int[]{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+                                        1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+        private short player1Card = 0;
+        private short player2Card = 0;
 
         public int gameRoomNumber = 0;
         public bool playGame = false;
-        private short victoryUser = 0;
 
         public GamePlayer player1;
         public GamePlayer player2;
@@ -43,6 +44,8 @@ namespace MainServer
 
             user1.EnterClientGameRoom(player1, this);
             user2.EnterClientGameRoom(player2, this);
+
+            ShuffleRandom();
         }
 
         public void GameStart()
@@ -254,6 +257,23 @@ namespace MainServer
 
             GameRoomManager gameroomManager = new GameRoomManager();
             gameroomManager.DestroyGameRoom(gameRoomNumber, this);
+        }
+
+        private void ShuffleRandom()
+        {
+
+            Random random = new Random();
+            int lastIndex = card.Length;
+
+            while (lastIndex > 0)
+            {
+                lastIndex--;
+                int randomIndex = random.Next(lastIndex);
+                int temp = card[randomIndex];
+                card[randomIndex] = card[lastIndex];
+                card[lastIndex] = temp;
+            }
+
         }
     }
 
