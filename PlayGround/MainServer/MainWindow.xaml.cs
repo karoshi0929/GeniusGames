@@ -51,6 +51,7 @@ namespace MainServer
                 OnPropertyChanged("LogMessage");
             }
         }
+
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
         {
@@ -127,6 +128,7 @@ namespace MainServer
                 PrintText("클라이언트" + " -> ID : " + e.Data.clientID + "로그아웃 했습니다.");
             }
         }
+
         private void Instance_MatchingPacketEvent(DataHandler.EventManager.MatchingPacketReceivedArgs e)
         {
             //0. 클라이언트 정보 가지고 오기 Param = 클라이언트 아이디
@@ -199,6 +201,7 @@ namespace MainServer
                 }));
             }
         }
+
         private void Instance_HandleGamePacketEvent(DataHandler.EventManager.HandleGamePacketReceivedArgs e)
         {
             ClientInfo clientInfo = clientManagement.ClientInfoDic[e.Data.clientID];
@@ -289,13 +292,12 @@ namespace MainServer
                 }));
             }
         }
+
         private void Instance_IndianPokerGamePacketEvent(DataHandler.EventManager.IndianPokerGamePacketReceivedArgs e)
         {
             ClientInfo clientInfo = clientManagement.ClientInfoDic[e.Data.clientID];
             clientInfo.gameRoom.RequestBetting(clientInfo.gamePlayer, e.Data);
         }
-
-
 
         private void PrintText(string message)
         {
@@ -317,7 +319,5 @@ namespace MainServer
         {
             indianPokerServer.OpenIndianPokerServer();
         }
-
-        
     }
 }
