@@ -210,6 +210,8 @@ namespace MainServer
             {
                 if (clientInfo.gameRoom == null)
                     return;
+                //else if (clientInfo.GameRoomNumber == ) // 게임이 끝난 후, 5초 안에 매칭이 성사 될 경우 예외처리 해주어야 함.
+                    //return;
 
                 // (1) 두 클라이언트가 로딩이 완료되면 게임 시작
                 if (clientInfo.IsPlayGame == false)
