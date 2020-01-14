@@ -47,11 +47,12 @@ namespace MainServer
             user2.EnterClientGameRoom(player2, this);
 
             ShuffleRandom();
+            playingGameCount = 0;
         }
 
         public void GameStart()
         {
-            if (playingGameCount == 10)
+            if (playingGameCount >= 20)
             {
                 ShuffleRandom();
                 playingGameCount = 0;
@@ -72,8 +73,6 @@ namespace MainServer
             player1GamePacket.startGame = true;
             player1GamePacket.MyIndex = player1.PlayerIndex;
             //player1GamePacket.MyCard = (short)random.Next(CARDMINNUM, CARDMAXNUM);
-            this.player1Card = player1GamePacket.MyCard;
-
             if(victoryUser == 0)
             {
                 player1.PlayerTurn = 1;
@@ -87,8 +86,9 @@ namespace MainServer
             else
             {
                 player1.PlayerTurn = 2;
-                player1GamePacket.MyCard = (short)card[playingGameCount++];
+                player1GamePacket.MyCard = (short)card[++playingGameCount];
             }
+            this.player1Card = player1GamePacket.MyCard;
             player1GamePacket.playerTurn = player1.PlayerTurn;
             player1GamePacket.TotalBettingMoney = totalBettingMoney;
             player1GamePacket.MyMoney = player1.PlayerMoney - 5;
@@ -99,26 +99,25 @@ namespace MainServer
             player2GamePacket.startGame = true;
             player2GamePacket.MyIndex = player2.PlayerIndex;
             //player2GamePacket.MyCard = (short)random.Next(CARDMINNUM, CARDMAXNUM);
-            this.player2Card = player2GamePacket.MyCard;
 
             if (victoryUser == 0)
             {
                 player2.PlayerTurn = 2;
-                player1GamePacket.MyCard = (short)card[playingGameCount++];
+                player2GamePacket.MyCard = (short)card[++playingGameCount];
             }
             else if (victoryUser == 2)
             {
                 player2.PlayerTurn = 1;
-                player1GamePacket.MyCard = (short)card[playingGameCount];
+                player2GamePacket.MyCard = (short)card[playingGameCount];
             }
             else
             {
                 player2.PlayerTurn = 2;
-                player1GamePacket.MyCard = (short)card[playingGameCount++];
+                player2GamePacket.MyCard = (short)card[++playingGameCount];
             }
-                
-            player2GamePacket.playerTurn = player2.PlayerTurn;
 
+            this.player2Card = player2GamePacket.MyCard;
+            player2GamePacket.playerTurn = player2.PlayerTurn;
             player2GamePacket.TotalBettingMoney = totalBettingMoney;
             player2GamePacket.MyMoney = player2.PlayerMoney - 5;
             /* ***************************************************************************** */
@@ -131,7 +130,7 @@ namespace MainServer
             SendGameStartMessage(Header.Game, player1GamePacket, player1.owner);
             SendGameStartMessage(Header.Game, player2GamePacket, player2.owner);
 
-            this.playingGameCount = this.playingGameCount + 2;
+            this.playingGameCount = this.playingGameCount + 1;
         }
 
         public void RequestBetting(GamePlayer player, IndianPokerGamePacket gamePacketParam)
