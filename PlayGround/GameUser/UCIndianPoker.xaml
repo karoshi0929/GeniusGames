@@ -37,7 +37,7 @@
                 <!--<Image  x:Name="OtherPlayerCard" HorizontalAlignment="Right"  Margin="0,50,40,0" VerticalAlignment="Top" Width="90" Height="150"/>-->
                 
                 <Label  x:Name="Card2" Content="상대방 카드" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" Height="40"/>
-                <Button x:Name="Button_OtherPlayerCard" Content="0" Height="370"/>
+                <Button x:Name="Button_OtherPlayerCard" Content="0" Height="370" Width="250"/>
                 <Label Content="상대방의 남은 금액"/>
                 <Label x:Name="Label_OtherPlayerMoney" Content="0"/>
                 <Label x:Name="Label_PrintOtherPlayerBetting" Content="{Binding StrOtherPlayerBetting}"/>
